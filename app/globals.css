@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: #050816;
-  --foreground: #f8fbff;
+  --background: #f8fbff;
+  --foreground: #0f172a;
 }
 
 * {
@@ -35,21 +35,42 @@ body {
 
 .animated-gradient {
   background:
-    radial-gradient(circle at 15% 20%, rgba(124, 58, 237, 0.45), transparent 30%),
-    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.35), transparent 28%),
-    linear-gradient(120deg, #050816 0%, #111827 35%, #312e81 70%, #0f172a 100%);
+    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.24), transparent 30%),
+    radial-gradient(circle at 85% 10%, rgba(168, 85, 247, 0.18), transparent 28%),
+    linear-gradient(120deg, #f8fbff 0%, #eef6ff 35%, #e9d5ff 70%, #cffafe 100%);
   background-size: 180% 180%;
   animation: gradient-shift 16s ease infinite;
 }
 
+.dark .animated-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(124, 58, 237, 0.45), transparent 30%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.35), transparent 28%),
+    linear-gradient(120deg, #050816 0%, #111827 35%, #312e81 70%, #0f172a 100%);
+  background-size: 180% 180%;
+}
+
 .glass-card {
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.36));
+  box-shadow: 0 24px 80px rgba(15, 23, 42, 0.12);
   backdrop-filter: blur(24px);
 }
 
+.dark .glass-card {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
 .text-gradient {
+  background: linear-gradient(90deg, #0f172a, #2563eb, #7c3aed, #0f172a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.dark .text-gradient {
   background: linear-gradient(90deg, #ffffff, #b8ccff, #c4b5fd, #ffffff);
   -webkit-background-clip: text;
   background-clip: text;

@@ -6,16 +6,16 @@ import { GlassCard } from "./GlassCard";
 
 export function Hero() {
   return (
-    <section className="flex min-h-screen items-center justify-center px-6 py-24 text-center">
+    <section id="home" className="flex min-h-screen scroll-mt-24 items-center justify-center px-6 py-28 text-center">
       <GlassCard className="relative max-w-5xl overflow-hidden px-6 py-14 sm:px-12 sm:py-20">
         <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/70 to-transparent" />
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.7 }}
-          className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-sm font-medium text-cyan-100"
+          className="mx-auto mb-7 inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/60 px-4 py-2 text-sm font-medium text-slate-700 shadow-lg backdrop-blur dark:border-white/20 dark:bg-white/10 dark:text-cyan-100"
         >
-          <Sparkles size={16} /> Built with Next.js 15
+          <Sparkles size={16} /> Hello the World v2
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, y: 24 }}
@@ -23,15 +23,15 @@ export function Hero() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="text-gradient text-5xl font-black tracking-tight sm:text-7xl lg:text-8xl"
         >
-          Hello the world
+          Hello the World
         </motion.h1>
         <motion.p
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-slate-200 sm:text-2xl"
+          className="mx-auto mt-6 max-w-2xl text-xl leading-8 text-slate-700 sm:text-2xl dark:text-slate-200"
         >
-          Welcome to my first website.
+          A bright, responsive Next.js landing page with smooth motion, immersive gradients, and a refined place to begin exploring.
         </motion.p>
         <motion.a
           href="#about"

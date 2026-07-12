@@ -1,21 +1,19 @@
-# Hello the world
+# Hello the World
 
-A modern, responsive landing page built with **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Lucide React**.
+Hello the World is a modern Next.js landing page with a polished hero, animated gradient background, smooth scrolling navigation, dark mode, responsive sections, and an elegant footer. The experience is built with **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Lucide React**.
 
-## Features
+## Project Introduction
 
-- App Router architecture
-- TypeScript-first project setup
-- Tailwind CSS styling
-- Animated gradient background
-- Floating animated blobs
-- Glassmorphism hero and content cards
-- Glowing Explore button with smooth scrolling
-- About, Journey, and Contact sections
-- SEO metadata optimized for deployment
-- Vercel-ready configuration
+This project presents a refined homepage for **Hello the World**. It includes:
 
-## Getting Started
+- Animated gradient hero section with a large title, subtitle, and interactive Explore button
+- Sticky navigation for Home, About, Gallery, and Contact
+- Home, About, Features, and Contact content areas
+- Smooth scrolling and mobile-friendly layouts
+- Dark mode toggle
+- Footer with `© 2026 Hello the World`
+
+## Local Development
 
 Install dependencies:
 
@@ -23,7 +21,7 @@ Install dependencies:
 npm install
 ```
 
-Run the development server:
+Start the development server:
 
 ```bash
 npm run dev
@@ -31,20 +29,26 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Production
-
-Build the app:
+Run quality checks before shipping changes:
 
 ```bash
+npm run lint
 npm run build
 ```
 
-Start the production server:
+## Deployment on Vercel
 
-```bash
-npm start
-```
+1. Push the repository to GitHub.
+2. Import the project in [Vercel](https://vercel.com/new).
+3. Keep the default Next.js framework settings.
+4. Deploy the project.
 
-## Deploy on Vercel
+Vercel will install dependencies, run the Next.js build, and publish the landing page.
 
-This project is optimized for Vercel. Import the GitHub repository into Vercel, keep the default Next.js settings, and deploy.
+## Screenshots
+
+Add screenshots here after deployment or local review:
+
+- Desktop light mode: _placeholder_
+- Desktop dark mode: _placeholder_
+- Mobile layout: _placeholder_
