@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #050816;
+  --foreground: #f8fbff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+::selection {
+  background: rgba(125, 92, 255, 0.45);
+  color: white;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.animated-gradient {
+  background:
+    radial-gradient(circle at 15% 20%, rgba(124, 58, 237, 0.45), transparent 30%),
+    radial-gradient(circle at 85% 10%, rgba(14, 165, 233, 0.35), transparent 28%),
+    linear-gradient(120deg, #050816 0%, #111827 35%, #312e81 70%, #0f172a 100%);
+  background-size: 180% 180%;
+  animation: gradient-shift 16s ease infinite;
+}
+
+.glass-card {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.06));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(24px);
+}
+
+.text-gradient {
+  background: linear-gradient(90deg, #ffffff, #b8ccff, #c4b5fd, #ffffff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
