@@ -3,18 +3,18 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Hello the world | Modern Next.js Landing Page",
-  description: "Hello the world — a beautiful first website built with Next.js 15, Tailwind CSS, Framer Motion, and Lucide React.",
+  title: "Hello the World | Modern Next.js Landing Page",
+  description: "Hello the World — a beautiful first website built with Next.js 15, Tailwind CSS, Framer Motion, and Lucide React.",
   metadataBase: new URL("https://hellotheworld.vercel.app"),
   openGraph: {
-    title: "Hello the world",
+    title: "Hello the World",
     description: "Welcome to my first website.",
     type: "website",
     url: "https://hellotheworld.vercel.app",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Hello the world",
+    title: "Hello the World",
     description: "Welcome to my first website.",
   },
 };
