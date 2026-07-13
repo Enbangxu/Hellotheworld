@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { GlassCard } from "./GlassCard";
+import { GlassCard } from "@/src/components/GlassCard";
 
 type SectionCardProps = {
   id: string;
