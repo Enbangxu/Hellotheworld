@@ -1,8 +1,8 @@
-import { Globe2, Mail, Rocket, Sparkles, type LucideIcon } from "lucide-react";
+import { Beaker, Globe2, Mail, Rocket, Sparkles, Wrench, type LucideIcon } from "lucide-react";
 import type { Locale } from "@/src/config/site";
 
 export type Section = {
-  id: "about" | "features" | "contact";
+  id: "about" | "features" | "lab" | "tools" | "global" | "contact";
   title: string;
   icon: LucideIcon;
   body?: string;
@@ -28,6 +28,9 @@ export const siteContent: Record<Locale, {
       { label: "Home", href: "#home" },
       { label: "About", href: "#about" },
       { label: "Features", href: "#features" },
+      { label: "AI Lab", href: "/en/lab" },
+      { label: "AI Tools", href: "/en/tools" },
+      { label: "Global Creator", href: "/en/global" },
       { label: "Contact", href: "#contact" },
     ],
     hero: {
@@ -39,6 +42,9 @@ export const siteContent: Record<Locale, {
     sections: [
       { id: "about", title: "About", icon: Rocket, body: "Hello the World is a refined website starter for curious builders, travelers, and dreamers. It pairs thoughtful content structure with delightful motion so every visitor feels invited to explore." },
       { id: "features", title: "Production features", icon: Sparkles, cards: ["SEO metadata and social sharing", "Bilingual English and Chinese URLs", "Motion-first responsive components"] },
+      { id: "lab", title: "AI Lab", icon: Beaker, body: "Explore markdown-backed research notes, AI workflow experiments, and creator strategy essays for the new AI Creator Ecosystem." },
+      { id: "tools", title: "AI Tools", icon: Wrench, body: "Discover a searchable directory of practical AI tools with categories and tag filters for creators." },
+      { id: "global", title: "Global Creator", icon: Globe2, body: "Build for global audiences with bilingual switching, SEO metadata, and hreflang-ready pages." },
       { id: "contact", title: "Contact", icon: Mail, body: "Use this section as a launchpad for email, social links, newsletter signup, or a future contact form as the website continues to grow." },
     ],
     footer: "© 2026 Hello the World. Built for launch.",
@@ -55,6 +61,9 @@ export const siteContent: Record<Locale, {
       { label: "首页", href: "#home" },
       { label: "关于", href: "#about" },
       { label: "功能", href: "#features" },
+      { label: "AI Lab", href: "/zh/lab" },
+      { label: "AI Tools", href: "/zh/tools" },
+      { label: "Global Creator", href: "/zh/global" },
       { label: "联系", href: "#contact" },
     ],
     hero: {
@@ -66,6 +75,9 @@ export const siteContent: Record<Locale, {
     sections: [
       { id: "about", title: "关于", icon: Globe2, body: "Hello the World 是为创作者、旅行者和探索者准备的精致网站起点。它结合清晰的内容结构与愉悦的动效，让访客自然地开始探索。" },
       { id: "features", title: "上线能力", icon: Sparkles, cards: ["SEO 元数据与社交分享", "英文与中文的清晰 URL", "以动效驱动的响应式组件"] },
+      { id: "lab", title: "AI Lab", icon: Beaker, body: "沉淀 Markdown 研究文章、AI 工作流实验与创作者策略，构建新的 AI Creator Ecosystem。" },
+      { id: "tools", title: "AI Tools", icon: Wrench, body: "提供可搜索、可分类、可按标签过滤的 AI 工具目录，服务创作者日常工作。" },
+      { id: "global", title: "Global Creator", icon: Globe2, body: "通过中英文切换、SEO metadata 与 hreflang 页面，面向全球受众发布内容。" },
       { id: "contact", title: "联系", icon: Mail, body: "这里可以扩展为邮箱、社交链接、订阅入口，或未来的联系表单，伴随网站持续成长。" },
     ],
     footer: "© 2026 Hello the World。为上线而构建。",
