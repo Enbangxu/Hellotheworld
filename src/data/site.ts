@@ -1,87 +1,58 @@
-import { Beaker, Globe2, Mail, Rocket, Sparkles, Wrench, type LucideIcon } from "lucide-react";
+import { Bot, BookOpen, Globe2, Mail, Network, Rocket, Sparkles, Wrench, Beaker, type LucideIcon } from "lucide-react";
 import type { Locale } from "@/src/config/site";
 
-export type Section = {
-  id: "about" | "features" | "lab" | "tools" | "global" | "contact";
-  title: string;
-  icon: LucideIcon;
-  body?: string;
-  cards?: string[];
-};
+export type Section = { id: "about" | "features" | "lab" | "tools" | "assistant" | "community" | "knowledge" | "contact"; title: string; icon: LucideIcon; body?: string; cards?: string[] };
+type Content = { metadata: { title: string; description: string; ogTitle: string }; nav: { label: string; href: string }[]; hero: { eyebrow: string; title: string; subtitle: string; cta: string }; sections: Section[]; footer: string; languageLabel: string; themeLabel: string };
 
-export const siteContent: Record<Locale, {
-  metadata: { title: string; description: string; ogTitle: string };
-  nav: { label: string; href: string }[];
-  hero: { eyebrow: string; title: string; subtitle: string; cta: string };
-  sections: Section[];
-  footer: string;
-  languageLabel: string;
-  themeLabel: string;
-}> = {
+const nav = (locale: Locale, labels: string[]) => [
+  { label: labels[0], href: `/${locale}` }, { label: labels[1], href: `/${locale}/lab` }, { label: labels[2], href: `/${locale}/tools` }, { label: labels[3], href: `/${locale}/assistant` }, { label: labels[4], href: `/${locale}/community` }, { label: labels[5], href: `/${locale}/knowledge` }, { label: labels[6], href: `/${locale}/changelog` },
+];
+
+export const siteContent: Record<Locale, Content> = {
   en: {
-    metadata: {
-      title: "Hello the World | Production Ready Next.js Website",
-      description: "A bilingual, SEO-ready Next.js website foundation with polished motion, clean architecture, and production deployment workflows.",
-      ogTitle: "Hello the World — Production Ready Website",
-    },
-    nav: [
-      { label: "Home", href: "#home" },
-      { label: "About", href: "#about" },
-      { label: "Features", href: "#features" },
-      { label: "AI Lab", href: "/en/lab" },
-      { label: "AI Tools", href: "/en/tools" },
-      { label: "Global Creator", href: "/en/global" },
-      { label: "Contact", href: "#contact" },
-    ],
-    hero: {
-      eyebrow: "Hello the World v3",
-      title: "Build a warmer web presence.",
-      subtitle: "A production-ready Next.js foundation with bilingual content, SEO metadata, animated interactions, and a clean path to launch on Vercel.",
-      cta: "Explore the foundation",
-    },
+    metadata: { title: "Enbang AI Studio v4 | Build ideas with AI", description: "A multilingual AI Studio for lab projects, tools, assistant workflows, creator networks, and knowledge publishing.", ogTitle: "Enbang AI Studio v4" },
+    nav: nav("en", ["Home", "AI Lab", "AI Tools", "Assistant", "Creator Network", "Knowledge", "Changelog"]),
+    hero: { eyebrow: "Hello World 🌎", title: "Build ideas with AI.", subtitle: "Enbang AI Studio brings experiments, tools, assistant workflows, knowledge, and global creator collaboration into one launch-ready Next.js experience.", cta: "Enter AI Studio" },
     sections: [
-      { id: "about", title: "About", icon: Rocket, body: "Hello the World is a refined website starter for curious builders, travelers, and dreamers. It pairs thoughtful content structure with delightful motion so every visitor feels invited to explore." },
-      { id: "features", title: "Production features", icon: Sparkles, cards: ["SEO metadata and social sharing", "Bilingual English and Chinese URLs", "Motion-first responsive components"] },
-      { id: "lab", title: "AI Lab", icon: Beaker, body: "Explore markdown-backed research notes, AI workflow experiments, and creator strategy essays for the new AI Creator Ecosystem." },
-      { id: "tools", title: "AI Tools", icon: Wrench, body: "Discover a searchable directory of practical AI tools with categories and tag filters for creators." },
-      { id: "global", title: "Global Creator", icon: Globe2, body: "Build for global audiences with bilingual switching, SEO metadata, and hreflang-ready pages." },
-      { id: "contact", title: "Contact", icon: Mail, body: "Use this section as a launchpad for email, social links, newsletter signup, or a future contact form as the website continues to grow." },
+      { id: "about", title: "AI Studio Architecture", icon: Rocket, body: "A modular studio built around AI Lab, Tools, Assistant, Creator Network, Knowledge Base, and Changelog routes." },
+      { id: "features", title: "Studio entry points", icon: Sparkles, cards: ["AI Lab", "AI Tools", "AI Assistant", "Creator Network"] },
+      { id: "lab", title: "AI Lab", icon: Beaker, body: "Track experiments with status, stack, progress, links, tags, and project detail pages." },
+      { id: "tools", title: "AI Tools", icon: Wrench, body: "Search, filter, tag, categorize, and sort practical AI tools for creators." },
+      { id: "assistant", title: "AI Assistant", icon: Bot, body: "A chat-first UI prepared for OpenAI API, RAG, and vector database integration." },
+      { id: "community", title: "Creator Network", icon: Network, body: "Connect global creators through collaboration loops, rituals, and launch channels." },
+      { id: "knowledge", title: "Knowledge Base", icon: BookOpen, body: "Markdown-style articles for architecture notes, workflows, and reusable AI methods." },
+      { id: "contact", title: "Global-ready", icon: Mail, body: "Internationalized in English, Chinese, and Japanese with SEO metadata and hreflang alternates." },
     ],
-    footer: "© 2026 Hello the World. Built for launch.",
-    languageLabel: "中文",
-    themeLabel: "Toggle dark mode",
+    footer: "© 2026 Enbang AI Studio. Built for global AI creators.", languageLabel: "中文", themeLabel: "Toggle dark mode",
   },
   zh: {
-    metadata: {
-      title: "Hello the World | 可上线的 Next.js 网站",
-      description: "一个支持中英双语、SEO、现代动效、清晰架构与 Vercel 部署流程的 Next.js 网站基础版本。",
-      ogTitle: "Hello the World — 可上线的网站基础",
-    },
-    nav: [
-      { label: "首页", href: "#home" },
-      { label: "关于", href: "#about" },
-      { label: "功能", href: "#features" },
-      { label: "AI Lab", href: "/zh/lab" },
-      { label: "AI Tools", href: "/zh/tools" },
-      { label: "Global Creator", href: "/zh/global" },
-      { label: "联系", href: "#contact" },
-    ],
-    hero: {
-      eyebrow: "Hello the World v3",
-      title: "打造更有温度的网络名片。",
-      subtitle: "一个可直接上线的 Next.js 网站基础：支持双语内容、SEO 元数据、细腻交互动效，并为 Vercel 部署做好准备。",
-      cta: "探索网站基础",
-    },
+    metadata: { title: "Enbang AI Studio v4 | 用 AI 构建想法", description: "面向 AI 实验、工具、助手、创作者网络与知识发布的多语言 AI Studio。", ogTitle: "Enbang AI Studio v4" },
+    nav: nav("zh", ["首页", "AI实验室", "AI工具", "AI助手", "创作者网络", "知识库", "版本记录"]),
+    hero: { eyebrow: "Hello World 🌎", title: "Build ideas with AI.", subtitle: "Enbang AI Studio 将实验项目、工具库、助手工作流、知识库与全球创作者协作整合为一个可上线的 Next.js 体验。", cta: "进入 AI Studio" },
     sections: [
-      { id: "about", title: "关于", icon: Globe2, body: "Hello the World 是为创作者、旅行者和探索者准备的精致网站起点。它结合清晰的内容结构与愉悦的动效，让访客自然地开始探索。" },
-      { id: "features", title: "上线能力", icon: Sparkles, cards: ["SEO 元数据与社交分享", "英文与中文的清晰 URL", "以动效驱动的响应式组件"] },
-      { id: "lab", title: "AI Lab", icon: Beaker, body: "沉淀 Markdown 研究文章、AI 工作流实验与创作者策略，构建新的 AI Creator Ecosystem。" },
-      { id: "tools", title: "AI Tools", icon: Wrench, body: "提供可搜索、可分类、可按标签过滤的 AI 工具目录，服务创作者日常工作。" },
-      { id: "global", title: "Global Creator", icon: Globe2, body: "通过中英文切换、SEO metadata 与 hreflang 页面，面向全球受众发布内容。" },
-      { id: "contact", title: "联系", icon: Mail, body: "这里可以扩展为邮箱、社交链接、订阅入口，或未来的联系表单，伴随网站持续成长。" },
-    ],
-    footer: "© 2026 Hello the World。为上线而构建。",
-    languageLabel: "English",
-    themeLabel: "切换深色模式",
+      { id: "about", title: "AI Studio 架构", icon: Rocket, body: "围绕 AI Lab、Tools、Assistant、Creator Network、Knowledge Base 与 Changelog 的模块化架构。" },
+      { id: "features", title: "首页入口", icon: Sparkles, cards: ["AI Lab", "AI Tools", "AI Assistant", "Creator Network"] },
+      { id: "lab", title: "AI实验室", icon: Beaker, body: "用状态、技术栈、进度、链接、标签与详情页管理 AI 项目。" },
+      { id: "tools", title: "AI工具中心", icon: Wrench, body: "支持搜索、分类、标签与评分排序的 AI 工具数据库。" },
+      { id: "assistant", title: "AI助手入口", icon: Bot, body: "先完成聊天 UI，并为 OpenAI API、RAG 与向量数据库预留架构。" },
+      { id: "community", title: "Creator Network", icon: Network, body: "面向全球创作者的协作网络、发布节奏与增长闭环。" },
+      { id: "knowledge", title: "知识库", icon: BookOpen, body: "用 Markdown 风格文章沉淀架构、工作流与可复用 AI 方法。" },
+      { id: "contact", title: "国际化就绪", icon: Mail, body: "支持中文、English、日本語，并提供 SEO metadata 与 hreflang。" },
+    ], footer: "© 2026 Enbang AI Studio。为全球 AI 创作者构建。", languageLabel: "日本語", themeLabel: "切换深色模式",
+  },
+  ja: {
+    metadata: { title: "Enbang AI Studio v4 | AIでアイデアを形にする", description: "AI実験、ツール、アシスタント、クリエイターネットワーク、知識ベースを備えた多言語AI Studio。", ogTitle: "Enbang AI Studio v4" },
+    nav: nav("ja", ["ホーム", "AI Lab", "AI Tools", "Assistant", "Creator Network", "Knowledge", "Changelog"]),
+    hero: { eyebrow: "Hello World 🌎", title: "Build ideas with AI.", subtitle: "Enbang AI Studio は実験、ツール、アシスタント、知識、グローバルなクリエイター協業を一つの Next.js 体験にまとめます。", cta: "AI Studioへ" },
+    sections: [
+      { id: "about", title: "AI Studio Architecture", icon: Rocket, body: "AI Lab、Tools、Assistant、Creator Network、Knowledge Base、Changelog を中心にしたモジュール設計。" },
+      { id: "features", title: "Studio entry points", icon: Sparkles, cards: ["AI Lab", "AI Tools", "AI Assistant", "Creator Network"] },
+      { id: "lab", title: "AI実験室", icon: Beaker, body: "ステータス、スタック、進捗、リンク、タグ、詳細ページでプロジェクトを管理します。" },
+      { id: "tools", title: "AIツールセンター", icon: Wrench, body: "検索、カテゴリ、タグ、評価順に対応したAIツールデータベース。" },
+      { id: "assistant", title: "AIアシスタント", icon: Bot, body: "OpenAI API、RAG、Vector Database 接続に備えたチャットUI。" },
+      { id: "community", title: "Creator Network", icon: Network, body: "世界中のクリエイターをつなぐ協業と公開のループ。" },
+      { id: "knowledge", title: "Knowledge Base", icon: BookOpen, body: "Markdown形式の記事でAIワークフローと知識を蓄積します。" },
+      { id: "contact", title: "グローバル対応", icon: Globe2, body: "中文、English、日本語、SEO metadata、hreflang に対応。" },
+    ], footer: "© 2026 Enbang AI Studio. Global AI creators のために。", languageLabel: "English", themeLabel: "ダークモード切替",
   },
 };

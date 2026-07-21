@@ -5,45 +5,12 @@ import { siteConfig } from "@/src/config/site";
 export const metadata: Metadata = {
   metadataBase: new URL(siteConfig.url),
   applicationName: siteConfig.name,
-  title: {
-    default: "Hello the World | Production Ready Next.js Website",
-    template: `%s | ${siteConfig.name}`,
-  },
-  description: "A bilingual, SEO-ready Next.js website foundation with polished motion, clean architecture, and production deployment workflows.",
-  alternates: {
-    canonical: "/en",
-    languages: {
-      en: "/en",
-      zh: "/zh",
-    },
-  },
-  openGraph: {
-    title: "Hello the World — Production Ready Website",
-    description: "A bilingual, SEO-ready Next.js website foundation with polished motion and a clean architecture.",
-    type: "website",
-    url: "/en",
-    siteName: siteConfig.name,
-    locale: "en_US",
-    alternateLocale: ["zh_CN"],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Hello the World — Production Ready Website",
-    description: "A bilingual, SEO-ready Next.js website foundation with polished motion and a clean architecture.",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
+  title: { default: "Enbang AI Studio v4 | Build ideas with AI", template: `%s | ${siteConfig.name}` },
+  description: "A multilingual AI Studio for lab projects, tools, assistant workflows, creator networks, and knowledge publishing.",
+  alternates: { canonical: "/en", languages: { en: "/en", zh: "/zh", ja: "/ja", "x-default": "/en" } },
+  openGraph: { title: "Enbang AI Studio v4", description: "Build ideas with AI through labs, tools, assistant workflows, knowledge, and creator networks.", type: "website", url: "/en", siteName: siteConfig.name, locale: "en_US", alternateLocale: ["zh_CN", "ja_JP"] },
+  twitter: { card: "summary_large_image", title: "Enbang AI Studio v4", description: "Build ideas with AI through labs, tools, assistant workflows, knowledge, and creator networks." },
+  robots: { index: true, follow: true },
 };
 
-
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="antialiased">
-        {children}
-      </body>
-    </html>
-  );
-}
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="en" suppressHydrationWarning><body className="antialiased">{children}</body></html>; }
