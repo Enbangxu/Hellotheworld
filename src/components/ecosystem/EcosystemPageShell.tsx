@@ -1,0 +1,29 @@
+import Link from "next/link";
+import { FloatingBlobs } from "@/src/components/FloatingBlobs";
+import type { Locale } from "@/src/config/site";
+
+export function EcosystemPageShell({ locale, eyebrow, title, subtitle, children }: { locale: Locale; eyebrow: string; title: string; subtitle: string; children: React.ReactNode }) {
+  return (
+    <main className="dark min-h-screen overflow-hidden">
+      <div className="animated-gradient min-h-screen text-white">
+        <FloatingBlobs />
+        <div className="relative z-10 mx-auto max-w-6xl px-6 py-8">
+          <nav className="mb-16 flex flex-wrap items-center justify-between gap-4 rounded-full border border-white/15 bg-slate-950/55 px-5 py-3 backdrop-blur-2xl">
+            <Link href={`/${locale}`} className="text-lg font-black tracking-tight">Hello the World</Link>
+            <div className="flex gap-2 text-sm font-bold">
+              <Link className="rounded-full bg-white/10 px-4 py-2 hover:bg-white/20" href={`/${locale}/lab`}>AI Lab</Link>
+              <Link className="rounded-full bg-white/10 px-4 py-2 hover:bg-white/20" href={`/${locale}/tools`}>AI Tools</Link>
+              <Link className="rounded-full bg-white/10 px-4 py-2 hover:bg-white/20" href={`/${locale}/global`}>Global Creator</Link>
+            </div>
+          </nav>
+          <section className="mb-10 max-w-3xl">
+            <p className="mb-4 text-sm font-black uppercase tracking-[0.35em] text-cyan-200">{eyebrow}</p>
+            <h1 className="text-4xl font-black tracking-tight md:text-6xl">{title}</h1>
+            <p className="mt-5 text-lg leading-8 text-slate-200">{subtitle}</p>
+          </section>
+          {children}
+        </div>
+      </div>
+    </main>
+  );
+}
