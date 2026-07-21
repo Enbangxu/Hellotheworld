@@ -9,5 +9,11 @@ export function getLocale(value: string | undefined): Locale {
 }
 
 export function getAlternateLocale(locale: Locale): Locale {
-  return locale === "en" ? "zh" : "en";
+  if (locale === "en") return "zh";
+  if (locale === "zh") return "ja";
+  return "en";
+}
+
+export function getOgLocale(locale: Locale) {
+  return { en: "en_US", zh: "zh_CN", ja: "ja_JP" }[locale];
 }
