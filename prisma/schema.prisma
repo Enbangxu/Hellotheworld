@@ -45,6 +45,7 @@ model User {
   articles       Article[]
   tools          Tool[]
   products       Product[]
+  agents         Agent[]
   following      Follow[]        @relation("Follower")
   followers      Follow[]        @relation("Following")
 }
@@ -65,6 +66,7 @@ model CreatorProfile {
   articles    Article[]
   tools       Tool[]
   products    Product[]
+  agents      Agent[]
 }
 
 model Project {
@@ -132,6 +134,19 @@ model Product {
   creatorId   String?
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   creator     CreatorProfile? @relation(fields: [creatorId], references: [id])
+}
+
+model Agent {
+  id          String          @id @default(cuid())
+  name        String
+  description String
+  category    String
+  prompt      String
+  creatorId   String
+  rating      Float           @default(0)
+  downloads   Int             @default(0)
+  createdAt   DateTime        @default(now())
+  creator     CreatorProfile  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
 }
 
 model Follow {

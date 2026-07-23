@@ -2,17 +2,18 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { EcosystemPageShell } from "@/src/components/ecosystem/EcosystemPageShell";
 import { creators } from "@/src/data/network";
+import { creators as creatorEconomy } from "@/src/data/ai-universe";
 import { getLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
 
-export const metadata: Metadata = { title: "Creator Network", description: "Discover AI creators building projects, articles, tools, prompts, and templates." };
+export const metadata: Metadata = { title: "Creator Economy", description: "Creator profiles, badges, rankings, published agents, and followers in Enbang AI Universe V6." };
 
 export default async function CreatorIndexPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale: rawLocale } = await params;
   const locale: Locale = getLocale(rawLocale);
 
   return (
-    <EcosystemPageShell locale={locale} eyebrow="AI Creator Network" title="Creator profiles for AI builders" subtitle="Explore creators, skills, projects, articles, tools, and collaboration links across Hello the World v5.">
+    <EcosystemPageShell locale={locale} eyebrow="Creator Economy" title="Creator profiles for AI builders" subtitle="Explore creator badges, rankings, published agents, followers, skills, projects, articles, tools, and collaboration links across Enbang AI Universe V6.">
       <div className="grid gap-5 md:grid-cols-2">
         {creators.map((creator) => (
           <Link key={creator.username} href={`/${locale}/creator/${creator.username}`} className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl transition hover:-translate-y-1 hover:bg-white/15">
@@ -25,6 +26,7 @@ export default async function CreatorIndexPage({ params }: { params: Promise<{ l
             </div>
             <p className="mt-4 text-slate-200">{creator.bio}</p>
             <div className="mt-4 flex flex-wrap gap-2">{creator.skills.map((skill) => <span key={skill} className="rounded-full bg-white/10 px-3 py-1 text-xs font-bold">{skill}</span>)}</div>
+            {(() => { const economy = creatorEconomy.find((item) => item.name === creator.displayName); return economy ? <div className="mt-5 grid grid-cols-3 gap-2 text-center text-sm font-bold"><span className="rounded-2xl bg-cyan-300/90 p-3 text-slate-950">#{economy.ranking}<br />Rank</span><span className="rounded-2xl bg-white/10 p-3">{economy.agents}<br />Agents</span><span className="rounded-2xl bg-white/10 p-3">{economy.followers}<br />Followers</span><span className="col-span-3 rounded-2xl bg-fuchsia-300/20 p-3 text-fuchsia-100">{economy.badge} badge</span></div> : null; })()}
           </Link>
         ))}
       </div>

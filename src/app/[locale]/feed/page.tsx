@@ -1,0 +1,7 @@
+import type { Metadata } from "next";
+import { EcosystemPageShell } from "@/src/components/ecosystem/EcosystemPageShell";
+import { type Locale } from "@/src/config/site";
+import { feedPosts } from "@/src/data/ai-universe";
+import { getLocale } from "@/src/lib/i18n";
+export const metadata: Metadata = { title: "Community Feed", description: "Posts, comments, likes, favorites, and sharing for AI creators." };
+export default async function FeedPage({ params }: { params: Promise<{ locale: string }> }) { const { locale: rawLocale } = await params; const locale: Locale = getLocale(rawLocale); return <EcosystemPageShell locale={locale} eyebrow="Community Feed" title={locale === "zh" ? "社区动态" : locale === "ja" ? "コミュニティフィード" : "Community Feed"} subtitle="A social layer for posts, comments, likes, favorites, and sharing across the AI creator network."><div className="space-y-5">{feedPosts.map((post) => <article key={post.title} className="rounded-3xl border border-white/15 bg-white/10 p-6 backdrop-blur-xl"><p className="font-black text-cyan-200">{post.author}</p><h2 className="mt-2 text-2xl font-black">{post.title}</h2><p className="mt-3 text-slate-200">{post.body}</p><div className="mt-5 flex flex-wrap gap-3 text-sm font-bold"><span>💬 {post.comments} comments</span><span>❤️ {post.likes} likes</span><span>⭐ {post.favorites} favorites</span><button className="rounded-full bg-white/10 px-3 py-1 hover:bg-white/20" type="button">Share</button></div></article>)}</div></EcosystemPageShell>; }
