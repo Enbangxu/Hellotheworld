@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import { V7Shell } from "@/src/components/V7Shell";
+import { Card } from "@/src/components/ui/card";
+export const metadata: Metadata = { title: "Register | AI Creator Network", description: "Create a creator profile for Hello the world V7." };
+export default function RegisterPage() { const fields = ["Display name", "Email", "Username", "Avatar URL", "Creator bio"]; return <V7Shell eyebrow="Creator onboarding" title="Register your AI creator identity" subtitle="A polished onboarding surface for profile, avatar, username, and Creator Profile setup."><Card className="mx-auto max-w-2xl"><div className="grid gap-4">{fields.map((field) => <label key={field} className="grid gap-2 text-sm font-black uppercase tracking-[0.2em] text-cyan-100">{field}<input placeholder={field} className="rounded-2xl border border-white/15 bg-slate-950/45 px-4 py-3 text-base font-medium normal-case tracking-normal text-white outline-none focus:ring-2 focus:ring-cyan-300" /></label>)}<button className="rounded-2xl bg-cyan-300 px-5 py-4 font-black text-slate-950">Create profile</button></div></Card></V7Shell>; }

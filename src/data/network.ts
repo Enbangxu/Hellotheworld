@@ -80,3 +80,17 @@ export function getCreatorContent(username: string) {
     tools: creatorTools.filter((tool) => creator.toolNames.includes(tool.name)),
   };
 }
+
+export type NetworkAgent = {
+  name: string;
+  description: string;
+  category: string;
+  creator: string;
+  rating: number;
+};
+
+export const agents: NetworkAgent[] = [
+  { name: "Launch Copilot", description: "Plans launch stories, landing pages, and distribution checklists.", category: "Marketing", creator: "enbang", rating: 4.9 },
+  { name: "RAG Architect", description: "Designs grounded retrieval workflows for creator knowledge bases.", category: "Knowledge", creator: "enbang", rating: 4.8 },
+  { name: "Community Pulse", description: "Summarizes feed trends, comments, and collaboration opportunities.", category: "Community", creator: "studio-agent", rating: 4.7 },
+];
