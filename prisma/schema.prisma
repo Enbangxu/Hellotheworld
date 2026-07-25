@@ -233,6 +233,18 @@ model AnalyticsEvent {
   createdAt DateTime           @default(now())
 }
 
+model ContentImage {
+  id        String   @id @default(cuid())
+  contentId String   @map("content_id")
+  imageUrl  String   @map("image_url")
+  source    String
+  tags      String[]
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([contentId])
+  @@map("content_images")
+}
+
 model Account {
   userId            String
   type              String
