@@ -8,7 +8,6 @@ import { SectionCard } from "@/src/components/SectionCard";
 import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
-import { V8ImageShowcase } from "@/src/components/V8ImageShowcase";
 
 export function HomePage({ locale }: { locale: Locale }) {
   const [isDark, setIsDark] = useState(true);
@@ -29,7 +28,6 @@ export function HomePage({ locale }: { locale: Locale }) {
         />
         <div className="relative z-10">
           <Hero content={content.hero} />
-          <V8ImageShowcase locale={locale} />
           <div className="space-y-10 px-6 pb-24">
             {content.sections.map((section) => (
               <SectionCard key={section.id} id={section.id} title={section.title} icon={section.icon}>
