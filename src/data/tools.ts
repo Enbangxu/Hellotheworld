@@ -5,6 +5,7 @@ export type CreatorTool = {
   url: string;
   rating: number;
   tags: string[];
+  image: string;
 };
 
 export const creatorTools: CreatorTool[] = [
@@ -13,7 +14,7 @@ export const creatorTools: CreatorTool[] = [
   { name: "Launch Checklist", category: "Operations", description: "A repeatable checklist for publishing multilingual campaigns without missing SEO basics.", url: "https://enbang.online/tools/launch-checklist", rating: 4.5, tags: ["seo", "ops", "global"] },
   { name: "Community Pulse", category: "Analytics", description: "Summarizes comments, questions, and recurring audience needs into next actions.", url: "https://enbang.online/tools/community-pulse", rating: 4.6, tags: ["analytics", "community", "insights"] },
   { name: "RAG Brief Builder", category: "Knowledge", description: "Transforms source notes into grounded briefs ready for assistant responses.", url: "https://enbang.online/tools/rag-brief-builder", rating: 4.9, tags: ["rag", "knowledge", "assistant"] },
-];
+].map((tool) => ({ ...tool, image: "/images/content-placeholder.svg" }));
 
 export const toolCategories = Array.from(new Set(creatorTools.map((tool) => tool.category))).sort();
 export const toolTags = Array.from(new Set(creatorTools.flatMap((tool) => tool.tags))).sort();
