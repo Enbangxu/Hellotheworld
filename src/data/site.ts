@@ -10,9 +10,9 @@ const nav = (locale: Locale, labels: string[]) => [
 
 export const siteContent: Record<Locale, Content> = {
   en: {
-    metadata: { title: "Enbang AI Universe V6 | Build ideas with AI", description: "A multilingual AI Universe for lab projects, tools, assistant workflows, creator networks, and knowledge publishing.", ogTitle: "Enbang AI Universe V6" },
+    metadata: { title: "Hello the world V8 | AI Image Content", description: "A multilingual AI Universe with intelligent image matching for projects, tools, and creator content.", ogTitle: "Hello the world V8" },
     nav: nav("en", ["Home", "Agents", "Workspace", "Creators", "Feed", "Knowledge", "Levels", "Assistant"]),
-    hero: { eyebrow: "Hello World 🌎", title: "Enter Enbang AI Universe V6.", subtitle: "Enbang AI Universe brings experiments, tools, assistant workflows, knowledge, and global creator collaboration into one launch-ready Next.js experience.", cta: "Enter AI Universe" },
+    hero: { eyebrow: "Hello the world V8 · AI Image Content", title: "Every idea deserves the right image.", subtitle: "Explore an AI creator universe where projects and tools are automatically enriched with relevant, fast, accessible imagery.", cta: "Explore V8" },
     sections: [
       { id: "about", title: "AI Universe Architecture", icon: Rocket, body: "A modular studio built around AI Lab, Tools, Assistant, Creator Network, Knowledge Base, and Changelog routes." },
       { id: "features", title: "Studio entry points", icon: Sparkles, cards: ["Creators", "Dashboard", "Marketplace", "AI Assistant"] },
@@ -26,9 +26,9 @@ export const siteContent: Record<Locale, Content> = {
     footer: "© 2026 Enbang AI Universe. Built for global AI creators.", languageLabel: "中文", themeLabel: "Toggle dark mode",
   },
   zh: {
-    metadata: { title: "Enbang AI Universe V6 | 用 AI 构建想法", description: "面向 AI 实验、工具、助手、创作者网络与知识发布的多语言 AI Universe。", ogTitle: "Enbang AI Universe V6" },
+    metadata: { title: "Hello the world V8 | AI 图片智能内容", description: "为项目、工具和创作者内容提供智能图片匹配的多语言 AI Universe。", ogTitle: "Hello the world V8" },
     nav: nav("zh", ["首页", "Agent", "工作空间", "创作者", "动态", "知识", "等级", "AI助手"]),
-    hero: { eyebrow: "Hello World 🌎", title: "Enter Enbang AI Universe V6.", subtitle: "Enbang AI Universe 将实验项目、工具库、助手工作流、知识库与全球创作者协作整合为一个可上线的 Next.js 体验。", cta: "进入 AI Universe" },
+    hero: { eyebrow: "Hello the world V8 · AI 图片智能内容", title: "让每一个想法，都拥有合适的图片。", subtitle: "项目与工具现在可以自动匹配相关、快速且无障碍的内容图片，让 V8 升级在首页直接呈现。", cta: "探索 V8" },
     sections: [
       { id: "about", title: "AI Universe 架构", icon: Rocket, body: "围绕 AI Lab、Tools、Assistant、Creator Network、Knowledge Base 与 Changelog 的模块化架构。" },
       { id: "features", title: "首页入口", icon: Sparkles, cards: ["Creators", "Dashboard", "Marketplace", "AI Assistant"] },
@@ -41,9 +41,9 @@ export const siteContent: Record<Locale, Content> = {
     ], footer: "© 2026 Enbang AI Universe。为全球 AI 创作者构建。", languageLabel: "日本語", themeLabel: "切换深色模式",
   },
   ja: {
-    metadata: { title: "Enbang AI Universe V6 | AIでアイデアを形にする", description: "AI実験、ツール、アシスタント、クリエイターネットワーク、知識ベースを備えた多言語AI Universe。", ogTitle: "Enbang AI Universe V6" },
+    metadata: { title: "Hello the world V8 | AI画像コンテンツ", description: "プロジェクトやツールにスマートな画像マッチングを提供する多言語AI Universe。", ogTitle: "Hello the world V8" },
     nav: nav("ja", ["ホーム", "Agents", "Workspace", "Creators", "Feed", "Knowledge", "Levels", "Assistant"]),
-    hero: { eyebrow: "Hello World 🌎", title: "Enter Enbang AI Universe V6.", subtitle: "Enbang AI Universe は実験、ツール、アシスタント、知識、グローバルなクリエイター協業を一つの Next.js 体験にまとめます。", cta: "AI Universeへ" },
+    hero: { eyebrow: "Hello the world V8 · AI画像コンテンツ", title: "すべてのアイデアに、最適な画像を。", subtitle: "プロジェクトとツールに関連性が高く高速でアクセシブルな画像を自動で追加するAI Creator Universeです。", cta: "V8を見る" },
     sections: [
       { id: "about", title: "AI Universe Architecture", icon: Rocket, body: "AI Lab、Tools、Assistant、Creator Network、Knowledge Base、Changelog を中心にしたモジュール設計。" },
       { id: "features", title: "Studio entry points", icon: Sparkles, cards: ["Creators", "Dashboard", "Marketplace", "AI Assistant"] },
