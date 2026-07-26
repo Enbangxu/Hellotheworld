@@ -19,7 +19,7 @@ const heroStats = [
 ];
 
 const featureCards = [
-  { icon: Bot, title: "AI Creation Center", body: "Generate articles, travel plans, learning roadmaps, and product stories from one intelligent workspace.", href: "/create", color: "from-violet-500 to-fuchsia-500" },
+  { icon: Bot, title: "AI Creation Center", body: "Generate articles, travel plans, learning roadmaps, and product stories from one intelligent workspace.", href: "/v9/create", color: "from-violet-500 to-fuchsia-500" },
   { icon: Boxes, title: "Agent Marketplace", body: "Discover useful agents by category, creator, and community rating — then save your favorites.", href: "/marketplace", color: "from-cyan-500 to-blue-500" },
   { icon: Users, title: "Creator Community", body: "Share what you build, join conversations, and find collaborators across the network.", href: "/community", color: "from-orange-400 to-pink-500" },
 ];
@@ -54,7 +54,7 @@ export function HomePage({ locale }: { locale: Locale }) {
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">The network where creators build intelligent agents, launch remarkable projects, and turn ideas into impact.</p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/create" className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Start creating <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
+              <Link href="/v9/create" className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Start creating <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
               <Link href={`${prefix}/marketplace`} className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/70 px-7 py-4 font-black backdrop-blur transition hover:-translate-y-1 hover:bg-white dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/20"><Search size={19} /> Explore agents</Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-7 text-sm text-slate-500 dark:text-slate-400">

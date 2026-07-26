@@ -45,7 +45,7 @@ export function AIExplorer({ locale }: { locale: Locale }) {
       {error && <p role="alert" className="mt-5 rounded-xl bg-rose-500/15 p-4 text-rose-200">{error}</p>}
       {result && <article className="mt-7 grid overflow-hidden rounded-3xl border border-white/10 bg-slate-950/45 md:grid-cols-[.8fr_1.2fr]">
         <SmartImage content={`${prompt} ${result.image.keyword}`} className="min-h-56" />
-        <div className="p-6"><p className="text-xs font-black uppercase tracking-widest text-cyan-300">{text.result}</p><h3 className="mt-2 text-2xl font-black">{result.title}</h3><p className="mt-4 whitespace-pre-line leading-7 text-slate-300">{result.content}</p><div className="mt-5 flex flex-wrap gap-2">{result.suggestions.map((item) => <button key={item} onClick={() => setPrompt(item)} className="rounded-full bg-white/10 px-3 py-2 text-xs">{item}</button>)}</div><Link href={`/create?prompt=${encodeURIComponent(prompt)}`} className="mt-6 inline-flex items-center gap-2 font-black text-violet-300">{text.create} <ArrowRight size={17} /></Link></div>
+        <div className="p-6"><p className="text-xs font-black uppercase tracking-widest text-cyan-300">{text.result}</p><h3 className="mt-2 text-2xl font-black">{result.title}</h3><p className="mt-4 whitespace-pre-line leading-7 text-slate-300">{result.content}</p><div className="mt-5 flex flex-wrap gap-2">{result.suggestions.map((item) => <button key={item} onClick={() => setPrompt(item)} className="rounded-full bg-white/10 px-3 py-2 text-xs">{item}</button>)}</div><Link href={`/v9/create?prompt=${encodeURIComponent(prompt)}`} className="mt-6 inline-flex items-center gap-2 font-black text-violet-300">{text.create} <ArrowRight size={17} /></Link></div>
       </article>}
     </div>
   </section>;
