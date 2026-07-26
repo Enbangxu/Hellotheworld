@@ -6,7 +6,6 @@ import { ArrowRight, Bot, Boxes, ChartNoAxesCombined, Heart, Search, Sparkles, U
 import { useState } from "react";
 import { FloatingBlobs } from "@/src/components/FloatingBlobs";
 import { Navbar } from "@/src/components/Navbar";
-import { AIExplorer } from "@/src/components/V9AIExplorer";
 import { agents, creators, networkStats } from "@/src/data/network";
 import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
@@ -19,7 +18,7 @@ const heroStats = [
 ];
 
 const featureCards = [
-  { icon: Bot, title: "AI Creation Center", body: "Generate articles, travel plans, learning roadmaps, and product stories from one intelligent workspace.", href: "/v9/create", color: "from-violet-500 to-fuchsia-500" },
+  { icon: Bot, title: "AI Studio", body: "Design agents, assemble projects, and publish your next AI product from one creative workspace.", href: "/studio", color: "from-violet-500 to-fuchsia-500" },
   { icon: Boxes, title: "Agent Marketplace", body: "Discover useful agents by category, creator, and community rating — then save your favorites.", href: "/marketplace", color: "from-cyan-500 to-blue-500" },
   { icon: Users, title: "Creator Community", body: "Share what you build, join conversations, and find collaborators across the network.", href: "/community", color: "from-orange-400 to-pink-500" },
 ];
@@ -42,19 +41,17 @@ export function HomePage({ locale }: { locale: Locale }) {
         <FloatingBlobs />
         <Navbar isDark={isDark} navItems={v7Nav} languageHref={`/${alternateLocale}`} languageLabel={content.languageLabel} themeLabel={content.themeLabel} onToggleTheme={() => setIsDark((value) => !value)} />
 
-        <div className="pt-24"><AIExplorer locale={locale} /></div>
-
         <section id="home" className="relative z-10 mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 pb-20 pt-36 lg:grid-cols-[1.08fr_.92fr] lg:px-10">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 text-sm font-bold text-violet-700 backdrop-blur dark:text-violet-200">
-              <Sparkles size={16} /> Hello the world · AI Content Platform V9
+              <Sparkles size={16} /> Hello the world · Creator Network V7
             </div>
             <h1 className="max-w-4xl text-5xl font-black leading-[.96] tracking-[-0.055em] sm:text-7xl xl:text-8xl">
               Create with AI.<br /><span className="text-gradient">Grow together.</span>
             </h1>
             <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">The network where creators build intelligent agents, launch remarkable projects, and turn ideas into impact.</p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <Link href="/v9/create" className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Start creating <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
+              <Link href="/studio" className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Start creating <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
               <Link href={`${prefix}/marketplace`} className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/70 px-7 py-4 font-black backdrop-blur transition hover:-translate-y-1 hover:bg-white dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/20"><Search size={19} /> Explore agents</Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-7 text-sm text-slate-500 dark:text-slate-400">
@@ -87,7 +84,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-7 py-14 text-center text-white shadow-2xl sm:px-14"><div className="mx-auto mb-6 flex -space-x-3">{creators.slice(0, 4).map((creator, index) => <span key={creator.username} className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-950 bg-gradient-to-br from-violet-500 to-cyan-400 font-black" style={{ zIndex: 4-index }}>{creator.displayName.charAt(0)}</span>)}</div><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Your next idea deserves a network.</h2><p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">Create your profile, ship an agent, and find the people who will help it grow.</p><Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 transition hover:scale-105">Join the creator network <ArrowRight size={18} /></Link></div></section>
 
-        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · AI Content Platform V9 · Ask, discover, create.</footer>
+        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · AI Creator Network V7 · Build boldly, grow together.</footer>
       </div>
     </main>
   );

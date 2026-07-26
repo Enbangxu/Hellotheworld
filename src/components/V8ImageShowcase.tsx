@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ContentImageCard } from "@/src/components/ContentImageCard";
+import { AIExplorer } from "@/src/components/V9AIExplorer";
 import type { Locale } from "@/src/config/site";
 import type { RelatedImage } from "@/src/services/imageService";
 
@@ -34,7 +35,9 @@ export function V8ImageShowcase({ locale }: { locale: Locale }) {
       : { eyebrow: "V9 visual intelligence", title: "A relevant visual for every discovery", description: "Content automatically receives a matched image, with a reliable local fallback when third-party image APIs are unavailable.", action: "Explore content", live: "Smart matched" };
 
   return (
-    <section aria-labelledby="v8-image-title" className="mx-auto max-w-6xl px-6 pb-14">
+    <>
+      <AIExplorer locale={locale} />
+      <section aria-labelledby="v8-image-title" className="mx-auto max-w-6xl px-6 pb-14">
       <div className="mb-7 flex flex-col justify-between gap-5 rounded-3xl border border-cyan-300/30 bg-slate-950/55 p-6 text-white shadow-2xl shadow-cyan-950/20 backdrop-blur-xl sm:flex-row sm:items-end">
         <div><p className="text-sm font-black uppercase tracking-[0.3em] text-cyan-200">{copy.eyebrow}</p><h2 id="v8-image-title" className="mt-3 text-3xl font-black sm:text-5xl">{copy.title}</h2><p className="mt-3 max-w-3xl text-slate-200">{copy.description}</p></div>
         <span className="w-fit shrink-0 rounded-full bg-emerald-300 px-4 py-2 text-sm font-black text-emerald-950"><span className="mr-2 inline-block h-2 w-2 animate-pulse rounded-full bg-emerald-700" />{copy.live}</span>
@@ -45,6 +48,7 @@ export function V8ImageShowcase({ locale }: { locale: Locale }) {
           return <Link key={item.title} href={`/${locale}/${item.href}`} className="block"><ContentImageCard image={matched?.url ?? fallback} title={item.title} description={item.description} tags={matched?.tags ?? item.tags}><div className="flex items-center justify-between text-sm font-black"><span className="text-cyan-200">{copy.action} →</span><span className="rounded-full bg-white/10 px-3 py-1 uppercase text-slate-300">{matched?.source ?? "fallback"}</span></div></ContentImageCard></Link>;
         })}
       </div>
-    </section>
+      </section>
+    </>
   );
 }
