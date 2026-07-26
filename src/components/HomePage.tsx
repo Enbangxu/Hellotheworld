@@ -6,6 +6,7 @@ import { ArrowRight, Bot, Boxes, ChartNoAxesCombined, Heart, Search, Sparkles, U
 import { useState } from "react";
 import { FloatingBlobs } from "@/src/components/FloatingBlobs";
 import { Navbar } from "@/src/components/Navbar";
+import { AIExplorer } from "@/src/components/V9AIExplorer";
 import { agents, creators, networkStats } from "@/src/data/network";
 import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
@@ -40,6 +41,8 @@ export function HomePage({ locale }: { locale: Locale }) {
       <div className="animated-gradient min-h-screen text-slate-950 transition-colors dark:text-white">
         <FloatingBlobs />
         <Navbar isDark={isDark} navItems={v7Nav} languageHref={`/${alternateLocale}`} languageLabel={content.languageLabel} themeLabel={content.themeLabel} onToggleTheme={() => setIsDark((value) => !value)} />
+
+        <div className="pt-24"><AIExplorer locale={locale} /></div>
 
         <section id="home" className="relative z-10 mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 pb-20 pt-36 lg:grid-cols-[1.08fr_.92fr] lg:px-10">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>

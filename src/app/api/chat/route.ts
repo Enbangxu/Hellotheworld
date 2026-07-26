@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { matchImage } from "@/src/lib/imageMatcher";
+import { matchImage } from "@/src/lib/contentImageMatcher";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

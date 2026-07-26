@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useMemo, useState } from "react";
-import { matchImage } from "@/src/lib/imageMatcher";
+import { matchImage } from "@/src/lib/contentImageMatcher";
 
 type SmartImageProps = { content: string; className?: string; priority?: boolean };
 
