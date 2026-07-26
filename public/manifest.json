@@ -1,0 +1,10 @@
+{
+  "name": "Hello the World V9 AI Platform",
+  "short_name": "Hello V9",
+  "description": "Explore and create useful content with AI.",
+  "start_url": "/en",
+  "display": "standalone",
+  "background_color": "#050816",
+  "theme_color": "#7c3aed",
+  "icons": [{ "src": "/icons/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+}
