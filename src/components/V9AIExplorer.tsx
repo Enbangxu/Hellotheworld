@@ -3,7 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { ArrowRight, LoaderCircle, Sparkles } from "lucide-react";
-import { SmartImage } from "@/src/components/SmartImage";
+import { SmartImage } from "@/src/components/V9SmartImage";
 import type { Locale } from "@/src/config/site";
 
 const copy = {
@@ -25,7 +25,7 @@ export function AIExplorer({ locale }: { locale: Locale }) {
     if (!prompt.trim() || loading) return;
     setLoading(true); setError("");
     try {
-      const response = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
+      const response = await fetch("/api/v9/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt }) });
       const body = await response.json();
       if (!response.ok) throw new Error(body.error?.message ?? "Exploration failed");
       setResult(body.data);
