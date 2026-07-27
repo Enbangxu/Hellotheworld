@@ -6,7 +6,7 @@ import { getLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
 
 export function generateStaticParams() { return creators.flatMap((creator) => ["en", "zh", "ja"].map((locale) => ({ locale, username: creator.username }))); }
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> { const { username } = await params; const data = getCreatorContent(username); return { title: data ? `${data.creator.displayName} | Creator Profile` : "Creator Profile" }; }
+export async function generateMetadata({ params }: { params: Promise<{ username: string }> }): Promise<Metadata> { const { username } = await params; const data = getCreatorContent(username); return { title: data ? `${data.creator.displayName} | AI Creator` : "Creator Profile", description: data?.creator.bio ?? "Discover an AI creator and their projects, articles, tools, and agents.", openGraph: data ? { title: `${data.creator.displayName} · AI Creator`, description: data.creator.bio, images: [data.creator.avatarUrl] } : undefined }; }
 
 export default async function CreatorProfilePage({ params }: { params: Promise<{ locale: string; username: string }> }) {
   const { locale: rawLocale, username } = await params;

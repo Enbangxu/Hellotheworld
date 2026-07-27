@@ -53,6 +53,8 @@ model User {
   generations    Generation[]
   favorites      Favorite[]
   history        History[]
+  memories       UserMemory[]
+  recommendations Recommendation[]
   following      Follow[]        @relation("Follower")
   followers      Follow[]        @relation("Following")
 }
@@ -158,12 +160,38 @@ model Agent {
   creatorId   String
   rating      Float           @default(0)
   downloads   Int             @default(0)
+  usageCount  Int             @default(0)
   createdAt   DateTime        @default(now())
   updatedAt   DateTime        @updatedAt
   user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
   creator     CreatorProfile  @relation(fields: [creatorId], references: [id], onDelete: Cascade)
   likes       Like[]
   analytics   Analytics[]
+}
+
+model UserMemory {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  content   String
+  embedding Unsupported("vector(1536)")?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, createdAt])
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  contentId   String
+  contentType String
+  score       Float
+  reason      String?
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, score])
 }
 
 model Follow {
