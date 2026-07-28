@@ -10,6 +10,7 @@ import { agents, creators, networkStats } from "@/src/data/network";
 import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
+import { PersonalDashboard } from "@/src/components/v11/PersonalDashboard";
 
 const heroStats = [
   { label: "Creators", value: networkStats.users },
@@ -18,9 +19,9 @@ const heroStats = [
 ];
 
 const featureCards = [
-  { icon: Bot, title: "Personal AI Space", body: "One intelligent home for your assistant, creations, activity, knowledge, and next best actions.", href: "/space", color: "from-violet-500 to-fuchsia-500" },
+  { icon: ChartNoAxesCombined, title: "AI Dashboard 2.0", body: "Begin every day with your AI brief, live agent status, creation history, memory summary, and recommendations.", href: "/dashboard", color: "from-violet-500 to-fuchsia-500" },
   { icon: Brain, title: "Living Memory", body: "Build user-controlled memory designed for semantic retrieval, grounded answers, and personal context.", href: "/memory", color: "from-cyan-500 to-blue-500" },
-  { icon: Newspaper, title: "Daily AI Feed", body: "See important AI news, emerging trends, and recommendations tuned to what you care about.", href: "/feed", color: "from-orange-400 to-pink-500" },
+  { icon: Newspaper, title: "Community Intelligence", body: "Discover AI artwork, exchange prompts, share agents, and find recommendations tuned to you.", href: "/community", color: "from-orange-400 to-pink-500" },
 ];
 
 export function HomePage({ locale }: { locale: Locale }) {
@@ -29,7 +30,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   const alternateLocale = getAlternateLocale(locale);
   const prefix = `/${locale}`;
   const v7Nav = [
-    { label: "My Space", href: `${prefix}/space` },
+    { label: "Dashboard", href: `${prefix}/dashboard` },
     { label: "Memory", href: `${prefix}/memory` },
     { label: "Daily Feed", href: `${prefix}/feed` },
     { label: "Agents", href: `${prefix}/agents` },
@@ -44,14 +45,14 @@ export function HomePage({ locale }: { locale: Locale }) {
         <section id="home" className="relative z-10 mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 pb-20 pt-36 lg:grid-cols-[1.08fr_.92fr] lg:px-10">
           <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
             <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 text-sm font-bold text-violet-700 backdrop-blur dark:text-violet-200">
-              <Sparkles size={16} /> V10 · AI Personal World OS
+              <Sparkles size={16} /> V11 · AI Life Ecosystem
             </div>
             <h1 className="max-w-4xl text-5xl font-black leading-[.96] tracking-[-0.055em] sm:text-7xl xl:text-8xl">
-              Your world.<br /><span className="text-gradient">Intelligently connected.</span>
+              Your life.<br /><span className="text-gradient">Intelligently connected.</span>
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">A personal AI world that remembers what matters, connects what you create, and helps every idea become your next meaningful step.</p>
+            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">One living AI ecosystem for your daily brief, memory, agents, creations, community, and personal recommendations.</p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <Link href={`${prefix}/space`} className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Enter your AI space <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
+              <Link href={`${prefix}/dashboard`} className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Open your dashboard <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
               <Link href={`${prefix}/agents`} className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/70 px-7 py-4 font-black backdrop-blur transition hover:-translate-y-1 hover:bg-white dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/20"><Search size={19} /> Explore agents</Link>
             </div>
             <div className="mt-10 flex flex-wrap gap-7 text-sm text-slate-500 dark:text-slate-400">
@@ -74,8 +75,13 @@ export function HomePage({ locale }: { locale: Locale }) {
         </section>
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
+          <div className="mb-10 flex flex-wrap items-end justify-between gap-5"><div className="max-w-3xl"><p className="font-black uppercase tracking-[.2em] text-cyan-500">AI Personal Dashboard 2.0</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">V11 is live — and visible.</h2><p className="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">See the five signals that organize your AI life, then open the full dashboard to manage the ecosystem.</p></div><Link href={`${prefix}/dashboard`} className="rounded-full bg-cyan-300 px-6 py-3 font-black text-slate-950">Explore Dashboard 2.0 →</Link></div>
+          <PersonalDashboard />
+        </section>
+
+        <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="mb-10 max-w-2xl"><p className="font-black uppercase tracking-[.2em] text-violet-500">One creative network</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">Everything your ideas need.</h2></div>
-          <div className="grid gap-5 md:grid-cols-3">{featureCards.map(({ icon: Icon, title, body, href, color }, index) => <motion.div key={title} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .1 }} className="glass-card group rounded-[2rem] p-7 transition hover:-translate-y-2"><span className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${color} text-white shadow-lg`}><Icon /></span><h3 className="mt-7 text-2xl font-black">{title}</h3><p className="mt-3 min-h-20 leading-7 text-slate-600 dark:text-slate-300">{body}</p><Link href={href} className="mt-6 inline-flex items-center gap-2 font-black text-violet-600 dark:text-violet-300">Explore <ArrowRight size={17} /></Link></motion.div>)}</div>
+          <div className="grid gap-5 md:grid-cols-3">{featureCards.map(({ icon: Icon, title, body, href, color }, index) => <motion.div key={title} initial={{ opacity: 0, y: 25 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * .1 }} className="glass-card group rounded-[2rem] p-7 transition hover:-translate-y-2"><span className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${color} text-white shadow-lg`}><Icon /></span><h3 className="mt-7 text-2xl font-black">{title}</h3><p className="mt-3 min-h-20 leading-7 text-slate-600 dark:text-slate-300">{body}</p><Link href={`${prefix}${href}`} className="mt-6 inline-flex items-center gap-2 font-black text-violet-600 dark:text-violet-300">Explore <ArrowRight size={17} /></Link></motion.div>)}</div>
         </section>
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
@@ -85,7 +91,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-7 py-14 text-center text-white shadow-2xl sm:px-14"><div className="mx-auto mb-6 flex -space-x-3">{creators.slice(0, 4).map((creator, index) => <span key={creator.username} className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-950 bg-gradient-to-br from-violet-500 to-cyan-400 font-black" style={{ zIndex: 4-index }}>{creator.displayName.charAt(0)}</span>)}</div><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Your next idea deserves a network.</h2><p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">Create your profile, ship an agent, and find the people who will help it grow.</p><Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 transition hover:scale-105">Join the creator network <ArrowRight size={18} /></Link></div></section>
 
-        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V10 AI Personal World OS · Remember, connect, create.</footer>
+        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V11 AI Life Ecosystem · Remember, connect, create, evolve.</footer>
       </div>
     </main>
   );
