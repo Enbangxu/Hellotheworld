@@ -10,7 +10,7 @@ const nav = (locale: Locale, labels: string[]) => [
 
 export const siteContent: Record<Locale, Content> = {
   en: {
-    metadata: { title: "Hello the world V8 | AI Image Content", description: "A multilingual AI Universe with intelligent image matching for projects, tools, and creator content.", ogTitle: "Hello the world V8" },
+    metadata: { title: "Hello the world V11 | AI Life Ecosystem", description: "A multilingual AI Life Ecosystem connecting personal memory, agents, creation, community, and recommendations.", ogTitle: "Hello the world V11 · AI Life Ecosystem" },
     nav: nav("en", ["Home", "Agents", "Workspace", "Creators", "Feed", "Knowledge", "Levels", "Assistant"]),
     hero: { eyebrow: "Hello the world V8 · AI Image Content", title: "Every idea deserves the right image.", subtitle: "Explore an AI creator universe where projects and tools are automatically enriched with relevant, fast, accessible imagery.", cta: "Explore V8" },
     sections: [
@@ -26,7 +26,7 @@ export const siteContent: Record<Locale, Content> = {
     footer: "© 2026 Enbang AI Universe. Built for global AI creators.", languageLabel: "中文", themeLabel: "Toggle dark mode",
   },
   zh: {
-    metadata: { title: "Hello the world V8 | AI 图片智能内容", description: "为项目、工具和创作者内容提供智能图片匹配的多语言 AI Universe。", ogTitle: "Hello the world V8" },
+    metadata: { title: "Hello the world V11 | AI 生活生态系统", description: "连接个人记忆、Agent、创作、社区与个性化推荐的多语言 AI 生活生态系统。", ogTitle: "Hello the world V11 · AI 生活生态系统" },
     nav: nav("zh", ["首页", "Agent", "工作空间", "创作者", "动态", "知识", "等级", "AI助手"]),
     hero: { eyebrow: "Hello the world V8 · AI 图片智能内容", title: "让每一个想法，都拥有合适的图片。", subtitle: "项目与工具现在可以自动匹配相关、快速且无障碍的内容图片，让 V8 升级在首页直接呈现。", cta: "探索 V8" },
     sections: [
@@ -41,7 +41,7 @@ export const siteContent: Record<Locale, Content> = {
     ], footer: "© 2026 Enbang AI Universe。为全球 AI 创作者构建。", languageLabel: "日本語", themeLabel: "切换深色模式",
   },
   ja: {
-    metadata: { title: "Hello the world V8 | AI画像コンテンツ", description: "プロジェクトやツールにスマートな画像マッチングを提供する多言語AI Universe。", ogTitle: "Hello the world V8" },
+    metadata: { title: "Hello the world V11 | AI Life Ecosystem", description: "記憶、エージェント、創作、コミュニティ、推薦をつなぐ多言語AIライフエコシステム。", ogTitle: "Hello the world V11 · AI Life Ecosystem" },
     nav: nav("ja", ["ホーム", "Agents", "Workspace", "Creators", "Feed", "Knowledge", "Levels", "Assistant"]),
     hero: { eyebrow: "Hello the world V8 · AI画像コンテンツ", title: "すべてのアイデアに、最適な画像を。", subtitle: "プロジェクトとツールに関連性が高く高速でアクセシブルな画像を自動で追加するAI Creator Universeです。", cta: "V8を見る" },
     sections: [
