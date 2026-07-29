@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title description">
+  <title id="title">Hello the world V12</title><desc id="description">AI World Experience: Explore. Create. Imagine.</desc>
+  <defs><radialGradient id="glow"><stop stop-color="#7c3aed"/><stop offset="1" stop-color="#050817"/></radialGradient><linearGradient id="text"><stop stop-color="#67e8f9"/><stop offset=".5" stop-color="#a78bfa"/><stop offset="1" stop-color="#f0abfc"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="#050817"/><circle cx="600" cy="315" r="430" fill="url(#glow)" opacity=".7"/>
+  <g fill="none" stroke="#67e8f9" opacity=".16"><path d="M0 90h1200M0 180h1200M0 270h1200M0 360h1200M0 450h1200M0 540h1200M120 0v630M300 0v630M480 0v630M660 0v630M840 0v630M1020 0v630"/></g>
+  <text x="600" y="170" fill="#a5f3fc" font-family="Arial,sans-serif" font-size="28" font-weight="700" text-anchor="middle" letter-spacing="9">HELLO THE WORLD · V12</text>
+  <text x="600" y="325" fill="url(#text)" font-family="Arial,sans-serif" font-size="92" font-weight="900" text-anchor="middle">Explore. Create.</text>
+  <text x="600" y="425" fill="white" font-family="Arial,sans-serif" font-size="92" font-weight="900" text-anchor="middle">Imagine.</text>
+  <text x="600" y="515" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="28" text-anchor="middle">AI WORLD EXPERIENCE</text>
+</svg>
