@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowRight, Bot, Brain, ChartNoAxesCombined, Heart, Newspaper, Orbit, Search, Sparkles } from "lucide-react";
+import { ArrowRight, Brain, ChartNoAxesCombined, Newspaper, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { FloatingBlobs } from "@/src/components/FloatingBlobs";
 import { Navbar } from "@/src/components/Navbar";
@@ -11,6 +11,9 @@ import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
 import { PersonalDashboard } from "@/src/components/v11/PersonalDashboard";
+import { ExploreCard } from "@/src/components/ExploreCard";
+import { VersionBadge } from "@/src/components/VersionBadge";
+import { v12Content } from "@/src/data/siteContent";
 
 const heroStats = [
   { label: "Creators", value: networkStats.users },
@@ -42,36 +45,27 @@ export function HomePage({ locale }: { locale: Locale }) {
         <FloatingBlobs />
         <Navbar isDark={isDark} navItems={v7Nav} languageHref={`/${alternateLocale}`} languageLabel={content.languageLabel} themeLabel={content.themeLabel} onToggleTheme={() => setIsDark((value) => !value)} />
 
-        <section id="home" className="relative z-10 mx-auto grid min-h-[92vh] max-w-7xl items-center gap-12 px-6 pb-20 pt-36 lg:grid-cols-[1.08fr_.92fr] lg:px-10">
-          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
-            <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-violet-400/30 bg-violet-500/10 px-4 py-2 text-sm font-bold text-violet-700 backdrop-blur dark:text-violet-200">
-              <Sparkles size={16} /> V11 · AI Life Ecosystem
-            </div>
-            <h1 className="max-w-4xl text-5xl font-black leading-[.96] tracking-[-0.055em] sm:text-7xl xl:text-8xl">
-              Your life.<br /><span className="text-gradient">Intelligently connected.</span>
+        <section id="home" className="v12-hero relative z-10 flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-36 lg:px-10">
+          <div className="ai-grid" aria-hidden="true" />
+          <div className="hero-orb hero-orb-one" aria-hidden="true" /><div className="hero-orb hero-orb-two" aria-hidden="true" />
+          <motion.div initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: .8 }} className="relative mx-auto w-full max-w-7xl text-center">
+            <VersionBadge />
+            <p className="mt-9 text-sm font-black uppercase tracking-[.38em] text-cyan-200">{v12Content.hero.eyebrow}</p>
+            <h1 className="mx-auto mt-5 max-w-5xl text-6xl font-black leading-[.88] tracking-[-.07em] text-white sm:text-8xl lg:text-[8.5rem]">
+              {v12Content.hero.lines.map((line, index) => <span key={line} className={index === 1 ? "v12-title-gradient block" : "block"}>{line}</span>)}
             </h1>
-            <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600 dark:text-slate-300 sm:text-xl">One living AI ecosystem for your daily brief, memory, agents, creations, community, and personal recommendations.</p>
-            <div className="mt-9 flex flex-wrap gap-4">
-              <Link href={`${prefix}/dashboard`} className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-7 py-4 font-black text-white shadow-xl transition hover:-translate-y-1 hover:shadow-violet-500/30 dark:bg-white dark:text-slate-950">Open your dashboard <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
-              <Link href={`${prefix}/agents`} className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/70 px-7 py-4 font-black backdrop-blur transition hover:-translate-y-1 hover:bg-white dark:border-white/15 dark:bg-white/10 dark:hover:bg-white/20"><Search size={19} /> Explore agents</Link>
+            <p className="mx-auto mt-8 max-w-2xl text-lg leading-8 text-slate-300 sm:text-xl">{v12Content.hero.description}</p>
+            <div className="mt-10 flex flex-col justify-center gap-4 sm:flex-row">
+              <Link href="#explore-v12" className="group inline-flex items-center justify-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 shadow-2xl transition hover:-translate-y-1 hover:shadow-cyan-400/30">{v12Content.hero.primaryCta} <ArrowRight className="transition group-hover:translate-x-1" size={19} /></Link>
+              <Link href="/create" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-7 py-4 font-black text-white backdrop-blur transition hover:-translate-y-1 hover:bg-white/20"><Sparkles size={19} /> {v12Content.hero.secondaryCta}</Link>
             </div>
-            <div className="mt-10 flex flex-wrap gap-7 text-sm text-slate-500 dark:text-slate-400">
-              {heroStats.map((stat) => <div key={stat.label}><strong className="block text-2xl font-black text-slate-950 dark:text-white">{stat.value}</strong>{stat.label}</div>)}
-            </div>
+            <div className="mt-12 flex flex-wrap justify-center gap-7 text-sm text-slate-400">{heroStats.map((stat) => <div key={stat.label}><strong className="block text-2xl font-black text-white">{stat.value}</strong>{stat.label}</div>)}</div>
           </motion.div>
+        </section>
 
-          <motion.div initial={{ opacity: 0, scale: .94, rotate: 2 }} animate={{ opacity: 1, scale: 1, rotate: 0 }} transition={{ duration: .8, delay: .15 }} className="relative mx-auto w-full max-w-xl">
-            <motion.div animate={{ rotate: 360 }} transition={{ duration: 24, repeat: Infinity, ease: "linear" }} className="absolute -inset-12 rounded-full border border-dashed border-cyan-300/30"><Orbit className="absolute -top-3 left-1/2 text-cyan-300" /></motion.div>
-            <div className="absolute -inset-8 rounded-[3rem] bg-gradient-to-r from-violet-500/20 to-cyan-400/20 blur-3xl" />
-            <div className="glass-card relative overflow-hidden rounded-[2rem] p-5 sm:p-7">
-              <div className="mb-6 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[.2em] text-violet-500">Creator cockpit</p><h2 className="mt-1 text-xl font-black">Build something alive</h2></div><span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-500 to-cyan-400 text-white"><Sparkles /></span></div>
-              <div className="rounded-3xl bg-slate-950 p-5 text-white shadow-2xl dark:bg-white/10">
-                <div className="flex items-center gap-3"><span className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-fuchsia-500 to-violet-600"><Bot /></span><div><p className="font-black">Launch Copilot</p><p className="text-sm text-slate-400">Strategy · Content · Analytics</p></div><span className="ml-auto rounded-full bg-emerald-400/15 px-3 py-1 text-xs font-bold text-emerald-300">Live</span></div>
-                <div className="mt-5 grid grid-cols-3 gap-2">{["Plan", "Create", "Measure"].map((item, index) => <div key={item} className="rounded-xl bg-white/5 p-3 text-center"><div className="mx-auto mb-2 h-1.5 rounded-full bg-gradient-to-r from-violet-400 to-cyan-300" style={{ width: `${55 + index * 16}%` }} /><span className="text-xs font-bold">{item}</span></div>)}</div>
-              </div>
-              <div className="mt-4 grid grid-cols-2 gap-4"><div className="rounded-2xl border border-slate-900/5 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5"><ChartNoAxesCombined className="mb-4 text-cyan-500" /><p className="text-2xl font-black">+28%</p><p className="text-xs text-slate-500 dark:text-slate-400">Weekly reach</p></div><div className="rounded-2xl border border-slate-900/5 bg-white/60 p-4 dark:border-white/10 dark:bg-white/5"><Heart className="mb-4 text-pink-500" /><p className="text-2xl font-black">1.4k</p><p className="text-xs text-slate-500 dark:text-slate-400">Community saves</p></div></div>
-            </div>
-          </motion.div>
+        <section id="explore-v12" className="relative z-10 mx-auto max-w-7xl scroll-mt-20 px-6 py-24 lg:px-10">
+          <div className="mx-auto mb-12 max-w-3xl text-center"><p className="font-black uppercase tracking-[.22em] text-cyan-500">{v12Content.explore.eyebrow}</p><h2 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">{v12Content.explore.title}</h2><p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{v12Content.explore.description}</p></div>
+          <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{v12Content.explore.items.map((item) => <ExploreCard key={item.title} item={item} locale={locale} />)}</div>
         </section>
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
@@ -91,7 +85,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-7 py-14 text-center text-white shadow-2xl sm:px-14"><div className="mx-auto mb-6 flex -space-x-3">{creators.slice(0, 4).map((creator, index) => <span key={creator.username} className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-950 bg-gradient-to-br from-violet-500 to-cyan-400 font-black" style={{ zIndex: 4-index }}>{creator.displayName.charAt(0)}</span>)}</div><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Your next idea deserves a network.</h2><p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">Create your profile, ship an agent, and find the people who will help it grow.</p><Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 transition hover:scale-105">Join the creator network <ArrowRight size={18} /></Link></div></section>
 
-        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V11 AI Life Ecosystem · Remember, connect, create, evolve.</footer>
+        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V12 AI World Experience · Explore, create, imagine.</footer>
       </div>
     </main>
   );
