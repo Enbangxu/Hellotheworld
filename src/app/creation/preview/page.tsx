@@ -1,0 +1,1 @@
+import type{Metadata}from"next";import{PortablePreview}from"@/src/components/creative-lab/PortablePreview";export const metadata:Metadata={title:"Portable creation preview",robots:{index:false,follow:false}};export default function Page(){return <PortablePreview/>}

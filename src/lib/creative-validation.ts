@@ -1,0 +1,3 @@
+import {categories,locales,type CreativeCategory,type CreativeLocale} from "./creative-schema";
+const id=/^[a-zA-Z0-9_-]{8,80}$/; const uuid=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+export function validateGenerate(v:unknown){const o=v&&typeof v==="object"?v as Record<string,unknown>:{}; const idea=typeof o.idea==="string"?o.idea.trim():""; if(!uuid.test(String(o.requestId))||!id.test(String(o.sessionId))||idea.length<3||idea.length>2000||!categories.includes(o.category as CreativeCategory)||!locales.includes(o.locale as CreativeLocale)) throw new Error("INVALID_REQUEST"); return {requestId:String(o.requestId),sessionId:String(o.sessionId),idea,category:o.category as CreativeCategory,locale:o.locale as CreativeLocale};}

@@ -7,13 +7,13 @@ export const metadata: Metadata = {
   applicationName: siteConfig.name,
   manifest: "/manifest.json",
   icons: { icon: "/icons/app-icon.svg", apple: "/icons/app-icon.svg" },
-  title: { default: "Hello the world V12 | AI World Experience", template: `%s | ${siteConfig.name}` },
+  title: { default: "Hello the world V13 | AI Creative Lab", template: `%s | ${siteConfig.name}` },
   description: "Explore, create, and imagine in an intelligent world of AI agents, living memory, creative tools, and global community.",
   alternates: { canonical: "/en", languages: { en: "/en", zh: "/zh", ja: "/ja", "x-default": "/en" } },
-  openGraph: { title: "Hello the world V12 — AI World Experience", description: "Explore, create, and imagine in a beautifully connected AI world.", images: [{ url: "/images/og-v12.svg", width: 1200, height: 630, alt: "Hello the world V12 AI World Experience" }], type: "website", url: "/en", siteName: siteConfig.name, locale: "en_US", alternateLocale: ["zh_CN", "ja_JP"] },
-  twitter: { card: "summary_large_image", title: "Hello the world V12", description: "Explore. Create. Imagine.", images: ["/images/og-v12.svg"] },
+  openGraph: { title: "Hello the world V13 — AI Creative Lab", description: "Explore, create, and imagine in a beautifully connected AI world.", images: [{ url: "/images/og-v12.svg", width: 1200, height: 630, alt: "Hello the world V13 AI World Experience" }], type: "website", url: "/en", siteName: siteConfig.name, locale: "en_US", alternateLocale: ["zh_CN", "ja_JP"] },
+  twitter: { card: "summary_large_image", title: "Hello the world V13", description: "Explore. Create. Imagine.", images: ["/images/og-v12.svg"] },
   robots: { index: true, follow: true },
 };
 
-const jsonLd = { "@context": "https://schema.org", "@type": "WebApplication", name: "Hello the world V12", applicationCategory: "ProductivityApplication", operatingSystem: "Web", description: "A multilingual AI World Experience for exploration, creation, memory, agents, and community.", url: siteConfig.url };
+const jsonLd = { "@context": "https://schema.org", "@type": "WebApplication", name: "Hello the world V13", applicationCategory: "ProductivityApplication", operatingSystem: "Web", description: "A multilingual AI World Experience for exploration, creation, memory, agents, and community.", url: siteConfig.url };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="en" suppressHydrationWarning><body className="antialiased"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />{children}</body></html>; }

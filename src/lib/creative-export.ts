@@ -1,0 +1,3 @@
+import type {CreativeWork} from "./creative-schema";
+export const sanitizeFilename=(v:string)=>v.replace(/[\\/:*?"<>|\u0000-\u001f]/g,"-").replace(/\.+$/g,"").trim().slice(0,80)||"creation";
+export function toMarkdown(w:CreativeWork,generatedAt:string){return `# ${w.title}\n\n> ${w.tagline}\n\n## 简介\n${w.summary}\n\n## 核心要素\n${w.keyElements.map(x=>`- **${x.label}**：${x.value}`).join("\n")}\n\n${w.sections.map(s=>`## ${s.heading}\n${s.body}\n\n${s.highlights.map(h=>`- ${h}`).join("\n")}`).join("\n\n")}\n\n## ${w.surprise.title}\n${w.surprise.content}\n\n## 下一步建议\n${w.nextActions.map(x=>`- ${x.label}`).join("\n")}\n\n## 视觉创作描述\n${w.cover.visualPrompt}\n\n生成时间：${generatedAt}\n\nCreated with Hello the world AI Creative Lab\n`;}
