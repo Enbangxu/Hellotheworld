@@ -1,10 +1,17 @@
 {
-  "name": "Hello the World V12 AI World Experience",
-  "short_name": "Hello V12",
-  "description": "Explore, create, and imagine in a connected AI world.",
+  "name": "Hello the World V13 AI Creative Lab",
+  "short_name": "Hello V13",
+  "description": "Turn an idea into a world with the AI Creative Lab.",
   "start_url": "/en",
   "display": "standalone",
   "background_color": "#050816",
   "theme_color": "#7c3aed",
-  "icons": [{ "src": "/icons/app-icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }]
+  "icons": [
+    {
+      "src": "/icons/app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
 }

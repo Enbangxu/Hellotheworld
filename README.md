@@ -74,3 +74,37 @@ npm run build
 ## CI/CD
 
 GitHub Actions runs on pushes to `main` and `feature/**` branches and on pull requests targeting `main`. The workflow uses Node.js 22, installs dependencies with `npm ci`, runs `npm run lint`, and runs `npm run build`.
+
+## V13 DeepSeek AI Creative Lab
+
+V13 upgrades `/create` from a single-output generator into a complete co-creation loop: category-led idea composition, a four-stage generation journey, safe structured results, full-result refinement, ten local versions, Markdown/JSON exports, feedback, and opt-in sharing. The experience supports Chinese, English, and Japanese without requiring sign-in.
+
+### Local development and DeepSeek
+
+```bash
+npm install
+cp .env.example .env.local
+npm run dev
+```
+
+Configure `DEEPSEEK_API_KEY` only as a server environment variable. The default endpoint is `https://api.deepseek.com`, the default model is `deepseek-v4-flash`, and `DEEPSEEK_PREMIUM_MODEL` is used only for the explicit high-quality rebuild action. Never prefix the key with a public-browser environment prefix. `AI_DEMO_MODE=true` enables deterministic local/demo responses; development also falls back to a clearly labelled demo when no key is configured. Production without a key and without demo mode returns `CONFIGURATION_REQUIRED` while the rest of the site remains available. Existing `AI_API_URL`, `AI_API_KEY`, and `AI_MODEL` continue to power the legacy chat route.
+
+### Database and sharing
+
+Run `npx prisma generate` after installing dependencies. Review the generated V13 migration and deploy it to production only through a controlled process (`npx prisma migrate deploy`) against the intended database. Never connect an unknown database from a development or automation environment. Public sharing is opt-in, uses an unpredictable slug, and hashes the one-time anonymous owner token. When the database is unavailable the client creates a strictly sized, hash-only portable preview containing selected public work fields; generation and local versioning remain operational.
+
+### Privacy, safety, rate limits, and cost
+
+DeepSeek calls run exclusively through server routes. Keys, authorization headers, full prompts, full model output, session identifiers, and owner tokens are excluded from analytics and exports. Requests have input/body/context limits, timeouts, request-id deduplication, a bounded retry, and a configurable anonymous daily limit. The bundled in-memory limiter is a single-instance fallback; production should attach a distributed adapter before multi-region scale. Public creation is always an explicit user choice.
+
+### Testing and Vercel deployment
+
+```bash
+npm run typecheck
+npm run test
+npm run check-build
+npm run lint
+npm run build
+```
+
+In Vercel, configure `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`, optional `DEEPSEEK_PREMIUM_MODEL`, `AI_DEMO_MODE`, `CREATION_SHARE_SECRET`, `CREATIVE_DAILY_ANONYMOUS_LIMIT`, `DATABASE_URL`, and `NEXT_PUBLIC_SITE_URL`. Confirm values separately for Development, Preview, and Production, and redeploy after changes. Do not place a real key in source, logs, screenshots, README content, or pull requests. Confirm the controlled production migration, distributed rate limiting, and real load/security testing before broad rollout.

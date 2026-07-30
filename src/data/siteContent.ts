@@ -22,7 +22,7 @@ export const v12Content = {
     description: "One connected gateway to everything already inside Hello the world.",
     items: [
       { title: "Discover", description: "Find ideas, stories, and signals selected for an endlessly curious mind.", icon: "compass", route: "/feed", accent: "from-cyan-400 to-blue-500" },
-      { title: "Create", description: "Turn a spark into writing, visuals, and intelligent experiences with AI.", icon: "sparkles", route: "/lab", accent: "from-fuchsia-500 to-violet-600" },
+      { title: "Create", description: "Turn a spark into writing, visuals, and intelligent experiences with AI.", icon: "sparkles", route: "/create", accent: "from-fuchsia-500 to-violet-600" },
       { title: "Remember", description: "Build a private, living memory that keeps your context close at hand.", icon: "brain", route: "/memory", accent: "from-violet-500 to-indigo-600" },
       { title: "Connect", description: "Meet creators, exchange perspectives, and grow with a global community.", icon: "users", route: "/community", accent: "from-orange-400 to-pink-500" },
       { title: "AI Agents", description: "Explore specialized collaborators ready to research, plan, and make with you.", icon: "orbit", route: "/agents", accent: "from-emerald-400 to-cyan-500" },

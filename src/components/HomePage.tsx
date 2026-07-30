@@ -33,6 +33,7 @@ export function HomePage({ locale }: { locale: Locale }) {
   const alternateLocale = getAlternateLocale(locale);
   const prefix = `/${locale}`;
   const v7Nav = [
+    { label: "AI Creative Lab", href: "/create" },
     { label: "Dashboard", href: `${prefix}/dashboard` },
     { label: "Memory", href: `${prefix}/memory` },
     { label: "Daily Feed", href: `${prefix}/feed` },
@@ -68,6 +69,8 @@ export function HomePage({ locale }: { locale: Locale }) {
           <div className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">{v12Content.explore.items.map((item) => <ExploreCard key={item.title} item={item} locale={locale} />)}</div>
         </section>
 
+        <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="creative-glass p-8 text-white"><p className="font-black uppercase tracking-[.2em] text-cyan-300">V13 · AI Creative Lab</p><h2 className="mt-3 text-4xl font-black">一个想法，创造一个世界</h2><div className="mt-7 grid gap-4 md:grid-cols-3">{["会保存居民梦境的未来城市","帮助人养成习惯的温暖 App","规则每次都会改变的探索游戏"].map((title)=><article key={title} className="rounded-2xl bg-white/10 p-5"><Sparkles/><h3 className="mt-3 font-bold">{title}</h3></article>)}</div><Link href="/create" className="creative-primary mt-7">进入 AI 创造实验室 <ArrowRight/></Link></div></section>
+
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10">
           <div className="mb-10 flex flex-wrap items-end justify-between gap-5"><div className="max-w-3xl"><p className="font-black uppercase tracking-[.2em] text-cyan-500">AI Personal Dashboard 2.0</p><h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">V11 is live — and visible.</h2><p className="mt-4 text-lg leading-8 text-slate-600 dark:text-slate-300">See the five signals that organize your AI life, then open the full dashboard to manage the ecosystem.</p></div><Link href={`${prefix}/dashboard`} className="rounded-full bg-cyan-300 px-6 py-3 font-black text-slate-950">Explore Dashboard 2.0 →</Link></div>
           <PersonalDashboard />
@@ -85,7 +88,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-7 py-14 text-center text-white shadow-2xl sm:px-14"><div className="mx-auto mb-6 flex -space-x-3">{creators.slice(0, 4).map((creator, index) => <span key={creator.username} className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-950 bg-gradient-to-br from-violet-500 to-cyan-400 font-black" style={{ zIndex: 4-index }}>{creator.displayName.charAt(0)}</span>)}</div><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Your next idea deserves a network.</h2><p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">Create your profile, ship an agent, and find the people who will help it grow.</p><Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 transition hover:scale-105">Join the creator network <ArrowRight size={18} /></Link></div></section>
 
-        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V12 AI World Experience · Explore, create, imagine.</footer>
+        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V13 AI Creative Lab</footer>
       </div>
     </main>
   );
