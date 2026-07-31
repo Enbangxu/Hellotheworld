@@ -1,3 +1,7 @@
+## V14 · AI Creation Universe / AI 创作宇宙
+
+Discover, share, and remix public AI creations at `/discover`, with a database-safe Demo fallback. V13 AI Creative Lab remains available at `/create`.
+
 # Hello the World
 
 Hello the World is a production-ready website foundation built with **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Lucide React**. Version 3 upgrades the original landing page into a bilingual, SEO-ready, deployment-friendly site that can grow into a portfolio, product page, travel journal, or personal brand hub.

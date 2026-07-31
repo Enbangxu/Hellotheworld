@@ -1,0 +1,25 @@
+name: Quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      AI_DEMO_MODE: "true"
+      CREATIVE_DAILY_ANONYMOUS_LIMIT: "20"
+      DATABASE_URL: "postgresql://ci:ci@127.0.0.1:5432/ci"
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test
+      - run: npm run lint
+      - run: npm run check-build
+      - run: npm run build
+      - run: git diff --check
