@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const requiredFiles = ["src/app/layout.tsx", "src/app/[locale]/page.tsx", "src/components/ExploreCard.tsx", "src/components/VersionBadge.tsx", "src/data/siteContent.ts", "public/manifest.json", "src/app/create/page.tsx", "src/components/creative-lab/CreativeLab.tsx", "src/lib/deepseek.ts", "src/lib/creative-schema.ts", "src/app/api/creative-lab/generate/route.ts", "src/app/api/creative-lab/refine/route.ts", "public/images/og-v13.svg", "src/app/discover/page.tsx", "src/app/api/creations/route.ts", "src/components/v14/CreationUniverse.tsx", "src/data/v14Creations.ts", "src/lib/creation-feed.ts", "src/lib/creative-query.ts", "public/images/og-v14.svg", ".github/workflows/quality.yml"];
+const requiredFiles = ["next-env.d.ts", "src/app/layout.tsx", "src/app/[locale]/page.tsx", "src/components/ExploreCard.tsx", "src/components/VersionBadge.tsx", "src/data/siteContent.ts", "public/manifest.json", "src/app/create/page.tsx", "src/components/creative-lab/CreativeLab.tsx", "src/lib/deepseek.ts", "src/lib/creative-schema.ts", "src/app/api/creative-lab/generate/route.ts", "src/app/api/creative-lab/refine/route.ts", "public/images/og-v13.svg", "src/app/discover/page.tsx", "src/app/api/creations/route.ts", "src/components/v14/CreationUniverse.tsx", "src/data/v14Creations.ts", "src/lib/creation-feed.ts", "src/lib/creative-query.ts", "public/images/og-v14.svg", ".github/workflows/quality.yml"];
 const extensions = ["", ".ts", ".tsx", ".js", ".jsx", ".json", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"];
 const sourceFiles = [];
 const errors = [];
@@ -53,7 +53,7 @@ const allText = sourceFiles.map((file) => fs.readFileSync(file, "utf8")).join("\
 if (allText.includes("NEXT_PUBLIC_" + "DEEPSEEK")) errors.push("DeepSeek credentials must never use a browser-public environment variable");
 if (/['"`]sk-[A-Za-z0-9_-]{16,}/.test(allText)) errors.push("Possible hard-coded provider key detected");
 const middleware = fs.readFileSync(path.join(root, "middleware.ts"), "utf8");
-if (!middleware.includes("create(?:/|$)") || !middleware.includes("creation(?:/|$)")) errors.push("Middleware must exclude create and creation routes");
+if (!middleware.includes("create(?:/|$)") || !middleware.includes("creation(?:/|$)") || !middleware.includes("discover(?:/|$)")) errors.push("Middleware must exclude create, creation, and discover routes");
 const schema = fs.readFileSync(path.join(root, "prisma/schema.prisma"), "utf8");
 if (!/model\s+Creation\s*\{/.test(schema)) errors.push("Prisma Creation model is missing");
 const env = fs.readFileSync(path.join(root, ".env.example"), "utf8");
