@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#050816"/><stop offset=".5" stop-color="#312e81"/><stop offset="1" stop-color="#0891b2"/></linearGradient><radialGradient id="glow"><stop stop-color="#67e8f9" stop-opacity=".45"/><stop offset="1" stop-color="#67e8f9" stop-opacity="0"/></radialGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/><circle cx="960" cy="120" r="300" fill="url(#glow)"/><circle cx="180" cy="570" r="330" fill="url(#glow)" opacity=".45"/>
+  <text x="90" y="125" fill="#a5f3fc" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="5">V14 · AI CREATION SPACE</text>
+  <text x="90" y="305" fill="white" font-family="Arial,sans-serif" font-size="94" font-weight="800">Hello the world</text>
+  <text x="90" y="390" fill="#cbd5e1" font-family="Arial,sans-serif" font-size="42">Your first AI creation space</text>
+  <rect x="90" y="465" width="340" height="70" rx="35" fill="#67e8f9"/><text x="155" y="511" fill="#0f172a" font-family="Arial,sans-serif" font-size="28" font-weight="700">Create with AI →</text>
+</svg>
