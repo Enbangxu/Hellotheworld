@@ -9,6 +9,10 @@ import { prisma } from "@/src/lib/prisma";
 
 type PageProps = { params: Promise<{ id: string }> };
 
+// Shared works require a live database record. Keeping this route dynamic
+// prevents CI and Vercel builds from trying to prerender database content.
+export const dynamic = "force-dynamic";
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
   const creation = await prisma.creation.findFirst({ where: { OR: [{ id }, { slug: id }], isPublic: true } }).catch(() => null);
