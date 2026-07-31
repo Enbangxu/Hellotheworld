@@ -5,4 +5,4 @@ function detectLocale(request: NextRequest): Locale { const languages = request.
 export function middleware(request: NextRequest) { const { pathname } = request.nextUrl; const pathnameLocale = pathname.split("/")[1]; if (isLocale(pathnameLocale)) return NextResponse.next(); const locale = detectLocale(request); const url = request.nextUrl.clone(); url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`; return NextResponse.redirect(url); }
 // Product pages without a locale segment and public/PWA assets must keep their
 // canonical URL. Everything else continues through locale detection.
-export const config = { matcher: ["/((?!api|create(?:/|$)|creation(?:/|$)|v9(?:/|$)|_next/static|_next/image|images|icons|manifest.json|favicon.ico|robots.txt|sitemap.xml).*)"] };
+export const config = { matcher: ["/((?!api|create(?:/|$)|creation(?:/|$)|works(?:/|$)|v9(?:/|$)|_next/static|_next/image|images|icons|manifest.json|favicon.ico|robots.txt|sitemap.xml).*)"] };

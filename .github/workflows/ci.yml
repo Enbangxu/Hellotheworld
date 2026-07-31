@@ -26,7 +26,6 @@ jobs:
         run: npm ci
       - name: Run lint
         run: npm run lint
-      - name: Run type check
-        run: npm run typecheck
       - name: Run build
+        # next build performs the production TypeScript validation as well.
         run: npm run build
