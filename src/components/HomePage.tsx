@@ -6,7 +6,7 @@ import { ArrowRight, Brain, ChartNoAxesCombined, Newspaper, Sparkles } from "luc
 import { useState } from "react";
 import { FloatingBlobs } from "@/src/components/FloatingBlobs";
 import { Navbar } from "@/src/components/Navbar";
-import { agents, creators, networkStats } from "@/src/data/network";
+import { agents, creators } from "@/src/data/network";
 import { siteContent } from "@/src/data/site";
 import { getAlternateLocale } from "@/src/lib/i18n";
 import type { Locale } from "@/src/config/site";
