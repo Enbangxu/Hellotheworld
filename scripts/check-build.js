@@ -53,7 +53,9 @@ const allText = sourceFiles.map((file) => fs.readFileSync(file, "utf8")).join("\
 if (allText.includes("NEXT_PUBLIC_" + "DEEPSEEK")) errors.push("DeepSeek credentials must never use a browser-public environment variable");
 if (/['"`]sk-[A-Za-z0-9_-]{16,}/.test(allText)) errors.push("Possible hard-coded provider key detected");
 const middleware = fs.readFileSync(path.join(root, "middleware.ts"), "utf8");
-if (!middleware.includes("create(?:/|$)") || !middleware.includes("creation(?:/|$)")) errors.push("Middleware must exclude create and creation routes");
+for (const route of ["create", "creation", "works"]) {
+  if (!middleware.includes(`${route}(?:/|$)`)) errors.push(`Middleware must exclude the ${route} route`);
+}
 const schema = fs.readFileSync(path.join(root, "prisma/schema.prisma"), "utf8");
 if (!/model\s+Creation\s*\{/.test(schema)) errors.push("Prisma Creation model is missing");
 const env = fs.readFileSync(path.join(root, ".env.example"), "utf8");

@@ -1,4 +1,4 @@
-export const categories = ["world", "story", "game", "app", "product", "learning", "surprise"] as const;
+export const categories = ["world", "story", "game", "product", "surprise", "startup", "website", "app", "learning", "content", "random"] as const;
 export const locales = ["zh", "en", "ja"] as const;
 export type CreativeCategory = typeof categories[number];
 export type CreativeLocale = typeof locales[number];
