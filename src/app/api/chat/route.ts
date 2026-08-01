@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
     if (!key) return NextResponse.json({ error: { code: "CONFIGURATION_REQUIRED", message: "AI 助手正在配置中，请稍后再试。" } }, { status: 503 });
     try {
       const base = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").replace(/\/$/, "");
-      const response = await fetch(`${base}/chat/completions`, { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, cache: "no-store", signal: AbortSignal.timeout(25_000), body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-chat", max_tokens: 700, messages: [{ role: "system", content: "你是 Hello the world 的 AI 欢迎助手。请用用户使用的语言简洁、友好地回答，帮助用户探索世界、知识与创意；不要虚构事实。" }, { role: "user", content: message }] }) });
+      const response = await fetch(`${base}/chat/completions`, { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, cache: "no-store", signal: AbortSignal.timeout(25_000), body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-chat", max_tokens: 700, messages: [{ role: "system", content: "你是 Hello the world V16 AI Creative Universe 的欢迎助手。请用用户使用的语言简洁、友好地回答，帮助用户探索世界、知识与创意；不要虚构事实。" }, { role: "user", content: message }] }) });
       if (!response.ok) throw new Error(`DeepSeek responded with ${response.status}`);
       const result = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
       const reply = result.choices?.[0]?.message?.content?.trim();
