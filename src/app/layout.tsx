@@ -7,13 +7,14 @@ export const metadata: Metadata = {
   applicationName: siteConfig.name,
   manifest: "/manifest.json",
   icons: { icon: "/icons/app-icon.svg", apple: "/icons/app-icon.svg" },
-  title: { default: "Hello the world V14.0 | AI Creative Lab", template: `%s | ${siteConfig.name}` },
-  description: "Explore, create, and imagine in an intelligent world of AI agents, living memory, creative tools, and global community.",
+  title: { default: "Hello the world V15 | AI 智能探索与互动体验", template: `%s | ${siteConfig.name}` },
+  description: "Hello the world V15 是由 DeepSeek 驱动的智能探索空间，与 AI 对话，发现个性化内容、世界灵感与创造方向。",
+  keywords: ["Hello the world", "AI 助手", "DeepSeek", "人工智能", "世界探索", "AI 推荐", "创意社区"],
   alternates: { canonical: "/en", languages: { en: "/en", zh: "/zh", ja: "/ja", "x-default": "/en" } },
-  openGraph: { title: "Hello the world V14.0 — AI Creative Lab", description: "Explore, create, and imagine in a beautifully connected AI world.", images: [{ url: "/images/og-v14.svg", width: 1200, height: 630, alt: "Hello the world V14.0 AI Creation Space" }], type: "website", url: "/en", siteName: siteConfig.name, locale: "en_US", alternateLocale: ["zh_CN", "ja_JP"] },
-  twitter: { card: "summary_large_image", title: "Hello the world V14.0", description: "Explore. Create. Imagine.", images: ["/images/og-v14.svg"] },
+  openGraph: { title: "Hello the world V15 — AI Interactive World", description: "Talk with AI, discover personal recommendations, and explore a beautifully connected intelligent world.", images: [{ url: "/images/og-v14.svg", width: 1200, height: 630, alt: "Hello the world V15 AI Interactive World" }], type: "website", url: "/en", siteName: siteConfig.name, locale: "en_US", alternateLocale: ["zh_CN", "ja_JP"] },
+  twitter: { card: "summary_large_image", title: "Hello the world V15 — AI Interactive World", description: "Talk. Discover. Explore with AI.", images: ["/images/og-v14.svg"] },
   robots: { index: true, follow: true },
 };
 
-const jsonLd = { "@context": "https://schema.org", "@type": "WebApplication", name: "Hello the world V14.0", applicationCategory: "ProductivityApplication", operatingSystem: "Web", description: "A multilingual AI Creation Space for exploration, creation, memory, agents, and community.", url: siteConfig.url };
+const jsonLd = { "@context": "https://schema.org", "@type": "WebApplication", name: "Hello the world V15", applicationCategory: "ProductivityApplication", operatingSystem: "Web", description: "A multilingual AI interactive world for personal recommendations, exploration, creation, memory, agents, and community.", url: siteConfig.url, featureList: ["DeepSeek AI welcome assistant", "Personalized AI recommendations", "World exploration", "Community interactions"] };
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) { return <html lang="en" suppressHydrationWarning><body className="antialiased"><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd).replace(/</g, "\\u003c") }} />{children}</body></html>; }

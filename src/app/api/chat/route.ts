@@ -17,8 +17,26 @@ function normalize(value: AIContent, prompt: string) {
 }
 
 export async function POST(request: NextRequest) {
-  let payload: { prompt?: unknown; type?: unknown };
+  let payload: { prompt?: unknown; message?: unknown; type?: unknown };
   try { payload = await request.json(); } catch { return NextResponse.json({ error: { code: "INVALID_JSON", message: "A valid JSON body is required." } }, { status: 400 }); }
+  const message = typeof payload.message === "string" ? payload.message.trim() : "";
+  if (message) {
+    if (message.length > 1000) return NextResponse.json({ error: { code: "INVALID_MESSAGE", message: "消息不能超过 1000 个字符。" } }, { status: 400 });
+    const key = process.env.DEEPSEEK_API_KEY;
+    if (!key) return NextResponse.json({ error: { code: "CONFIGURATION_REQUIRED", message: "AI 助手正在配置中，请稍后再试。" } }, { status: 503 });
+    try {
+      const base = (process.env.DEEPSEEK_BASE_URL || "https://api.deepseek.com").replace(/\/$/, "");
+      const response = await fetch(`${base}/chat/completions`, { method: "POST", headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" }, cache: "no-store", signal: AbortSignal.timeout(25_000), body: JSON.stringify({ model: process.env.DEEPSEEK_MODEL || "deepseek-chat", max_tokens: 700, messages: [{ role: "system", content: "你是 Hello the world 的 AI 欢迎助手。请用用户使用的语言简洁、友好地回答，帮助用户探索世界、知识与创意；不要虚构事实。" }, { role: "user", content: message }] }) });
+      if (!response.ok) throw new Error(`DeepSeek responded with ${response.status}`);
+      const result = await response.json() as { choices?: Array<{ message?: { content?: string } }> };
+      const reply = result.choices?.[0]?.message?.content?.trim();
+      if (!reply) throw new Error("DeepSeek returned an empty response");
+      return NextResponse.json({ reply });
+    } catch (error) {
+      console.error("DeepSeek chat request failed", error instanceof Error ? error.message : "Unknown error");
+      return NextResponse.json({ error: { code: "AI_UNAVAILABLE", message: "AI 助手暂时不可用，请稍后再试。" } }, { status: 502 });
+    }
+  }
   const prompt = typeof payload.prompt === "string" ? payload.prompt.trim() : "";
   const type = typeof payload.type === "string" ? payload.type.trim() : undefined;
   if (!prompt || prompt.length > 1000) return NextResponse.json({ error: { code: "INVALID_PROMPT", message: "Prompt must contain 1–1000 characters." } }, { status: 400 });
