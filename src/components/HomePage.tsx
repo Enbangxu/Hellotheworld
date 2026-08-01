@@ -13,7 +13,8 @@ import type { Locale } from "@/src/config/site";
 import { PersonalDashboard } from "@/src/components/v11/PersonalDashboard";
 import { ExploreCard } from "@/src/components/ExploreCard";
 import { v12Content } from "@/src/data/siteContent";
-import { V14Hero } from "@/src/components/V14Hero";
+import { V15Hero } from "@/src/components/V15Hero";
+import { AIRecommendation } from "@/src/components/AIRecommendation";
 
 
 const featureCards = [
@@ -41,7 +42,8 @@ export function HomePage({ locale }: { locale: Locale }) {
         <FloatingBlobs />
         <Navbar isDark={isDark} navItems={v7Nav} languageHref={`/${alternateLocale}`} languageLabel={content.languageLabel} themeLabel={content.themeLabel} onToggleTheme={() => setIsDark((value) => !value)} />
 
-        <V14Hero />
+        <V15Hero />
+        <AIRecommendation />
 
         <section id="explore-v12" className="relative z-10 mx-auto max-w-7xl scroll-mt-20 px-6 py-24 lg:px-10">
           <div className="mx-auto mb-12 max-w-3xl text-center"><p className="font-black uppercase tracking-[.22em] text-cyan-500">{v12Content.explore.eyebrow}</p><h2 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">{v12Content.explore.title}</h2><p className="mt-5 text-lg leading-8 text-slate-600 dark:text-slate-300">{v12Content.explore.description}</p></div>
@@ -67,7 +69,7 @@ export function HomePage({ locale }: { locale: Locale }) {
 
         <section className="relative z-10 mx-auto max-w-7xl px-6 py-20 lg:px-10"><div className="overflow-hidden rounded-[2.5rem] bg-slate-950 px-7 py-14 text-center text-white shadow-2xl sm:px-14"><div className="mx-auto mb-6 flex -space-x-3">{creators.slice(0, 4).map((creator, index) => <span key={creator.username} className="flex h-12 w-12 items-center justify-center rounded-full border-4 border-slate-950 bg-gradient-to-br from-violet-500 to-cyan-400 font-black" style={{ zIndex: 4-index }}>{creator.displayName.charAt(0)}</span>)}</div><h2 className="text-4xl font-black tracking-tight sm:text-5xl">Your next idea deserves a network.</h2><p className="mx-auto mt-5 max-w-2xl text-lg text-slate-300">Create your profile, ship an agent, and find the people who will help it grow.</p><Link href="/register" className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-7 py-4 font-black text-slate-950 transition hover:scale-105">Join the creator network <ArrowRight size={18} /></Link></div></section>
 
-        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V14.0 AI Creative Lab</footer>
+        <footer className="relative z-10 border-t border-slate-900/10 px-6 py-8 text-center text-sm font-semibold text-slate-500 dark:border-white/10 dark:text-slate-400">Hello the world · V15.0 AI Interactive World</footer>
       </div>
     </main>
   );
