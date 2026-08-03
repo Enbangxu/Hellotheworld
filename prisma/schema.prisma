@@ -374,3 +374,16 @@ model History {
 
   @@index([userId, createdAt])
 }
+
+model KeywordExplanation {
+  id              String   @id @default(cuid())
+  word            String   @unique
+  category        String
+  explanation     String
+  useCases        String[]
+  relatedKeywords String[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([category])
+}
