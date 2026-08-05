@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { generateExplanation } from "@/src/lib/keywords";
+import { matchImage } from "@/src/lib/imageMatcher";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -17,7 +18,8 @@ export async function POST(request: NextRequest) {
   try {
     const style = level === "simple" ? "通俗入门" : level === "expert" ? "专家技术" : "商业决策";
     const result = await generateExplanation(`${keyword}（请使用${style}视角）`, level);
-    return NextResponse.json({ data: { title: keyword, summary: result.explanation, relatedKeywords: result.relatedKeywords, level } });
+    const matched = matchImage(`${keyword} ${result.relatedKeywords.join(" ")}`);
+    return NextResponse.json({ data: { title: keyword, summary: result.explanation, deepExplanation: result.deepExplanation, relatedKeywords: result.relatedKeywords, suggestedQuestions: result.suggestedQuestions, image: result.image || { url: matched.imageUrl, alt: matched.alt }, level } });
   } catch (error) {
     console.error("V18 explanation failed", error instanceof Error ? error.message : "Unknown error");
     return NextResponse.json({ error: { message: "DeepSeek 解释暂时不可用，请稍后再试。" } }, { status: 502 });

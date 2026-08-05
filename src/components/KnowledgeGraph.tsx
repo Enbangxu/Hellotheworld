@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 
-export type KnowledgeNode = { id: string; label: string; type: "人物" | "公司" | "技术" | "产品" | "地点" | "概念"; x: number; y: number };
+export type KnowledgeNode = { id: string; label: string; type: string; x: number; y: number };
 export type KnowledgeEdge = { from: string; to: string };
 
 export function KnowledgeGraph({ nodes, edges, onNodeClick }: { nodes: KnowledgeNode[]; edges: KnowledgeEdge[]; onNodeClick?: (node: KnowledgeNode) => void }) {
