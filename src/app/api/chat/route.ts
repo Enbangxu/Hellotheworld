@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { matchImage } from "@/src/lib/imageMatcher";
-import { analyzeKeywords, type Keyword } from "@/src/lib/keywords";
+import { analyzeAIResponse, analyzeKeywords, type Keyword } from "@/src/lib/keywords";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -33,9 +33,17 @@ export async function POST(request: NextRequest) {
       const reply = result.choices?.[0]?.message?.content?.trim();
       if (!reply) throw new Error("DeepSeek returned an empty response");
       let keywords: Keyword[] = [];
-      try { keywords = await analyzeKeywords(reply); }
+      let suggestedQuestions: string[] = [];
+      try {
+        const analysis = await analyzeAIResponse(reply);
+        keywords = analysis.keywords;
+        suggestedQuestions = analysis.suggestedQuestions;
+      }
       catch (keywordError) { console.warn("DeepSeek keyword analysis failed", keywordError instanceof Error ? keywordError.message : "Unknown error"); }
-      return NextResponse.json({ answer: reply, keywords, reply });
+      if (!keywords.length) {
+        try { keywords = await analyzeKeywords(reply); } catch {}
+      }
+      return NextResponse.json({ answer: reply, keywords, suggestedQuestions, reply });
     } catch (error) {
       console.error("DeepSeek chat request failed", error instanceof Error ? error.message : "Unknown error");
       return NextResponse.json({ error: { code: "AI_UNAVAILABLE", message: "AI 助手暂时不可用，请稍后再试。" } }, { status: 502 });
