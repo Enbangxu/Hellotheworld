@@ -1,59 +1,32 @@
-"use client";
-
 import Link from "next/link";
-import { Languages, Menu, Moon, Sun, X } from "lucide-react";
-import { motion } from "framer-motion";
-import { useState } from "react";
+import { Languages } from "lucide-react";
+import { siteConfig, type Locale } from "@/src/config/site";
 
-type NavItem = { label: string; href: string };
+const languageNames: Record<Locale, string> = { zh: "中文", en: "EN", ja: "日本語" };
 
-type NavbarProps = {
-  isDark: boolean;
-  navItems: NavItem[];
-  languageHref: string;
-  languageLabel: string;
-  themeLabel: string;
-  onToggleTheme: () => void;
-};
-
-export function Navbar({ isDark, navItems, languageHref, languageLabel, themeLabel, onToggleTheme }: NavbarProps) {
-  const [isOpen, setIsOpen] = useState(false);
+export function Navbar({ locale }: { locale: Locale }) {
+  const prefix = `/${locale}`;
+  const navItems = [
+    { label: "AI", href: `${prefix}/assistant` },
+    { label: "Studio", href: "/studio" },
+    { label: "Community", href: `${prefix}/community` },
+    { label: "Profile", href: `${prefix}/dashboard` },
+  ];
 
   return (
-    <motion.header initial={{ opacity: 0, y: -18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} className="fixed inset-x-0 top-0 z-50 px-4 py-4">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between rounded-full border border-slate-900/10 bg-white/75 px-5 py-3 text-slate-900 shadow-2xl shadow-slate-950/10 backdrop-blur-2xl transition dark:border-white/15 dark:bg-slate-950/55 dark:text-white">
-        <a href="#home" className="text-lg font-black tracking-tight">Hello the World</a>
-
-        <div className="hidden items-center gap-2 md:flex">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} className="rounded-full px-4 py-2 text-sm font-semibold text-slate-700 transition hover:bg-slate-900 hover:text-white dark:text-slate-200 dark:hover:bg-white dark:hover:text-slate-950">
-              {item.label}
-            </a>
-          ))}
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-xl">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5" aria-label="Primary navigation">
+        <Link href={prefix} className="font-black tracking-tight text-white">Hello the World</Link>
+        <div className="hidden items-center gap-1 md:flex">
+          {navItems.map((item) => <Link key={item.label} href={item.href} className="minimal-nav-link">{item.label}</Link>)}
         </div>
-
-        <div className="flex items-center gap-2">
-          <Link href={languageHref} className="inline-flex items-center gap-2 rounded-full border border-slate-900/10 bg-white/80 px-3 py-2 text-sm font-bold text-slate-900 transition hover:scale-105 hover:bg-slate-100 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label="Switch language">
-            <Languages size={18} /> {languageLabel}
-          </Link>
-          <button type="button" onClick={onToggleTheme} className="rounded-full border border-slate-900/10 bg-white/80 p-2 text-slate-900 transition hover:scale-105 hover:bg-slate-100 dark:border-white/15 dark:bg-white/10 dark:text-white dark:hover:bg-white/20" aria-label={themeLabel}>
-            {isDark ? <Sun size={20} /> : <Moon size={20} />}
-          </button>
-          <button type="button" onClick={() => setIsOpen((value) => !value)} className="rounded-full border border-slate-900/10 bg-white/80 p-2 text-slate-900 md:hidden dark:border-white/15 dark:bg-white/10 dark:text-white" aria-label="Toggle navigation menu">
-            {isOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
+        <div className="flex items-center gap-1" aria-label="Language selector">
+          <Languages className="mr-1 text-slate-400" size={17} aria-hidden="true" />
+          {siteConfig.locales.map((item) => (
+            <Link key={item} href={`/${item}`} hrefLang={item} aria-current={item === locale ? "page" : undefined} className={item === locale ? "minimal-language minimal-language-active" : "minimal-language"}>{languageNames[item]}</Link>
+          ))}
         </div>
       </nav>
-
-      {isOpen ? (
-        <div className="mx-auto mt-3 grid max-w-6xl gap-2 rounded-3xl border border-slate-900/10 bg-white/90 p-4 text-slate-900 shadow-2xl backdrop-blur-2xl md:hidden dark:border-white/15 dark:bg-slate-950/85 dark:text-white">
-          {navItems.map((item) => (
-            <a key={item.href} href={item.href} onClick={() => setIsOpen(false)} className="rounded-2xl px-4 py-3 font-semibold transition hover:bg-slate-900 hover:text-white dark:hover:bg-white dark:hover:text-slate-950">
-              {item.label}
-            </a>
-          ))}
-        </div>
-      ) : null}
-    </motion.header>
+    </header>
   );
 }

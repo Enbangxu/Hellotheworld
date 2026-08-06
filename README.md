@@ -75,6 +75,16 @@ npm run build
 
 GitHub Actions runs on pushes to `main` and `feature/**` branches and on pull requests targeting `main`. The workflow uses Node.js 22, installs dependencies with `npm ci`, runs `npm run lint`, and runs `npm run build`.
 
+
+## V20 AI Minimal Experience
+
+V20 focuses the homepage on the shortest path from an idea to an AI-powered experience while preserving the complete DeepSeek creative workflow, AI Studio, community, V19 knowledge graph, SEO, internationalization, and Vercel deployment architecture on their dedicated routes.
+
+- **Minimal homepage:** a compact hero and three clear core destinations replace repeated introductions and feature grids.
+- **AI entry system:** the new `AIEntry` offers direct Learn, Create, and Explore paths in Chinese, English, and Japanese.
+- **Mobile optimization:** a thumb-friendly bottom navigation keeps Home, AI, Studio, Community, and Profile one tap away.
+- **Performance improvements:** the homepage is server-rendered, avoids Framer Motion and unnecessary client state, and ships without below-the-fold showcase sections.
+
 ## V13 DeepSeek AI Creative Lab
 
 V13 upgrades `/create` from a single-output generator into a complete co-creation loop: category-led idea composition, a four-stage generation journey, safe structured results, full-result refinement, ten local versions, Markdown/JSON exports, feedback, and opt-in sharing. The experience supports Chinese, English, and Japanese without requiring sign-in.
