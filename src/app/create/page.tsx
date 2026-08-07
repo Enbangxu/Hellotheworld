@@ -1,1 +1,11 @@
-import type{Metadata}from"next";import{CreativeLab}from"@/src/components/creative-lab/CreativeLab";import{siteConfig}from"@/src/config/site";export const metadata:Metadata={title:"AI Creative Lab · Turn an idea into a world",description:"Create structured worlds, stories, games, apps and plans with AI, then refine, version, export and share them.",alternates:{canonical:"/create"},openGraph:{title:"Hello the world · AI Creative Lab",description:"Turn an idea into a world.",url:`${siteConfig.url}/create`,images:["/images/og-v14.svg"]},twitter:{card:"summary_large_image",images:["/images/og-v14.svg"]}};export default async function Page({searchParams}:{searchParams:Promise<{idea?:string|string[]}>}){const params=await searchParams;const idea=typeof params.idea==="string"?params.idea.slice(0,2000):"";return <CreativeLab initialIdea={idea}/>}
+import type { Metadata } from "next";
+import { ImageGenerator } from "@/src/components/image-generation/ImageGenerator";
+
+export const metadata: Metadata = {
+  title: "AI 图片生成 · Hello the World",
+  description: "把文字灵感变成独一无二的 AI 图片。",
+};
+
+export default function CreatePage() {
+  return <ImageGenerator />;
+}
