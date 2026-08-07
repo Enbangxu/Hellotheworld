@@ -118,3 +118,27 @@ npm run build
 ```
 
 In Vercel, configure `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`, optional `DEEPSEEK_PREMIUM_MODEL`, `AI_DEMO_MODE`, `CREATION_SHARE_SECRET`, `CREATIVE_DAILY_ANONYMOUS_LIMIT`, `DATABASE_URL`, and `NEXT_PUBLIC_SITE_URL`. Confirm values separately for Development, Preview, and Production, and redeploy after changes. Do not place a real key in source, logs, screenshots, README content, or pull requests. Confirm the controlled production migration, distributed rate limiting, and real load/security testing before broad rollout.
+# HelloTheWorld V20
+
+## AI 图片生成中心
+
+- `/create`：输入提示词并选择风格、画幅，调用服务端图片生成接口。
+- `/history`：查看保存在 PostgreSQL 中的生成记录。
+- `/api/generate-image`：仅在服务端读取 `OPENAI_API_KEY` 并请求 OpenAI。
+
+### 本地运行
+
+```bash
+cp .env.example .env.local
+# 配置 DATABASE_URL、OPENAI_API_KEY，可按需修改 OPENAI_IMAGE_MODEL
+npm install
+npx prisma migrate dev
+npm run dev
+```
+
+### Vercel 部署
+
+在 Vercel 项目环境变量中配置 `DATABASE_URL`、`OPENAI_API_KEY` 和可选的
+`OPENAI_IMAGE_MODEL`。不要把密钥命名为 `NEXT_PUBLIC_*`。首次发布及每次 schema
+更新后，使用生产数据库连接运行 `npx prisma migrate deploy`，随后正常执行
+`npm run build`。图片生成可能耗时较长，请为对应部署方案配置足够的函数执行时限。

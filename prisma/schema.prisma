@@ -387,3 +387,14 @@ model KeywordExplanation {
 
   @@index([category])
 }
+
+model GenerationTask {
+  id        String   @id @default(cuid())
+  prompt    String
+  style     String
+  size      String
+  imageUrl  String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
+}
