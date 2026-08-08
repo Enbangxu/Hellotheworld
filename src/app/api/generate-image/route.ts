@@ -24,7 +24,7 @@ async function optimizePrompt(prompt: string, style: ImageStyle, size: ImageSize
     generationConfig: { temperature: 0.7, maxOutputTokens: 500 },
   }, signal);
   if (!response.ok) {
-    console.error("Gemini prompt optimization failed", response.status, (await response.text()).slice(0, 500));
+    console.error("Gemini prompt optimization failed", { status: response.status });
     throw new Error(response.status === 429 ? "RATE_LIMITED" : "PROMPT_OPTIMIZATION_FAILED");
   }
   const result = await response.json() as GeminiResponse;
@@ -52,7 +52,7 @@ export async function POST(request: Request) {
         generationConfig: { responseModalities: ["TEXT", "IMAGE"], imageConfig: { aspectRatio: googleAspectRatios[body.size] } },
       }, controller.signal);
       if (!response.ok) {
-        console.error("Gemini image generation failed", response.status, (await response.text()).slice(0, 500));
+        console.error("Gemini image generation failed", { status: response.status });
         return NextResponse.json({ error: "这次生成没有成功，请调整描述后重试。" }, { status: response.status === 429 ? 429 : 502 });
       }
       const result = await response.json() as GeminiResponse;
@@ -63,9 +63,10 @@ export async function POST(request: Request) {
       return NextResponse.json({ imageUrl });
     } finally { clearTimeout(timer); }
   } catch (error) {
-    console.error("Image generation route error", error);
     const timedOut = error instanceof Error && error.name === "AbortError";
     const rateLimited = error instanceof Error && error.message === "RATE_LIMITED";
+    const errorCode = error instanceof Error ? error.message : "UNKNOWN_ERROR";
+    console.error("Image generation route error", { timedOut, rateLimited, errorCode });
     return NextResponse.json({ error: timedOut ? "生成超时了，请稍后重试。" : rateLimited ? "生成请求较多，请稍后再试。" : "服务暂时不可用，请稍后再试。" }, { status: timedOut ? 504 : rateLimited ? 429 : 500 });
   }
 }

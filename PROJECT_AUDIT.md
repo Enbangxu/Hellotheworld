@@ -50,7 +50,7 @@ Repository: Enbangxu/Hellotheworld
 
 - `.env.example` exists for documenting environment variables.
 - Current implementation is static/data-driven and does not require a server-side secret.
-- Future AI Assistant integration should introduce server-only variables such as `OPENAI_API_KEY`, vector database URLs, and RAG index identifiers without exposing secrets to the client.
+- Future AI Assistant integration should use server-only variables such as `AI_API_KEY`, vector database URLs, and RAG index identifiers without exposing secrets to the client.
 
 ## Upgrade constraints
 

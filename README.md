@@ -56,6 +56,9 @@ GOOGLE_AI_IMAGE_MODEL="gemini-2.5-flash-image"
 `GOOGLE_AI_API_KEY` 只会由 `/api/generate-image` 服务端路由读取。不要使用
 `NEXT_PUBLIC_` 前缀，也不要将真实密钥提交到 Git。
 
+图片生成没有旧供应商兼容层或回退路径：Prompt 优化与图片生成均只调用 Google
+Generative Language API。
+
 生成流程如下：
 
 1. 校验 `prompt`、`style` 和 `size`。
