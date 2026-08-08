@@ -124,13 +124,13 @@ In Vercel, configure `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`, 
 
 - `/create`：输入提示词并选择风格、画幅，调用服务端图片生成接口。
 - `/history`：查看保存在 PostgreSQL 中的生成记录。
-- `/api/generate-image`：仅在服务端读取 `OPENAI_API_KEY` 并请求 OpenAI。
+- `/api/generate-image`：先通过 Gemini 优化提示词，再通过 Google AI 生成图片。API Key 仅在服务端读取。
 
 ### 本地运行
 
 ```bash
 cp .env.example .env.local
-# 配置 DATABASE_URL、OPENAI_API_KEY，可按需修改 OPENAI_IMAGE_MODEL
+# 配置 DATABASE_URL、GOOGLE_AI_API_KEY，可按需修改两个 Gemini 模型变量
 npm install
 npx prisma migrate dev
 npm run dev
@@ -138,7 +138,8 @@ npm run dev
 
 ### Vercel 部署
 
-在 Vercel 项目环境变量中配置 `DATABASE_URL`、`OPENAI_API_KEY` 和可选的
-`OPENAI_IMAGE_MODEL`。不要把密钥命名为 `NEXT_PUBLIC_*`。首次发布及每次 schema
+在 Vercel 项目环境变量中配置 `DATABASE_URL`、`GOOGLE_AI_API_KEY` 和可选的
+`GOOGLE_AI_TEXT_MODEL`、`GOOGLE_AI_IMAGE_MODEL`。不要把密钥命名为
+`NEXT_PUBLIC_*`。首次发布及每次 schema
 更新后，使用生产数据库连接运行 `npx prisma migrate deploy`，随后正常执行
 `npm run build`。图片生成可能耗时较长，请为对应部署方案配置足够的函数执行时限。

@@ -11,7 +11,7 @@ const stylePrompts: Record<ImageStyle, string> = {
   cyberpunk: "cyberpunk visual style, neon atmosphere, cinematic futuristic detail",
 };
 
-export const openAiSizes: Record<ImageSize, string> = { "1:1": "1024x1024", "16:9": "1792x1024", "9:16": "1024x1792" };
+export const googleAspectRatios: Record<ImageSize, string> = { "1:1": "1:1", "16:9": "16:9", "9:16": "9:16" };
 
 export function isImageStyle(value: unknown): value is ImageStyle { return typeof value === "string" && IMAGE_STYLES.includes(value as ImageStyle); }
 export function isImageSize(value: unknown): value is ImageSize { return typeof value === "string" && IMAGE_SIZES.includes(value as ImageSize); }
