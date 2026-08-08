@@ -1,145 +1,133 @@
 # Hello the World
 
-Hello the World is a production-ready website foundation built with **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Lucide React**. Version 3 upgrades the original landing page into a bilingual, SEO-ready, deployment-friendly site that can grow into a portfolio, product page, travel journal, or personal brand hub.
+Hello the World 是一个基于 **Next.js 15、React 19、TypeScript、Tailwind CSS、Prisma**
+构建的多语言 AI 创作与知识探索网站。当前版本为 **V20.1**，图片生成中心使用
+Google Gemini 优化提示词并生成图片。
 
-## Project Overview
+## 主要功能
 
-The site includes:
+- `/create`：AI 图片生成中心，支持 Prompt、风格、画幅、预览与下载。
+- `/history`：从 PostgreSQL 读取并展示图片生成历史。
+- `/api/generate-image`：仅在服务端调用 Google AI，先优化 Prompt，再生成图片。
+- `/[locale]/assistant`：多语言 AI 助手入口，支持 `zh`、`en`、`ja`。
+- `/studio`、`/[locale]/community`：AI Studio 与创作者社区。
+- `/creation/[slug]`：已有 Creative Lab 作品的展示与分享页面。
 
-- English and Chinese experiences with clean `/en` and `/zh` URLs
-- Browser language detection that redirects first-time visitors to the best locale
-- Next.js Metadata API configuration with canonical alternates, Open Graph, and Twitter card metadata
-- Generated `sitemap.xml` and `robots.txt`
-- Smooth page motion, scroll reveal sections, animated gradients, and interactive cards
-- Dark mode UI controls and a bilingual language switcher
-- CI workflow that installs dependencies, runs lint, and verifies the production build
-
-## Architecture
+## 技术结构
 
 ```text
 src/
-├── app/          # Next.js App Router layouts, locale pages, sitemap, and robots routes
-├── components/   # Reusable UI components and client-side interactions
-├── config/       # Site-wide constants such as supported locales and public URL
-├── data/         # Static bilingual content used by the UI and metadata
-├── lib/          # Shared helpers, including locale utilities
-└── styles/       # Global Tailwind CSS and custom animation styles
+├── app/          # Next.js App Router 页面与服务端 API
+├── components/   # 页面组件和交互组件
+├── config/       # 站点及语言配置
+├── data/         # 静态内容与展示数据
+├── lib/          # Prisma、鉴权、AI 与共享逻辑
+└── styles/       # Tailwind 与全局样式
+prisma/
+├── schema.prisma
+└── migrations/
 ```
 
-Key files:
+## 本地运行
 
-- `src/data/site.ts` stores static website copy, navigation labels, section content, and locale metadata.
-- `middleware.ts` detects browser language and redirects `/` to `/en` or `/zh` while preserving clean locale URLs.
-- `src/app/sitemap.ts` and `src/app/robots.ts` generate search-engine discovery files.
-- `.github/workflows/ci.yml` validates every push and pull request with lint and build checks.
-
-## Local Development
-
-Install dependencies:
-
-```bash
-npm install
-```
-
-Create local environment variables:
-
-```bash
-cp .env.example .env.local
-```
-
-Start the development server:
-
-```bash
-npm run dev
-```
-
-Open [http://localhost:3000](http://localhost:3000). The middleware redirects to the browser-preferred locale. You can also open [http://localhost:3000/en](http://localhost:3000/en) or [http://localhost:3000/zh](http://localhost:3000/zh) directly.
-
-Run quality checks before shipping changes:
-
-```bash
-npm run lint
-npm run build
-```
-
-## Vercel Deployment Guide
-
-1. Push this repository to GitHub.
-2. Import the project in [Vercel](https://vercel.com/new).
-3. Keep the default Next.js framework preset.
-4. Add `NEXT_PUBLIC_SITE_URL` in Vercel project environment variables, using the production domain.
-5. Deploy the project.
-6. After deployment, verify `/en`, `/zh`, `/sitemap.xml`, and `/robots.txt`.
-
-## CI/CD
-
-GitHub Actions runs on pushes to `main` and `feature/**` branches and on pull requests targeting `main`. The workflow uses Node.js 22, installs dependencies with `npm ci`, runs `npm run lint`, and runs `npm run build`.
-
-
-## V20 AI Minimal Experience
-
-V20 focuses the homepage on the shortest path from an idea to an AI-powered experience while preserving the complete DeepSeek creative workflow, AI Studio, community, V19 knowledge graph, SEO, internationalization, and Vercel deployment architecture on their dedicated routes.
-
-- **Minimal homepage:** a compact hero and three clear core destinations replace repeated introductions and feature grids.
-- **AI entry system:** the new `AIEntry` offers direct Learn, Create, and Explore paths in Chinese, English, and Japanese.
-- **Mobile optimization:** a thumb-friendly bottom navigation keeps Home, AI, Studio, Community, and Profile one tap away.
-- **Performance improvements:** the homepage is server-rendered, avoids Framer Motion and unnecessary client state, and ships without below-the-fold showcase sections.
-
-## V13 DeepSeek AI Creative Lab
-
-V13 upgrades `/create` from a single-output generator into a complete co-creation loop: category-led idea composition, a four-stage generation journey, safe structured results, full-result refinement, ten local versions, Markdown/JSON exports, feedback, and opt-in sharing. The experience supports Chinese, English, and Japanese without requiring sign-in.
-
-### Local development and DeepSeek
+要求：Node.js 22、npm，以及可访问的 PostgreSQL 数据库。
 
 ```bash
 npm install
 cp .env.example .env.local
-npm run dev
-```
-
-Configure `DEEPSEEK_API_KEY` only as a server environment variable. The default endpoint is `https://api.deepseek.com`, the default model is `deepseek-v4-flash`, and `DEEPSEEK_PREMIUM_MODEL` is used only for the explicit high-quality rebuild action. Never prefix the key with a public-browser environment prefix. `AI_DEMO_MODE=true` enables deterministic local/demo responses; development also falls back to a clearly labelled demo when no key is configured. Production without a key and without demo mode returns `CONFIGURATION_REQUIRED` while the rest of the site remains available. Existing `AI_API_URL`, `AI_API_KEY`, and `AI_MODEL` continue to power the legacy chat route.
-
-### Database and sharing
-
-Run `npx prisma generate` after installing dependencies. Review the generated V13 migration and deploy it to production only through a controlled process (`npx prisma migrate deploy`) against the intended database. Never connect an unknown database from a development or automation environment. Public sharing is opt-in, uses an unpredictable slug, and hashes the one-time anonymous owner token. When the database is unavailable the client creates a strictly sized, hash-only portable preview containing selected public work fields; generation and local versioning remain operational.
-
-### Privacy, safety, rate limits, and cost
-
-DeepSeek calls run exclusively through server routes. Keys, authorization headers, full prompts, full model output, session identifiers, and owner tokens are excluded from analytics and exports. Requests have input/body/context limits, timeouts, request-id deduplication, a bounded retry, and a configurable anonymous daily limit. The bundled in-memory limiter is a single-instance fallback; production should attach a distributed adapter before multi-region scale. Public creation is always an explicit user choice.
-
-### Testing and Vercel deployment
-
-```bash
-npm run typecheck
-npm run test
-npm run check-build
-npm run lint
-npm run build
-```
-
-In Vercel, configure `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`, optional `DEEPSEEK_PREMIUM_MODEL`, `AI_DEMO_MODE`, `CREATION_SHARE_SECRET`, `CREATIVE_DAILY_ANONYMOUS_LIMIT`, `DATABASE_URL`, and `NEXT_PUBLIC_SITE_URL`. Confirm values separately for Development, Preview, and Production, and redeploy after changes. Do not place a real key in source, logs, screenshots, README content, or pull requests. Confirm the controlled production migration, distributed rate limiting, and real load/security testing before broad rollout.
-# HelloTheWorld V20
-
-## AI 图片生成中心
-
-- `/create`：输入提示词并选择风格、画幅，调用服务端图片生成接口。
-- `/history`：查看保存在 PostgreSQL 中的生成记录。
-- `/api/generate-image`：先通过 Gemini 优化提示词，再通过 Google AI 生成图片。API Key 仅在服务端读取。
-
-### 本地运行
-
-```bash
-cp .env.example .env.local
-# 配置 DATABASE_URL、GOOGLE_AI_API_KEY，可按需修改两个 Gemini 模型变量
-npm install
 npx prisma migrate dev
 npm run dev
 ```
 
-### Vercel 部署
+打开 [http://localhost:3000](http://localhost:3000)。图片生成页位于
+[http://localhost:3000/create](http://localhost:3000/create)。
 
-在 Vercel 项目环境变量中配置 `DATABASE_URL`、`GOOGLE_AI_API_KEY` 和可选的
-`GOOGLE_AI_TEXT_MODEL`、`GOOGLE_AI_IMAGE_MODEL`。不要把密钥命名为
-`NEXT_PUBLIC_*`。首次发布及每次 schema
-更新后，使用生产数据库连接运行 `npx prisma migrate deploy`，随后正常执行
-`npm run build`。图片生成可能耗时较长，请为对应部署方案配置足够的函数执行时限。
+### 图片生成配置
+
+在 `.env.local` 中设置：
+
+```dotenv
+DATABASE_URL="postgresql://USER:PASSWORD@HOST:5432/DATABASE?schema=public"
+GOOGLE_AI_API_KEY="your-google-ai-api-key"
+GOOGLE_AI_TEXT_MODEL="gemini-2.5-flash"
+GOOGLE_AI_IMAGE_MODEL="gemini-2.5-flash-image"
+```
+
+`GOOGLE_AI_API_KEY` 只会由 `/api/generate-image` 服务端路由读取。不要使用
+`NEXT_PUBLIC_` 前缀，也不要将真实密钥提交到 Git。
+
+生成流程如下：
+
+1. 校验 `prompt`、`style` 和 `size`。
+2. 使用 `GOOGLE_AI_TEXT_MODEL` 扩展 Prompt，同时保留用户原始意图和约束。
+3. 使用 `GOOGLE_AI_IMAGE_MODEL` 按所选画幅生成图片。
+4. 将原始 Prompt、风格、尺寸、图片和创建时间写入 `GenerationTask`。
+5. 返回保持兼容的 `{ "imageUrl": "..." }` 响应。
+
+## 其他服务端配置
+
+完整变量及安全占位值请参考 [`.env.example`](./.env.example)。现有模块还可能使用：
+
+- `AUTH_SECRET`、`AUTH_GITHUB_ID`、`AUTH_GITHUB_SECRET`：登录与 GitHub OAuth。
+- `DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL`、`DEEPSEEK_MODEL`：Creative Lab 相关能力。
+- `AI_API_URL`、`AI_API_KEY`、`AI_MODEL`：旧版聊天接口。
+- `CREATION_SHARE_SECRET`：作品分享签名。
+- `UNSPLASH_ACCESS_KEY`、`PEXELS_API_KEY`：内容图片服务。
+
+所有密钥都必须保留在服务端环境变量中。
+
+## 数据库
+
+安装依赖后 `postinstall` 会生成 Prisma Client，也可以手动运行：
+
+```bash
+npx prisma generate
+```
+
+开发环境创建或应用迁移：
+
+```bash
+npx prisma migrate dev
+```
+
+生产环境只应用已经提交的迁移：
+
+```bash
+npx prisma migrate deploy
+```
+
+不要在 Vercel 构建过程中运行 `prisma migrate dev`，也不要让 Preview 部署误用生产数据库。
+
+## 质量检查
+
+提交代码前运行：
+
+```bash
+npm run lint
+npm run typecheck
+npm run test
+npm run build
+```
+
+`npm run check-build` 可用于运行项目附带的额外构建检查。
+
+## Vercel 部署
+
+1. 将仓库导入 Vercel，并保留 Next.js Framework Preset。
+2. 分别为 Development、Preview、Production 配置正确的 `DATABASE_URL`。
+3. 配置 `GOOGLE_AI_API_KEY`；如需覆盖默认模型，再配置两个模型变量。
+4. 根据启用的模块配置鉴权、DeepSeek 和第三方图片服务变量。
+5. 使用目标生产数据库执行一次 `npx prisma migrate deploy`。
+6. 以 `npm run build` 构建并部署。
+7. 部署后检查 `/create`、`/history`、`/api/generate-image`、语言页面以及数据库连接。
+
+图片生成路由声明了较长的执行时间，但最终上限取决于 Vercel 套餐和项目设置。
+如果生成量较大，建议将图片转存到 Vercel Blob 或对象存储，而不是长期把 Base64 图片保存在
+PostgreSQL 中。
+
+## 安全注意事项
+
+- 不要提交 `.env.local` 或任何真实 API Key。
+- 不要在浏览器代码、日志、截图、README 或 Pull Request 中粘贴密钥。
+- Prompt 和模型错误只记录必要信息，生产环境应配合速率限制和监控。
+- 在对外开放前验证数据库迁移、函数时限、Google AI 配额和实际生成成本。
