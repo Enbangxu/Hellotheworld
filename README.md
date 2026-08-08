@@ -118,19 +118,33 @@ npm run build
 ```
 
 In Vercel, configure `DEEPSEEK_API_KEY`, `DEEPSEEK_BASE_URL`, `DEEPSEEK_MODEL`, optional `DEEPSEEK_PREMIUM_MODEL`, `AI_DEMO_MODE`, `CREATION_SHARE_SECRET`, `CREATIVE_DAILY_ANONYMOUS_LIMIT`, `DATABASE_URL`, and `NEXT_PUBLIC_SITE_URL`. Confirm values separately for Development, Preview, and Production, and redeploy after changes. Do not place a real key in source, logs, screenshots, README content, or pull requests. Confirm the controlled production migration, distributed rate limiting, and real load/security testing before broad rollout.
-# HelloTheWorld V20
+# HelloTheWorld V21
 
-## AI 图片生成中心
+## Gemini AI Image Generation
 
-- `/create`：输入提示词并选择风格、画幅，调用服务端图片生成接口。
+V21 的 **AI Image Studio** 只使用 Google Gemini / Google AI 生成图片。`/create`
+接收创意、七种风格和三种画幅；服务端首先通过 Gemini 文本模型优化提示词，
+随后通过 Gemini 图片模型生成图片，并把原始提示词、优化提示词、图片与供应商信息保存到 PostgreSQL。
+
+- `/create`：Gemini AI Image Studio。
 - `/history`：查看保存在 PostgreSQL 中的生成记录。
-- `/api/generate-image`：仅在服务端读取 `OPENAI_API_KEY` 并请求 OpenAI。
+- `/api/generate-image`：Gemini-only 服务端 POST 接口，不向浏览器暴露密钥。
+
+所需服务端环境变量：
+
+```bash
+GOOGLE_AI_API_KEY="your-google-ai-key"
+GOOGLE_AI_TEXT_MODEL="gemini-2.5-flash"
+GOOGLE_AI_IMAGE_MODEL="gemini-2.5-flash-image"
+```
+
+`GOOGLE_AI_API_KEY` 必须保持为服务端变量，禁止添加 `NEXT_PUBLIC_` 前缀。
 
 ### 本地运行
 
 ```bash
 cp .env.example .env.local
-# 配置 DATABASE_URL、OPENAI_API_KEY，可按需修改 OPENAI_IMAGE_MODEL
+# 配置 DATABASE_URL 和上述三个 GOOGLE_AI_* 变量
 npm install
 npx prisma migrate dev
 npm run dev
@@ -138,7 +152,12 @@ npm run dev
 
 ### Vercel 部署
 
-在 Vercel 项目环境变量中配置 `DATABASE_URL`、`OPENAI_API_KEY` 和可选的
-`OPENAI_IMAGE_MODEL`。不要把密钥命名为 `NEXT_PUBLIC_*`。首次发布及每次 schema
-更新后，使用生产数据库连接运行 `npx prisma migrate deploy`，随后正常执行
-`npm run build`。图片生成可能耗时较长，请为对应部署方案配置足够的函数执行时限。
+1. 将仓库推送到 GitHub 并导入 Vercel，框架选择 Next.js。
+2. 在 Vercel 的 Development、Preview、Production 环境分别配置 `DATABASE_URL`、
+   `GOOGLE_AI_API_KEY`、`GOOGLE_AI_TEXT_MODEL` 和 `GOOGLE_AI_IMAGE_MODEL`。
+3. 使用生产数据库连接运行 `npx prisma migrate deploy`，不要在构建阶段执行开发迁移。
+4. 部署后访问 `/create` 完成一次生成，再通过 `/history` 检查持久化结果。
+
+生成 API 使用 Node.js runtime、300 秒最大执行时间、240 秒上游超时，并对单实例请求
+进行速率限制。生产环境如需跨实例的全局限流，应接入共享限流存储。Vercel 套餐还需支持
+相应的函数时长与响应大小；修改环境变量后请重新部署。

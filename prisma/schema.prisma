@@ -389,12 +389,14 @@ model KeywordExplanation {
 }
 
 model GenerationTask {
-  id        String   @id @default(cuid())
-  prompt    String
-  style     String
-  size      String
-  imageUrl  String
-  createdAt DateTime @default(now())
+  id             String   @id @default(cuid())
+  prompt         String
+  enhancedPrompt String
+  style          String
+  size           String
+  imageUrl       String
+  provider       String   @default("gemini")
+  createdAt      DateTime @default(now())
 
   @@index([createdAt])
 }
