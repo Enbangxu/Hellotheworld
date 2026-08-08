@@ -1,43 +1,94 @@
 import { NextResponse } from "next/server";
-import { enhancePrompt, isImageSize, isImageStyle, openAiSizes } from "@/src/lib/image-generation";
+import {
+  enhancePrompt,
+  GeminiRequestError,
+  googleAspectRatios,
+  isImageSize,
+  isImageStyle,
+} from "@/src/lib/image-generation";
 import { prisma } from "@/src/lib/prisma";
 
 export const runtime = "nodejs";
+export const maxDuration = 300;
+
+const WINDOW_MS = 60_000;
+const LIMIT = 5;
+const requests = new Map<string, { count: number; expiresAt: number }>();
+
+type GeminiImageResponse = {
+  candidates?: Array<{ content?: { parts?: Array<{ inlineData?: { data?: string; mimeType?: string } }> } }>;
+};
+
+function isRateLimited(request: Request) {
+  const address = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "anonymous";
+  const now = Date.now();
+  const entry = requests.get(address);
+  if (!entry || entry.expiresAt <= now) {
+    requests.set(address, { count: 1, expiresAt: now + WINDOW_MS });
+    return false;
+  }
+  entry.count += 1;
+  return entry.count > LIMIT;
+}
 
 export async function POST(request: Request) {
+  if (isRateLimited(request)) {
+    return NextResponse.json({ error: "请求过于频繁，请一分钟后再试。" }, { status: 429 });
+  }
+
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 240_000);
+
   try {
-    const body = await request.json() as { prompt?: unknown; style?: unknown; size?: unknown };
+    const body = (await request.json()) as { prompt?: unknown; style?: unknown; size?: unknown };
     const prompt = typeof body.prompt === "string" ? body.prompt.trim() : "";
     if (!prompt || prompt.length > 1500 || !isImageStyle(body.style) || !isImageSize(body.size)) {
       return NextResponse.json({ error: "请提供有效的描述、风格和图片尺寸。" }, { status: 400 });
     }
-    const apiKey = process.env.OPENAI_API_KEY;
-    if (!apiKey) return NextResponse.json({ error: "图片生成服务尚未配置，请联系管理员。" }, { status: 503 });
 
-    const controller = new AbortController();
-    const timer = setTimeout(() => controller.abort(), 120_000);
-    let response: Response;
-    try {
-      response = await fetch("https://api.openai.com/v1/images/generations", {
-        method: "POST", signal: controller.signal,
-        headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-        body: JSON.stringify({ model: process.env.OPENAI_IMAGE_MODEL || "dall-e-3", prompt: enhancePrompt(prompt, body.style, body.size), size: openAiSizes[body.size], quality: "standard", n: 1, response_format: "url" }),
-      });
-    } finally { clearTimeout(timer); }
-    if (!response.ok) {
-      const detail = await response.text();
-      console.error("OpenAI image generation failed", response.status, detail.slice(0, 500));
-      return NextResponse.json({ error: "这次生成没有成功，请调整描述后重试。" }, { status: response.status === 429 ? 429 : 502 });
+    const apiKey = process.env.GOOGLE_AI_API_KEY;
+    if (!apiKey) {
+      return NextResponse.json({ error: "Gemini 图片服务尚未配置，请联系管理员。" }, { status: 503 });
     }
-    const result = await response.json() as { data?: Array<{ url?: string; b64_json?: string }> };
-    const first = result.data?.[0];
-    const imageUrl = first?.url || (first?.b64_json ? `data:image/png;base64,${first.b64_json}` : "");
-    if (!imageUrl) throw new Error("Image provider returned no image");
-    await prisma.generationTask.create({ data: { prompt, style: body.style, size: body.size, imageUrl } });
+
+    const enhancedPrompt = await enhancePrompt(prompt, body.style, body.size, apiKey, controller.signal);
+    const model = process.env.GOOGLE_AI_IMAGE_MODEL || "gemini-2.5-flash-image";
+    const response = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+      {
+        method: "POST",
+        signal: controller.signal,
+        headers: { "Content-Type": "application/json", "x-goog-api-key": apiKey },
+        body: JSON.stringify({
+          contents: [{ role: "user", parts: [{ text: enhancedPrompt }] }],
+          generationConfig: {
+            responseModalities: ["IMAGE"],
+            imageConfig: { aspectRatio: googleAspectRatios[body.size] },
+          },
+        }),
+      },
+    );
+
+    if (!response.ok) throw new GeminiRequestError("Image generation failed", response.status);
+    const result = (await response.json()) as GeminiImageResponse;
+    const image = result.candidates?.[0]?.content?.parts?.find((part) => part.inlineData?.data)?.inlineData;
+    if (!image?.data) throw new GeminiRequestError("Image generation returned no image", 502);
+
+    const imageUrl = `data:${image.mimeType || "image/png"};base64,${image.data}`;
+    await prisma.generationTask.create({
+      data: { prompt, enhancedPrompt, style: body.style, size: body.size, imageUrl, provider: "gemini" },
+    });
     return NextResponse.json({ imageUrl });
   } catch (error) {
-    console.error("Image generation route error", error);
     const timedOut = error instanceof Error && error.name === "AbortError";
-    return NextResponse.json({ error: timedOut ? "生成超时了，请稍后重试。" : "服务暂时不可用，请稍后再试。" }, { status: timedOut ? 504 : 500 });
+    const providerStatus = error instanceof GeminiRequestError ? error.status : 0;
+    const rateLimited = providerStatus === 429;
+    console.error("Gemini image request failed", { timedOut, providerStatus });
+    return NextResponse.json(
+      { error: timedOut ? "生成超时了，请稍后重试。" : rateLimited ? "Gemini 服务繁忙，请稍后重试。" : "图片生成暂时不可用，请稍后再试。" },
+      { status: timedOut ? 504 : rateLimited ? 429 : 502 },
+    );
+  } finally {
+    clearTimeout(timer);
   }
 }
