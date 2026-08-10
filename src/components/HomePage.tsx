@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, Bot, ImageIcon, Sparkles, Users } from "lucide-react";
+import { ArrowRight, Bot, BookOpen, ImageIcon, Sparkles, Users } from "lucide-react";
 import type { Locale } from "@/src/config/site";
 import { AIEntry } from "@/src/components/AIEntry";
 import { MobileBottomNav } from "@/src/components/MobileBottomNav";
@@ -20,6 +20,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     { ...content.core[1], href: "/studio", icon: Sparkles },
     { ...content.core[2], href: `${prefix}/community`, icon: Users },
     { title: locale === "zh" ? "AI 图片生成" : locale === "ja" ? "AI画像生成" : "AI Image Creator", description: locale === "zh" ? "用文字创造你的专属视觉作品" : locale === "ja" ? "言葉からオリジナル画像を作成" : "Turn words into original visual art", href: "/create", icon: ImageIcon },
+    { title: locale === "zh" ? "初三 AI 学习" : locale === "ja" ? "中学3年 AI 学習" : "Grade 9 AI Learning", description: locale === "zh" ? "七科知识点，10 秒抓住核心" : locale === "ja" ? "7教科を10秒で理解" : "Seven subjects, ten-second essentials", href: `${prefix}/knowledge`, icon: BookOpen },
   ];
 
   return (
@@ -33,7 +34,7 @@ export function HomePage({ locale }: { locale: Locale }) {
         <Link href={`${prefix}/assistant`} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-bold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">{content.cta}<ArrowRight size={18} aria-hidden="true" /></Link>
       </section>
       <div className="relative mx-auto max-w-6xl px-5"><AIEntry locale={locale} /></div>
-      <section className="relative mx-auto grid max-w-6xl gap-3 px-5 py-10 sm:grid-cols-2 lg:grid-cols-4" aria-label="Core AI experiences">
+      <section className="relative mx-auto grid max-w-6xl gap-3 px-5 py-10 sm:grid-cols-2 lg:grid-cols-5" aria-label="Core AI experiences">
         {entries.map(({ title, description, href, icon: Icon }) => (
           <Link key={title} href={href} className="minimal-core-card">
             <Icon size={24} className="text-cyan-300" aria-hidden="true" />

@@ -1,0 +1,5 @@
+import Link from "next/link";
+import { subjects } from "@/src/data/grade9";
+import { localize } from "@/src/lib/grade9-curriculum";
+import type { Locale } from "@/src/config/site";
+export function SubjectGrid({ locale }: { locale: Locale }) { return <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{subjects.map((subject) => <Link key={subject.id} href={`/${locale}/knowledge/grade-9/${subject.slug}`} className="rounded-2xl border border-white/15 bg-slate-900 p-5 transition hover:-translate-y-1 hover:border-white/40 focus-visible:outline focus-visible:outline-2 focus-visible:outline-cyan-300" style={{ borderTopColor: subject.color }}><span className="text-2xl" aria-hidden="true">{subject.icon}</span><h2 className="mt-3 text-xl font-bold">{localize(subject.name, locale)}</h2><p className="mt-2 text-sm text-slate-300">{localize(subject.shortDescription, locale)}</p><p className="mt-4 text-xs text-slate-400">{subject.chapters.length} 章节 · {subject.chapters.flatMap((c) => c.topics).length} 知识点</p></Link>)}</div> }

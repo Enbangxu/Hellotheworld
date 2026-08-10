@@ -61,7 +61,7 @@ if (!/model\s+Creation\s*\{/.test(schema)) errors.push("Prisma Creation model is
 const env = fs.readFileSync(path.join(root, ".env.example"), "utf8");
 for (const name of ["DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "DEEPSEEK_MODEL"]) if (!env.includes(name)) errors.push(`.env.example is missing ${name}`);
 const home = fs.readFileSync(path.join(root, "src/components/HomePage.tsx"), "utf8");
-if (!home.includes("/create") || !home.includes("AI Creative Lab")) errors.push("Homepage V13 entry is missing");
+if (!home.includes("/create") || !home.includes("AI Studio")) errors.push("Homepage AI Studio entry is missing");
 
 if (errors.length) {
   console.error(`Build check failed with ${errors.length} error(s):\n${errors.map((error) => `  - ${error}`).join("\n")}`);
@@ -69,3 +69,5 @@ if (errors.length) {
 }
 
 console.log(`Build check passed: ${requiredFiles.length} required files and ${sourceFiles.length} source files verified.`);
+
+if (!home.includes("初三 AI 学习") || !fs.existsSync(path.join(root, "src/app/api/learning/tutor/route.ts"))) { console.error("V22 learning architecture is missing"); process.exit(1); }
