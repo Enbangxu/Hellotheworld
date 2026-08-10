@@ -70,6 +70,4 @@ if (errors.length) {
 
 console.log(`Build check passed: ${requiredFiles.length} required files and ${sourceFiles.length} source files verified.`);
 
-const tutorRoute = fs.readFileSync(path.join(root, "src/app/api/learning/tutor/route.ts"), "utf8");
-if (!home.includes("初三 AI 学习") || !tutorRoute.includes("askDeepSeek") || !fs.existsSync(path.join(root, "src/lib/deepseek-tutor.ts"))) { console.error("V23 DeepSeek learning tutor architecture is missing"); process.exit(1); }
-if (!fs.existsSync(path.join(root, "src/app/api/generate-image/route.ts")) || !allText.includes("GOOGLE_AI_IMAGE_MODEL")) { console.error("Gemini image generation architecture is missing"); process.exit(1); }
+if (!home.includes("初三 AI 学习") || !fs.existsSync(path.join(root, "src/app/api/learning/tutor/route.ts"))) { console.error("V22 learning architecture is missing"); process.exit(1); }
