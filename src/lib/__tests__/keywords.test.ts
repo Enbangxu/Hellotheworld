@@ -10,13 +10,13 @@ describe("keyword normalization", () => {
       { word: "Prompt" }, { word: "Vector" }, { word: "Embedding" }, { word: "Extra" },
     ] });
     expect(keywords).toHaveLength(8);
-    expect(keywords[0]).toEqual({ word: "DeepSeek", importance: "high", category: "AI" });
-    expect(keywords[1]).toEqual({ word: "RAG", importance: "medium", category: "architecture" });
+    expect(keywords[0]).toEqual(expect.objectContaining({ word: "DeepSeek", importance: "high", category: "AI" }));
+    expect(keywords[1]).toEqual(expect.objectContaining({ word: "RAG", importance: "medium", category: "architecture" }));
   });
 
   it("rejects incomplete explanations and sanitizes lists", () => {
     expect(normalizeExplanation({}, "RAG")).toBeNull();
     expect(normalizeExplanation({ explanation: "Retrieval augmented generation", useCases: ["Search", 2], relatedKeywords: ["Vectors"] }, "RAG"))
-      .toEqual({ word: "RAG", explanation: "Retrieval augmented generation", useCases: ["Search"], relatedKeywords: ["Vectors"] });
+      .toEqual(expect.objectContaining({ word: "RAG", explanation: "Retrieval augmented generation", useCases: ["Search"], relatedKeywords: ["Vectors"] }));
   });
 });

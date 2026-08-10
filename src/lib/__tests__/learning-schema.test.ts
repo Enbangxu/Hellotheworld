@@ -1,0 +1,2 @@
+import { describe,expect,it } from "vitest"; import { parseTutorRequest,parseTutorResponse } from "@/src/lib/learning-schema";
+describe("tutor schemas",()=>{it("rejects invalid input",()=>expect(parseTutorRequest({locale:"xx",topicId:"x",mode:"ask"})).toBeUndefined());it("validates output",()=>{expect(parseTutorResponse({answer:"a",steps:[],keyInsight:"k"})?.answer).toBe("a");expect(parseTutorResponse({answer:""})).toBeUndefined();});});
