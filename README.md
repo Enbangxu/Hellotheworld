@@ -1,3 +1,11 @@
+# V22 初三 AI 10 秒学习中心
+
+`/[locale]/knowledge` 提供中国大陆通用中考框架九年级上册学习中心，覆盖语文、数学、英语、物理、化学、道德与法治、历史。路由依次为 `/{zh|en|ja}/knowledge/grade-9`、学科页和知识点页。每个知识点包含原创 10 秒解释、类比、方法、易错点、即时检测、本地进度和 DeepSeek V4 Flash 导师。
+
+本地运行：`npm ci && npm run dev`。学习导师仅在服务端读取 `DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL` 与 `DEEPSEEK_MODEL`（默认 `deepseek-v4-flash`）；Gemini 继续只负责 AI 图片生成。Vercel Development、Preview、Production 均需配置 `DEEPSEEK_API_KEY`，修改后须重新部署。没有 DeepSeek Key 时静态 10 秒理解、检测和进度仍可用。
+
+课程标注“通用版”，并非教育部门官方产品；不同教材版本可能不同。内容是概念与方法的原创概括，不复制教材、教辅、试卷或受保护课文。当前为单实例内存限流，生产多实例应接共享限流（本 PR 不引入数据库）。
+
 # Hello the World
 
 Hello the World is a production-ready website foundation built with **Next.js 15**, **TypeScript**, **Tailwind CSS**, **Framer Motion**, and **Lucide React**. Version 3 upgrades the original landing page into a bilingual, SEO-ready, deployment-friendly site that can grow into a portfolio, product page, travel journal, or personal brand hub.
