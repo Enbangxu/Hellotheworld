@@ -28,7 +28,7 @@ export function HomePage({ locale }: { locale: Locale }) {
       <Navbar locale={locale} />
       <div className="minimal-glow" aria-hidden="true" />
       <section className="relative mx-auto flex max-w-6xl flex-col items-center px-5 pb-12 pt-32 text-center sm:pt-36">
-        <p className="text-xs font-bold uppercase tracking-[.28em] text-cyan-300">V20 · AI Minimal Experience</p>
+        <p className="text-xs font-bold uppercase tracking-[.28em] text-cyan-300">V23 · Adaptive Learning</p>
         <h1 className="mt-5 text-5xl font-black tracking-[-.055em] sm:text-7xl">Hello the World</h1>
         <p className="mt-5 text-lg text-slate-300 sm:text-xl">{content.subtitle}</p>
         <Link href={`${prefix}/assistant`} className="mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 font-bold text-slate-950 transition hover:bg-cyan-200 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-cyan-300">{content.cta}<ArrowRight size={18} aria-hidden="true" /></Link>
@@ -44,7 +44,7 @@ export function HomePage({ locale }: { locale: Locale }) {
           </Link>
         ))}
       </section>
-      <footer className="relative border-t border-white/10 px-5 py-6 text-center text-xs text-slate-500">Hello the World · V20 AI Minimal Experience</footer>
+      <footer className="relative border-t border-white/10 px-5 py-6 text-center text-xs text-slate-500">V23 · Adaptive Learning</footer>
       <MobileBottomNav locale={locale} />
     </main>
   );
