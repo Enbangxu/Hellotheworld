@@ -5,7 +5,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.resolve(__dirname, "..");
-const requiredFiles = ["src/app/layout.tsx", "src/app/[locale]/page.tsx", "src/components/ExploreCard.tsx", "src/components/VersionBadge.tsx", "src/data/siteContent.ts", "public/manifest.json", "src/app/create/page.tsx", "src/components/creative-lab/CreativeLab.tsx", "src/lib/deepseek.ts", "src/lib/creative-schema.ts", "src/app/api/creative-lab/generate/route.ts", "src/app/api/creative-lab/refine/route.ts", "public/images/og-v13.svg"];
+const requiredFiles = ["src/app/layout.tsx", "src/app/[locale]/page.tsx", "src/components/ExploreCard.tsx", "src/components/VersionBadge.tsx", "src/data/siteContent.ts", "public/manifest.json", "src/app/create/page.tsx", "src/components/creative-lab/CreativeLab.tsx", "src/lib/deepseek.ts", "src/lib/creative-schema.ts", "src/app/api/creative-lab/generate/route.ts", "src/app/api/creative-lab/refine/route.ts", "public/images/og-v13.svg", "src/lib/learning-progress.ts", "src/app/[locale]/knowledge/grade-9/progress/page.tsx", "src/components/learning/ProgressDashboard.tsx", "src/components/learning/LearningSearch.tsx", "src/lib/image-generation.ts", "src/app/api/generate-image/route.ts"];
 const extensions = ["", ".ts", ".tsx", ".js", ".jsx", ".json", "/index.ts", "/index.tsx", "/index.js", "/index.jsx"];
 const sourceFiles = [];
 const errors = [];
@@ -63,11 +63,19 @@ for (const name of ["DEEPSEEK_API_KEY", "DEEPSEEK_BASE_URL", "DEEPSEEK_MODEL"]) 
 const home = fs.readFileSync(path.join(root, "src/components/HomePage.tsx"), "utf8");
 if (!home.includes("/create") || !home.includes("AI Studio")) errors.push("Homepage AI Studio entry is missing");
 
+const tutorPanel = fs.readFileSync(path.join(root, "src/components/learning/TutorPanel.tsx"), "utf8");
+const tutorRoute = fs.readFileSync(path.join(root, "src/app/api/learning/tutor/route.ts"), "utf8");
+const learningFiles = sourceFiles.filter((file) => file.includes(`${path.sep}learning${path.sep}`)).map((file) => fs.readFileSync(file, "utf8")).join("\n");
+if (!home.includes("初三 AI 学习")) errors.push("Grade 9 learning homepage entry is missing");
+if (!home.includes("V23 · Adaptive Learning")) errors.push("Homepage V23 version label is missing");
+if (!tutorPanel.includes('fetch("/api/learning/tutor"')) errors.push("TutorPanel must use the canonical learning tutor API");
+if (!tutorRoute.includes('from "@/src/lib/deepseek-tutor"') || !tutorRoute.includes("askDeepSeek")) errors.push("Learning tutor route must use DeepSeek");
+if (learningFiles.includes("askGemini") || tutorRoute.includes("askGemini")) errors.push("Learning components and APIs must not use the Gemini tutor");
+if (fs.existsSync(path.join(root, "src/app/api/learning/deepseek-tutor/route.ts"))) errors.push("Duplicate DeepSeek tutor route must not exist");
+
 if (errors.length) {
   console.error(`Build check failed with ${errors.length} error(s):\n${errors.map((error) => `  - ${error}`).join("\n")}`);
   process.exit(1);
 }
 
 console.log(`Build check passed: ${requiredFiles.length} required files and ${sourceFiles.length} source files verified.`);
-
-if (!home.includes("初三 AI 学习") || !fs.existsSync(path.join(root, "src/app/api/learning/tutor/route.ts"))) { console.error("V22 learning architecture is missing"); process.exit(1); }

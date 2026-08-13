@@ -1,10 +1,13 @@
-# V22 初三 AI 10 秒学习中心
+# V23 · Adaptive Learning
 
-`/[locale]/knowledge` 提供中国大陆通用中考框架九年级上册学习中心，覆盖语文、数学、英语、物理、化学、道德与法治、历史。路由依次为 `/{zh|en|ja}/knowledge/grade-9`、学科页和知识点页。每个知识点包含原创 10 秒解释、类比、方法、易错点、即时检测、本地进度和 Gemini 导师。
+V23 在原有 V1–V22 功能之上增加初三 AI 自适应学习与智能复习中心。课程采用**通用中考课程框架**，内容是原创概括；本产品并非教育部门官方产品，也不宣称完整覆盖某一特定教材。
 
-本地运行：`npm ci && npm run dev`。导师仅在服务端读取 `GOOGLE_AI_API_KEY` 与 `GOOGLE_AI_TEXT_MODEL`（默认 `gemini-2.5-flash`）。Vercel Development、Preview、Production 均需配置，修改后须重新部署。没有 Key 时静态课程、检测和进度仍可用。
+- **DeepSeek** 负责初三 AI 学习导师，唯一接口为 `/api/learning/tutor`。导师仅在服务端读取 `DEEPSEEK_API_KEY`、`DEEPSEEK_BASE_URL` 和 `DEEPSEEK_MODEL`。
+- **Gemini** 继续负责 V21 AI 图片生成；`GOOGLE_AI_API_KEY`、`GOOGLE_AI_TEXT_MODEL` 和 `GOOGLE_AI_IMAGE_MODEL` 仅供图片生成及仍实际依赖 Gemini 的功能使用。
+- 学习进度默认保存在浏览器 `localStorage`，无需账户、数据库、迁移或新增环境变量。清理浏览器数据会删除本地学习进度。旧 `v22-grade9-progress` 会自动迁移至版本化的 V23 数据。
+- DeepSeek 未配置或暂不可用时，静态课程、即时检测、搜索和本地进度仍然可用。密钥不得使用 `NEXT_PUBLIC_` 前缀。
 
-课程标注“通用版”，并非教育部门官方产品；不同教材版本可能不同。内容是概念与方法的原创概括，不复制教材、教辅、试卷或受保护课文。当前为单实例内存限流，生产多实例应接共享限流（本 PR 不引入数据库）。
+复习计划根据答题表现安排：答错次日、首次答对 2 天、连续答对 2 次 4 天、3 次 7 天，之后扩展为 14 天和 30 天。部署到 Vercel **不要求新增环境变量**；如需启用导师，沿用已有服务端 `DEEPSEEK_*` 配置并重新部署。
 
 # Hello the World
 
@@ -84,7 +87,7 @@ npm run build
 GitHub Actions runs on pushes to `main` and `feature/**` branches and on pull requests targeting `main`. The workflow uses Node.js 22, installs dependencies with `npm ci`, runs `npm run lint`, and runs `npm run build`.
 
 
-## V20 AI Minimal Experience
+## V20 AI Minimal Experience（历史功能）
 
 V20 focuses the homepage on the shortest path from an idea to an AI-powered experience while preserving the complete DeepSeek creative workflow, AI Studio, community, V19 knowledge graph, SEO, internationalization, and Vercel deployment architecture on their dedicated routes.
 

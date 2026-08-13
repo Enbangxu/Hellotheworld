@@ -1,0 +1,12 @@
+import { describe, expect, it } from "vitest";
+import { calculateMastery, calculateStudyStreak, createEmptyProgress, getDueTopics, getSubjectProgress, getWeakTopics, migrateV22Progress, readLearningProgress, recordQuizAttempt, V23_PROGRESS_KEY } from "@/src/lib/learning-progress";
+const now = new Date("2026-08-13T10:00:00.000Z");
+describe("V23 learning progress", () => {
+  it("migrates V22 learned, recent and checks", () => { const value = migrateV22Progress({ learned: ["a"], recent: ["a", "b"], checks: { a: true, b: false } }, now); expect(value.version).toBe(23); expect(value.topics.a).toMatchObject({ attempts: 1, correctAttempts: 1 }); expect(value.topics.a.learnedAt).toBeTruthy(); expect(value.recentTopicIds).toEqual(["a", "b"]); });
+  it("falls back safely for corrupt storage", () => { const storage = { getItem: () => "{broken", setItem: () => undefined }; expect(readLearningProgress(storage)).toEqual(createEmptyProgress()); });
+  it("always clamps mastery", () => { expect(calculateMastery(1, 99, 99, true)).toBe(100); expect(calculateMastery(-1, -2, -2)).toBe(0); });
+  it("schedules incorrect and consecutive correct review intervals", () => { let value = recordQuizAttempt(createEmptyProgress(), "x", false, now); expect(value.topics.x.nextReviewAt).toBe("2026-08-14T10:00:00.000Z"); value = recordQuizAttempt(value, "x", true, now); expect(value.topics.x.nextReviewAt).toBe("2026-08-15T10:00:00.000Z"); value = recordQuizAttempt(value, "x", true, now); expect(value.topics.x.nextReviewAt).toBe("2026-08-17T10:00:00.000Z"); value = recordQuizAttempt(value, "x", true, now); expect(value.topics.x.nextReviewAt).toBe("2026-08-20T10:00:00.000Z"); });
+  it("calculates due, weak and subject statistics", () => { let value = recordQuizAttempt(createEmptyProgress(), "a", false, new Date("2026-08-10T10:00:00Z")); value = recordQuizAttempt(value, "b", true, now); expect(getDueTopics(value, now).map((x) => x.topicId)).toEqual(["a"]); expect(getWeakTopics(value)[0].topicId).toBe("a"); expect(getSubjectProgress(value, ["a", "b", "c"])).toMatchObject({ total: 3, learned: 0 }); });
+  it("uses local calendar dates for streaks", () => { expect(calculateStudyStreak(["2026-08-11", "2026-08-12", "2026-08-13"], now)).toBe(3); expect(calculateStudyStreak(["2026-08-11", "2026-08-12"], now)).toBe(2); });
+  it("uses the new storage key", () => expect(V23_PROGRESS_KEY).toContain("v23"));
+});
