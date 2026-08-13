@@ -20,7 +20,7 @@ export function HomePage({ locale }: { locale: Locale }) {
     { ...content.core[1], href: "/studio", icon: Sparkles },
     { ...content.core[2], href: `${prefix}/community`, icon: Users },
     { title: locale === "zh" ? "AI 图片生成" : locale === "ja" ? "AI画像生成" : "AI Image Creator", description: locale === "zh" ? "用文字创造你的专属视觉作品" : locale === "ja" ? "言葉からオリジナル画像を作成" : "Turn words into original visual art", href: "/create", icon: ImageIcon },
-    { title: locale === "zh" ? "初三 AI 学习" : locale === "ja" ? "中学3年 AI 学習" : "Grade 9 AI Learning", description: locale === "zh" ? "七科知识点，10 秒抓住核心" : locale === "ja" ? "7教科を10秒で理解" : "Seven subjects, ten-second essentials", href: `${prefix}/knowledge`, icon: BookOpen },
+    { title: locale === "zh" ? "初三 AI 学习" : locale === "ja" ? "中学3年 AI 学習" : "Grade 9 AI Learning", description: locale === "zh" ? "七科知识点，按章节系统学习" : locale === "ja" ? "7教科を体系的に学ぶ" : "Seven subjects with complete lessons", href: `${prefix}/knowledge`, icon: BookOpen },
   ];
 
   return (

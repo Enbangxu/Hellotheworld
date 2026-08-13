@@ -23,9 +23,12 @@ describe("DeepSeek grade 9 tutor", () => {
     expect(url).toBe("https://api.deepseek.com/chat/completions");
     expect(request.headers).toMatchObject({ Authorization: "Bearer server-test-key" });
     const body = JSON.parse(String(request.body));
-    expect(body).toMatchObject({ model: "deepseek-v4-flash", thinking: { type: "disabled" }, response_format: { type: "json_object" }, max_tokens: 1600, stream: false });
+    expect(body).toMatchObject({ model: "deepseek-v4-flash", thinking: { type: "disabled" }, response_format: { type: "json_object" }, max_tokens: 2400, stream: false });
     expect(body.messages[0].content).toContain("必须只输出一个 JSON 对象");
     expect(body.messages[0].content).toContain('"keyInsight"');
+    const userPayload = JSON.parse(body.messages.at(-1).content);
+    expect(userPayload.context).toMatchObject({ sections: expect.any(Array), workedExamples: expect.any(Array), commonMistakes: expect.any(Array) });
+    expect(userPayload.context.sections).toHaveLength(topic.sections.length);
   });
 
   it("parses Markdown JSON fences", async () => {
