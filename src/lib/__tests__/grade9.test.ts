@@ -1,37 +1,142 @@
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { subjects } from "@/src/data/grade9";
-import { allTopics, getSubject, getTopic, getTopicBySlug } from "@/src/lib/grade9-curriculum";
+import {
+  allTopics,
+  getSubject,
+  getTopic,
+  getTopicBySlug,
+} from "@/src/lib/grade9-curriculum";
 
-const forbidden = ["条件是起点，规则是路线，结论是终点", "先读清对象、条件与问题", "用定义、规律或证据建立联系", "回到题目检验结论", "圈出关键词和已知条件", "匹配对应概念或公式", "写出结论并检查", "待补充", "TODO", "示例内容", "Lorem ipsum"];
-const body = (topic: ReturnType<typeof allTopics>[number]["topic"]) => JSON.stringify({ introduction: topic.introduction.zh, sections: topic.sections.map((section) => section.paragraphs.map((p) => p.zh)), examples: topic.workedExamples.map((example) => example.problem.zh) });
+const compact = (value: string) => value.replace(/[\s，。；：、“”‘’（）]/g, "");
+const quickText = (topic: ReturnType<typeof allTopics>[number]["topic"]) => {
+  const q = topic.quickLesson;
+  return [
+    q.meaning.zh,
+    q.plainExplanation.zh,
+    q.microExample.setup.zh,
+    q.microExample.thinking.zh,
+    q.microExample.result.zh,
+    q.useWhen.zh,
+    q.memoryLine.zh,
+  ].join("|");
+};
+const topic = (id: string) => {
+  const value = getTopic(id);
+  if (!value) throw new Error(`missing topic ${id}`);
+  return value;
+};
 
-describe("grade 9 complete curriculum", () => {
-  it("keeps all seven subjects and all 83 pre-existing topics", () => {
-    expect(subjects.map((subject) => subject.slug)).toEqual(["chinese", "mathematics", "english", "physics", "chemistry", "morality-law", "history"]);
+describe("grade 9 30-second curriculum", () => {
+  it("keeps all seven subjects and all 83 topic identities", () => {
+    expect(subjects.map((subject) => subject.slug)).toEqual([
+      "chinese",
+      "mathematics",
+      "english",
+      "physics",
+      "chemistry",
+      "morality-law",
+      "history",
+    ]);
     expect(allTopics()).toHaveLength(83);
-  });
-  it("has unique and connected ids and slugs", () => {
-    const ids: string[] = [], slugs: string[] = [];
-    for (const subject of subjects) for (const chapter of subject.chapters) for (const topic of chapter.topics) {
-      ids.push(topic.id); slugs.push(`${subject.slug}/${topic.slug}`);
+    const ids = allTopics().map(({ topic }) => topic.id);
+    expect(new Set(ids).size).toBe(83);
+    for (const { subject, topic } of allTopics()) {
+      expect(getTopicBySlug(subject.slug, topic.slug)?.id).toBe(topic.id);
       expect(topic.relatedTopicIds.every((id) => getTopic(id))).toBe(true);
     }
-    expect(new Set(ids).size).toBe(ids.length); expect(new Set(slugs).size).toBe(slugs.length);
   });
-  it("requires substantial structured lessons rather than a shared short template", () => {
-    const bodies = new Set<string>();
+
+  it("gives every topic a complete, concise and unique quick lesson", () => {
+    const lessons = new Set<string>();
+    const forbidden = [
+      "条件是起点",
+      "规则是路线",
+      "结论是终点",
+      "先读清对象、条件与问题",
+      "圈出关键词和已知条件",
+      "匹配对应概念或公式",
+      "待补充",
+      "TODO",
+      "Lorem ipsum",
+    ];
     for (const { topic } of allTopics()) {
-      expect(topic.introduction.zh.length).toBeGreaterThanOrEqual(100);
-      expect(topic.sections.length).toBeGreaterThanOrEqual(3);
-      topic.sections.forEach((section) => { expect(section.paragraphs.length).toBeGreaterThan(0); section.paragraphs.forEach((paragraph) => expect(paragraph.zh.length).toBeGreaterThan(30)); });
-      expect(topic.workedExamples.length).toBeGreaterThanOrEqual(1);
-      topic.workedExamples.forEach((example) => { expect(example.problem.zh.length).toBeGreaterThan(20); expect(example.steps.length).toBeGreaterThanOrEqual(3); expect(example.answer.zh).toBeTruthy(); expect(example.explanation.zh).toBeTruthy(); });
-      expect(topic.commonMistakes.length).toBeGreaterThanOrEqual(2);
-      topic.commonMistakes.forEach((mistake) => { expect(mistake.mistake.zh).toBeTruthy(); expect(mistake.whyWrong.zh).toBeTruthy(); expect(mistake.correction.zh).toBeTruthy(); });
-      expect(topic.quickCheck.options.some((option) => option.zh === topic.quickCheck.answer.zh)).toBe(true);
-      const content = body(topic); forbidden.forEach((phrase) => expect(content).not.toContain(phrase)); bodies.add(content);
+      const q = topic.quickLesson;
+      const fields = [
+        q.meaning.zh,
+        q.plainExplanation.zh,
+        q.microExample.setup.zh,
+        q.microExample.thinking.zh,
+        q.microExample.result.zh,
+        q.useWhen.zh,
+        q.memoryLine.zh,
+      ];
+      fields.forEach((field) => expect(field.trim()).not.toBe(""));
+      expect(compact(q.meaning.zh).length).toBeLessThanOrEqual(55);
+      expect(compact(q.plainExplanation.zh).length).toBeLessThanOrEqual(90);
+      expect(
+        compact(
+          q.microExample.setup.zh +
+            q.microExample.thinking.zh +
+            q.microExample.result.zh,
+        ).length,
+      ).toBeLessThanOrEqual(120);
+      expect(compact(q.useWhen.zh).length).toBeLessThanOrEqual(45);
+      expect(compact(q.memoryLine.zh).length).toBeLessThanOrEqual(45);
+      const content = quickText(topic);
+      forbidden.forEach((phrase) => expect(content).not.toContain(phrase));
+      lessons.add(content);
+      expect(
+        topic.quickCheck.options.some(
+          (option) => option.zh === topic.quickCheck.answer.zh,
+        ),
+      ).toBe(true);
     }
-    expect(bodies.size).toBe(allTopics().length);
+    expect(lessons.size).toBe(83);
   });
-  it("looks up entries", () => { const first = allTopics()[0]; expect(getSubject(first.subject.slug)?.id).toBe(first.subject.id); expect(getTopicBySlug(first.subject.slug, first.topic.slug)?.id).toBe(first.topic.id); });
+
+  it("retains formulas and correct definitions in regression topics", () => {
+    expect(quickText(topic("chinese.argument.argument-structure"))).toMatch(
+      /论点.*论据.*论证/,
+    );
+    expect(quickText(topic("mathematics.quadratic-equations.vieta"))).toMatch(
+      /-b\/a.*c\/a/,
+    );
+    expect(quickText(topic("mathematics.quadratic-functions.graph"))).toMatch(
+      /y=ax²\+bx\+c.*x=-b\/2a/,
+    );
+    expect(quickText(topic("physics.ohms-law.ohm"))).toMatch(/I=U\/R.*V.*Ω.*A/);
+    expect(quickText(topic("chemistry.equations.balancing"))).toMatch(
+      /原子.*2H₂ \+ O₂ = 2H₂O/,
+    );
+    expect(quickText(topic("english.grammar.passive-voice"))).toMatch(
+      /be \+ 过去分词.*Tea is grown/,
+    );
+    expect(quickText(topic("history.capitalism.american-french"))).toMatch(
+      /独立战争.*法国大革命.*自由平等/,
+    );
+  });
+
+  it("renders the complete lesson collapsed and wires simplify mode", () => {
+    const lesson = readFileSync(
+      "src/components/learning/CompleteLesson.tsx",
+      "utf8",
+    );
+    const tutor = readFileSync(
+      "src/components/learning/TutorPanel.tsx",
+      "utf8",
+    );
+    expect(lesson).toContain("<details");
+    expect(lesson).toContain("展开完整讲解（约 5 分钟）");
+    expect(lesson).not.toMatch(/<details[^>]*\sopen/);
+    expect(lesson.indexOf("<QuickCheck")).toBeLessThan(
+      lesson.indexOf("<details"),
+    );
+    expect(tutor).toContain('run("simplify"');
+    expect(tutor).toContain("简单解释");
+    expect(tutor).toContain("最关键的一句话");
+  });
+
+  it("looks up subjects", () =>
+    expect(getSubject("mathematics")?.id).toBe("mathematics"));
 });
