@@ -87,8 +87,10 @@ const copy = {
 export function TutorPanel({
   topicId,
   locale,
+  microLessonId,
 }: {
   topicId: string;
+  microLessonId?: string;
   locale: Locale;
 }) {
   const content = copy[locale];
@@ -121,6 +123,7 @@ export function TutorPanel({
         body: JSON.stringify({
           locale,
           topicId,
+          microLessonId,
           mode,
           question: text,
           userAnswer: mode === "diagnose" ? text : undefined,
@@ -157,7 +160,7 @@ export function TutorPanel({
   useEffect(() => {
     const simplify = (event: Event) => {
       if (
-        (event as CustomEvent<{ topicId: string }>).detail?.topicId === topicId
+        (event as CustomEvent<{ topicId: string; microLessonId?: string }>).detail?.topicId === topicId
       )
         void run("simplify", "我还没懂，请换一个具体例子解释");
     };

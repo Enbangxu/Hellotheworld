@@ -7,15 +7,12 @@ import type { Locale } from "@/src/config/site";
 
 export type SearchResult = { topicId: string; href: string; title: string; subject: string; chapter: string };
 export function searchLearningTopics(data: Subject[], query: string, subjectFilter: string, locale: Locale): SearchResult[] {
-  const needle = query.trim().toLocaleLowerCase(); const results: SearchResult[] = [];
-  for (const subject of data) {
-    if (subjectFilter && subject.id !== subjectFilter) continue;
-    for (const chapter of subject.chapters) for (const topic of chapter.topics) {
-      const haystack = [subject.name.zh, subject.name.en, subject.name.ja, chapter.title.zh, chapter.title.en, chapter.title.ja, topic.title.zh, topic.title.en, topic.title.ja, ...topic.keywords].join(" ").toLocaleLowerCase();
-      if (!needle || haystack.includes(needle)) results.push({ topicId: topic.id, href: `${subject.slug}/${topic.slug}`, title: localize(topic.title, locale), subject: localize(subject.name, locale), chapter: localize(chapter.title, locale) });
-    }
-  }
-  return results;
+  const needle=query.trim().toLocaleLowerCase(),results:SearchResult[]=[];
+  for(const subject of data){if(subjectFilter&&subject.id!==subjectFilter)continue;for(const chapter of subject.chapters)for(const topic of chapter.topics){
+    const parent=[...Object.values(subject.name),...Object.values(chapter.title),...Object.values(topic.title),...topic.keywords].join(" ").toLocaleLowerCase();
+    if(!needle||parent.includes(needle))results.push({topicId:topic.id,href:`${subject.slug}/${topic.slug}`,title:localize(topic.title,locale),subject:localize(subject.name,locale),chapter:localize(chapter.title,locale)});
+    for(const micro of topic.microLessons){const text=[...Object.values(micro.title),...micro.keywords].join(" ").toLocaleLowerCase();if(needle&&text.includes(needle))results.push({topicId:micro.id,href:`${subject.slug}/${topic.slug}/${micro.slug}`,title:localize(micro.title,locale),subject:localize(subject.name,locale),chapter:localize(chapter.title,locale)});}
+  }}return results;
 }
 const labels = { zh: { search: "搜索标题、关键词、章节或学科", all: "全部学科", results: "搜索结果", none: "没有找到匹配的知识点，请换个关键词。" }, en: { search: "Search titles, keywords, chapters or subjects", all: "All subjects", results: "Results", none: "No matching topics. Try another keyword." }, ja: { search: "タイトル、キーワード、章、教科を検索", all: "すべての教科", results: "検索結果", none: "該当する知識点がありません。" } };
 export function LearningSearch({ locale }: { locale: Locale }) {

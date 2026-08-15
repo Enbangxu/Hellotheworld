@@ -17,6 +17,20 @@ export type QuickCheck = {
   answer: LocalizedText;
   explanation: LocalizedText;
 };
+export type MicroLesson = {
+  id: string;
+  slug: string;
+  order: number;
+  title: LocalizedText;
+  objective: LocalizedText;
+  oneSentence: LocalizedText;
+  plainExplanation: LocalizedText;
+  microExample: { setup: LocalizedText; thinking: LocalizedText; result: LocalizedText };
+  memoryLine: LocalizedText;
+  quickCheck: QuickCheck;
+  prerequisiteMicroLessonIds: string[];
+  keywords: string[];
+};
 export type LessonSection = {
   id: string;
   title: LocalizedText;
@@ -53,6 +67,7 @@ export type Topic = {
   quickCheck: QuickCheck;
   relatedTopicIds: string[];
   keywords: string[];
+  microLessons: MicroLesson[];
 };
 export type Chapter = {
   id: string;
