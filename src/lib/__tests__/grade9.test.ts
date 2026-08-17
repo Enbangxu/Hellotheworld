@@ -7,6 +7,7 @@ import {
   getTopic,
   getTopicBySlug,
 } from "@/src/lib/grade9-curriculum";
+import { getTwentySecondLesson } from "@/src/lib/twenty-second-lesson";
 
 const compact = (value: string) => value.replace(/[\s，。；：、“”‘’（）]/g, "");
 const quickText = (topic: ReturnType<typeof allTopics>[number]["topic"]) => {
@@ -27,7 +28,7 @@ const topic = (id: string) => {
   return value;
 };
 
-describe("grade 9 30-second curriculum", () => {
+describe("grade 9 20-second curriculum", () => {
   it("keeps all seven subjects and all 83 topic identities", () => {
     expect(subjects.map((subject) => subject.slug)).toEqual([
       "chinese",
@@ -117,7 +118,30 @@ describe("grade 9 30-second curriculum", () => {
     );
   });
 
-  it("renders the complete lesson collapsed and wires simplify mode", () => {
+  it("keeps every localized required lesson within the 36/28/28 limits", () => {
+    for (const { topic } of allTopics()) {
+      for (const locale of ["zh", "en", "ja"] as const) {
+        const lesson = getTwentySecondLesson(topic, locale);
+        expect(Array.from(lesson.core).length).toBeLessThanOrEqual(36);
+        expect(Array.from(lesson.setup).length).toBeLessThanOrEqual(28);
+        expect(Array.from(lesson.result).length).toBeLessThanOrEqual(28);
+        expect(Array.from(lesson.core + lesson.setup + lesson.result).length).toBeLessThanOrEqual(92);
+        expect(lesson.core.trim()).not.toBe("");
+        expect(lesson.setup.trim()).not.toBe("");
+        expect(lesson.result.trim()).not.toBe("");
+      }
+    }
+  });
+
+  it("renders the concise main flow and three collapsed optional tools", () => {
+    const route = readFileSync(
+      "src/components/learning/TopicLearningRoute.tsx",
+      "utf8",
+    );
+    const page = readFileSync(
+      "src/app/[locale]/knowledge/grade-9/[subject]/[topic]/page.tsx",
+      "utf8",
+    );
     const lesson = readFileSync(
       "src/components/learning/CompleteLesson.tsx",
       "utf8",
@@ -126,12 +150,24 @@ describe("grade 9 30-second curriculum", () => {
       "src/components/learning/TutorPanel.tsx",
       "utf8",
     );
-    expect(lesson).toContain("<details");
-    expect(lesson).toContain("展开完整讲解（约 5 分钟）");
-    expect(lesson).not.toMatch(/<details[^>]*\sopen/);
-    expect(lesson.indexOf("<QuickCheck")).toBeLessThan(
-      lesson.indexOf("<details"),
+    ["20 秒核心", "只看一句话和一个关系", "先记这一句", "一眼看懂"].forEach(
+      (text) => expect(route).toContain(text),
     );
+    expect(page).toContain("知识链");
+    expect(page).toContain("它不是孤立的一页");
+    expect(route).not.toContain("从第1步开始");
+    expect(route).not.toContain("microLessons.map");
+    expect(page).not.toContain("从第1步开始");
+    expect(page.match(/<details/g)).toHaveLength(3);
+    expect(page).not.toMatch(/<details[^>]*\sopen/);
+    ["可选：用1道题确认是否理解", "可选：问AI导师", "可选：展开完整讲解"].forEach(
+      (text) => expect(page).toContain(text),
+    );
+    expect(page).toContain("<QuickCheck");
+    expect(page).toContain("<TutorPanel");
+    expect(lesson).not.toContain("30 秒弄懂");
+    expect(lesson).not.toContain("<QuickCheck");
+    expect(lesson).not.toContain("<LearningProgress");
     expect(tutor).toContain('run("simplify"');
     expect(tutor).toContain("简单解释");
     expect(tutor).toContain("最关键的一句话");
