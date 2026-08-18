@@ -1,5 +1,5 @@
 import type { Subject } from "./types";
-import { buildMicroLessons } from "./micro-lessons";
+import { instantLessons } from "./instant-lessons";
 
 const legacySubjects = [
   {
@@ -23399,11 +23399,14 @@ const legacySubjects = [
   }
 ] as unknown as Subject[];
 
-/** Adds the V24 micro-course layer without changing any legacy topic identity. */
+/** Attaches concise lessons without changing any public topic identity. */
 export const subjects: Subject[] = legacySubjects.map((subject) => ({
   ...subject,
   chapters: subject.chapters.map((chapter) => ({
     ...chapter,
-    topics: chapter.topics.map((topic) => ({ ...topic, microLessons: buildMicroLessons(topic) })),
+    topics: chapter.topics.map((topic) => ({
+      ...topic,
+      instantLesson: instantLessons[topic.id],
+    })),
   })),
 }));

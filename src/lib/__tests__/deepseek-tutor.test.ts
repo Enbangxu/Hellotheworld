@@ -5,7 +5,7 @@ import { allTopics } from "@/src/lib/grade9-curriculum";
 const input = { locale: "zh" as const, topicId: "x", mode: "ask" as const };
 const topic = allTopics()[0].topic;
 const completion = (content: string | null) => new Response(JSON.stringify({ choices: [{ message: { content } }] }), { status: 200 });
-const valid = JSON.stringify({ answer: "结论", steps: ["一步"], keyInsight: "关键" });
+const valid = JSON.stringify({ answer: "结论", example: "例子" });
 
 afterEach(() => { delete process.env.DEEPSEEK_API_KEY; delete process.env.DEEPSEEK_BASE_URL; delete process.env.DEEPSEEK_MODEL; vi.restoreAllMocks(); });
 
@@ -23,12 +23,11 @@ describe("DeepSeek grade 9 tutor", () => {
     expect(url).toBe("https://api.deepseek.com/chat/completions");
     expect(request.headers).toMatchObject({ Authorization: "Bearer server-test-key" });
     const body = JSON.parse(String(request.body));
-    expect(body).toMatchObject({ model: "deepseek-v4-flash", thinking: { type: "disabled" }, response_format: { type: "json_object" }, max_tokens: 2400, stream: false });
-    expect(body.messages[0].content).toContain("必须只输出一个 JSON 对象");
-    expect(body.messages[0].content).toContain('"keyInsight"');
+    expect(body).toMatchObject({ model: "deepseek-v4-flash", thinking: { type: "disabled" }, response_format: { type: "json_object" }, max_tokens: 700, stream: false });
+    expect(body.messages[0].content).toContain("只输出JSON对象");
+    expect(body.messages[0].content).not.toContain('"steps"');
     const userPayload = JSON.parse(body.messages.at(-1).content);
-    expect(userPayload.context).toMatchObject({ sections: expect.any(Array), workedExamples: expect.any(Array), commonMistakes: expect.any(Array) });
-    expect(userPayload.context.sections).toHaveLength(topic.sections.length);
+    expect(userPayload.context).toMatchObject({ plainMeaning: expect.any(String), concreteExample: expect.any(String) });
   });
 
   it("parses Markdown JSON fences", async () => {
@@ -36,7 +35,7 @@ describe("DeepSeek grade 9 tutor", () => {
     await expect(askDeepSeek(input, topic, vi.fn().mockResolvedValue(completion(`\`\`\`json\n${valid}\n\`\`\``)))).resolves.toMatchObject({ answer: "结论" });
   });
 
-  it.each([[null], ["not json"], [JSON.stringify({ answer: "missing fields" })]])("returns INVALID_OUTPUT for empty or invalid output", async (content) => {
+  it.each([[null], ["not json"], [JSON.stringify({ example: "missing answer" })]])("returns INVALID_OUTPUT for empty or invalid output", async (content) => {
     process.env.DEEPSEEK_API_KEY = "test";
     await expect(askDeepSeek(input, topic, vi.fn().mockResolvedValue(completion(content)))).rejects.toMatchObject({ code: "INVALID_OUTPUT", status: 502 });
   });

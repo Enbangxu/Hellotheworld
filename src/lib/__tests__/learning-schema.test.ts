@@ -8,5 +8,5 @@ describe("tutor schemas", () => {
     expect(parseTutorRequest({ locale: "zh", topicId: "x", mode: "ask", history: Array(9).fill({ role: "user", text: "x" }) })).toBeUndefined();
   });
   it("accepts no more than eight safe history messages", () => expect(parseTutorRequest({ locale: "zh", topicId: "x", mode: "ask", history: Array(8).fill({ role: "model", text: "x" }) })?.history).toHaveLength(8));
-  it("validates output", () => { expect(parseTutorResponse({ answer: "a", steps: [], keyInsight: "k" })?.answer).toBe("a"); expect(parseTutorResponse({ answer: "" })).toBeUndefined(); });
+  it("validates output", () => { expect(parseTutorResponse({ answer: "a", example: "e" })?.answer).toBe("a"); expect(parseTutorResponse({ answer: "" })).toBeUndefined(); });
 });
