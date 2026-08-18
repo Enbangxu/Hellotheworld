@@ -1,5 +1,11 @@
 export type LearningLocale = "zh" | "en" | "ja";
 export type LocalizedText = Record<LearningLocale, string>;
+export type InstantLesson = {
+  plainMeaning: LocalizedText;
+  concreteExample: LocalizedText;
+  essentialFormula?: string;
+  formulaExplanation?: LocalizedText;
+};
 export type QuickLesson = {
   meaning: LocalizedText;
   plainExplanation: LocalizedText;
@@ -16,20 +22,6 @@ export type QuickCheck = {
   options: LocalizedText[];
   answer: LocalizedText;
   explanation: LocalizedText;
-};
-export type MicroLesson = {
-  id: string;
-  slug: string;
-  order: number;
-  title: LocalizedText;
-  objective: LocalizedText;
-  oneSentence: LocalizedText;
-  plainExplanation: LocalizedText;
-  microExample: { setup: LocalizedText; thinking: LocalizedText; result: LocalizedText };
-  memoryLine: LocalizedText;
-  quickCheck: QuickCheck;
-  prerequisiteMicroLessonIds: string[];
-  keywords: string[];
 };
 export type LessonSection = {
   id: string;
@@ -55,6 +47,7 @@ export type Topic = {
   slug: string;
   title: LocalizedText;
   chapterId: string;
+  instantLesson: InstantLesson;
   quickLesson: QuickLesson;
   learningObjective: LocalizedText;
   prerequisites: LocalizedText[];
@@ -67,7 +60,6 @@ export type Topic = {
   quickCheck: QuickCheck;
   relatedTopicIds: string[];
   keywords: string[];
-  microLessons: MicroLesson[];
 };
 export type Chapter = {
   id: string;
