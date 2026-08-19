@@ -3,7 +3,7 @@ import type { InstantLesson } from "./types";
 const same = (text: string) => ({ zh: text, en: text, ja: text });
 
 /** 83 个知识点各自独立的一眼看懂内容；键与公开 topic id 一一对应。 */
-export const instantLessons: Record<string, InstantLesson> = {
+const lessonContent: Record<string, Omit<InstantLesson, "memoryAnchor" | "recallPrompt">> = {
   "chinese.argument.argument-structure": {
     plainMeaning: same("论点是作者主张，论据是支撑主张的材料，论证是用材料说服读者的过程"),
     concreteExample: same("“坚持阅读能拓宽眼界，因为书能带我们接触不同人生。”；论点：阅读拓宽眼界；论据：书呈现不同人生"),
@@ -351,3 +351,104 @@ export const instantLessons: Record<string, InstantLesson> = {
     concreteExample: same("一名工厂主日记称“工人生活良好”；只能证明该工厂主如此表述，不能直接代表所有工人"),
   },
 };
+
+type MemoryContent = { memoryAnchor: string; recallPrompt: string };
+
+/** 每条钩子都压缩真实知识，每个问题只唤醒一个核心关系。 */
+const memoryContent: Record<string, MemoryContent> = {
+  "chinese.argument.argument-structure": { memoryAnchor: "论点说什么，论据凭什么，论证怎么证", recallPrompt: "论点、论据和论证各起什么作用？" },
+  "chinese.argument.argument-methods": { memoryAnchor: "举例摆事实，道理讲依据，对比显差异", recallPrompt: "常见论证方法怎样增强说服力？" },
+  "chinese.fiction.character": { memoryAnchor: "看言行心理，也看旁人评价", recallPrompt: "分析人物形象要从哪些描写找依据？" },
+  "chinese.fiction.plot-environment": { memoryAnchor: "情节写事变，环境定时地与背景", recallPrompt: "环境描写怎样影响情节和人物？" },
+  "chinese.classics.poetry": { memoryAnchor: "景物带情成意象，意象相融成意境", recallPrompt: "意象怎样共同营造意境并传情？" },
+  "chinese.classics.classical-chinese": { memoryAnchor: "实词随语境，句式要落实，省略需补全", recallPrompt: "准确翻译文言句子要注意哪三点？" },
+  "chinese.literacy.masterpieces": { memoryAnchor: "人物连情节，情节见主题", recallPrompt: "回答名著题应怎样用情节说明人物？" },
+  "chinese.literacy.language-use": { memoryAnchor: "留主体事件结果，删修饰次节", recallPrompt: "概括语段时哪些信息必须保留？" },
+  "chinese.writing.structure": { memoryAnchor: "审题定边界，立意定中心，结构排材料", recallPrompt: "审题、立意、结构分别解决什么问题？" },
+  "chinese.writing.evidence": { memoryAnchor: "选材扣中心，细节显真情，修改求准确", recallPrompt: "怎样让写作材料具体又紧扣中心？" },
+  "mathematics.quadratic-equations.roots": { memoryAnchor: "一元最高二次，标准式中a不为零", recallPrompt: "一元二次方程的一般式和关键条件是什么？" },
+  "mathematics.quadratic-equations.discriminant": { memoryAnchor: "德尔塔看根数，正二零一负无实根", recallPrompt: "Δ的正、零、负分别对应几个实根？" },
+  "mathematics.quadratic-equations.vieta": { memoryAnchor: "和看−b/a，积看c/a", recallPrompt: "两根的和与积分别怎样用a、b、c表示？" },
+  "mathematics.quadratic-functions.graph": { memoryAnchor: "二次图像抛物线，轴在−b/2a", recallPrompt: "二次函数图像的对称轴怎样表示？" },
+  "mathematics.quadratic-functions.transform": { memoryAnchor: "顶点式看坐标，括号反号外面同号", recallPrompt: "y=a(x−h)²+k的顶点在哪里？" },
+  "mathematics.rotation.rotation-properties": { memoryAnchor: "绕心同角转，中心距离不改变", recallPrompt: "旋转前后对应点保持哪两个关系？" },
+  "mathematics.rotation.central-symmetry": { memoryAnchor: "绕一点转半周，重合就是中心对称", recallPrompt: "怎样用180°旋转判断中心对称？" },
+  "mathematics.circle.circle-basics": { memoryAnchor: "到圆心等距成圆，定长就是半径", recallPrompt: "圆上的点与圆心保持什么关系？" },
+  "mathematics.circle.angles": { memoryAnchor: "同弧圆周角相等，都是圆心角一半", recallPrompt: "同弧的圆周角与圆心角有什么关系？" },
+  "mathematics.circle.tangent": { memoryAnchor: "半径外端作垂线，这条直线是切线", recallPrompt: "怎样由半径和垂直关系判定切线？" },
+  "mathematics.probability.random-event": { memoryAnchor: "随机可发可不发，概率始终零到一", recallPrompt: "随机事件和概率范围分别是什么？" },
+  "mathematics.probability.tree-diagram": { memoryAnchor: "列表树图列全结果，不重不漏再求比", recallPrompt: "多次随机试验怎样避免结果遗漏？" },
+  "english.grammar.passive-voice": { memoryAnchor: "主语承受动作，用be加过去分词", recallPrompt: "被动语态表示什么，基本结构是什么？" },
+  "english.grammar.relative-clauses": { memoryAnchor: "从句跟名词，关系词连接又充成分", recallPrompt: "定语从句的位置和关系词作用是什么？" },
+  "english.grammar.reported-speech": { memoryAnchor: "转述放进宾语从句，人称时态随语境", recallPrompt: "直接引语转述时要关注哪些变化？" },
+  "english.vocabulary.word-formation": { memoryAnchor: "前后缀判词义词性，语境再确认", recallPrompt: "遇到生词怎样结合构词法和语境猜义？" },
+  "english.vocabulary.topic-vocabulary": { memoryAnchor: "词随话题成群记，搭配放进语境用", recallPrompt: "主题词汇为什么要连同搭配一起记？" },
+  "english.listening-speaking.listening": { memoryAnchor: "听前预测类型，听中锁人时地转数", recallPrompt: "听前和听中分别应抓住什么？" },
+  "english.listening-speaking.speaking": { memoryAnchor: "回应贴场景，追问把信息接下去", recallPrompt: "怎样让英语对话回应自然又能延续？" },
+  "english.reading.main-idea": { memoryAnchor: "段意汇成主旨，结构看展开顺序", recallPrompt: "怎样从各段内容归纳全文主旨？" },
+  "english.reading.inference": { memoryAnchor: "细节回原文，推断凭明示信息", recallPrompt: "细节定位与合理推断有什么区别？" },
+  "english.writing.paragraph": { memoryAnchor: "主题句定心，支撑句给据，结尾句收束", recallPrompt: "完整英语段落中三类句子各做什么？" },
+  "english.writing.revision": { memoryAnchor: "先查对象目的格式，再核时态拼写一致", recallPrompt: "修改英语应用文要核对哪些关键项？" },
+  "physics.internal-energy.internal-energy": { memoryAnchor: "分子动势能合成内能，传热做功可改变", recallPrompt: "物体内能包含什么，又怎样改变？" },
+  "physics.internal-energy.heat-engine": { memoryAnchor: "内能变机械能，吸压做排四冲程", recallPrompt: "汽油机四冲程按什么顺序进行？" },
+  "physics.current-circuit.circuit": { memoryAnchor: "电源用器开关线，通路有流短路过流", recallPrompt: "通路、断路和短路的电流各有什么特点？" },
+  "physics.current-circuit.series-parallel": { memoryAnchor: "串联一条路，并联多支路", recallPrompt: "怎样从电流路径区分串联和并联？" },
+  "physics.voltage-resistance.voltage": { memoryAnchor: "电压促成电流，电压表并联测两端", recallPrompt: "电压表应怎样接入被测元件？" },
+  "physics.voltage-resistance.resistance": { memoryAnchor: "电阻碍电流，接入电阻丝越长阻值越大", recallPrompt: "滑动变阻器靠改变什么来调节电阻？" },
+  "physics.ohms-law.ohm": { memoryAnchor: "同段状态不变，电流等于电压除电阻", recallPrompt: "欧姆定律的公式和适用条件是什么？" },
+  "physics.ohms-law.measure-resistance": { memoryAnchor: "伏表测U安表测I，相除得到R", recallPrompt: "伏安法测电阻要测哪两个量？" },
+  "physics.electric-power.electric-work": { memoryAnchor: "电功看电压电流时间，W等于UIt", recallPrompt: "电功怎样由电压、电流和时间计算？" },
+  "physics.electric-power.electric-power": { memoryAnchor: "电功率表示做功快慢，P等于UI", recallPrompt: "电功率的物理意义和常用公式是什么？" },
+  "physics.safe-electricity.home-circuit": { memoryAnchor: "家电并联，开关保险接火线", recallPrompt: "家庭电路中家电、开关和保险怎样连接？" },
+  "physics.safe-electricity.safety": { memoryAnchor: "不碰低压带电体，不近高压带电体", recallPrompt: "安全用电对低压和高压分别怎样要求？" },
+  "chemistry.lab.changes": { memoryAnchor: "有新物质是化变，无新物质是物变", recallPrompt: "判断物理变化与化学变化的依据是什么？" },
+  "chemistry.lab.operations": { memoryAnchor: "取用按量，加热防伤，实验守规范", recallPrompt: "化学基本操作为什么必须遵守规范？" },
+  "chemistry.air.air-composition": { memoryAnchor: "空气氮约四分之三，氧约五分之一", recallPrompt: "空气中氮气和氧气约各占多少？" },
+  "chemistry.air.oxygen": { memoryAnchor: "带火星木条复燃，就是氧气", recallPrompt: "怎样用带火星木条检验氧气？" },
+  "chemistry.particles.particles": { memoryAnchor: "微粒不停运动，间有空隙还能再分", recallPrompt: "分子和原子的哪些性质解释宏观现象？" },
+  "chemistry.particles.elements": { memoryAnchor: "质子数定元素，元素符号表身份", recallPrompt: "区分不同元素的根本依据是什么？" },
+  "chemistry.water.purification": { memoryAnchor: "静沉滤吸除杂，蒸馏净化最彻底", recallPrompt: "常见净水方法中哪种净化程度最高？" },
+  "chemistry.water.chemical-formula": { memoryAnchor: "化学式表组成，化合价定原子个数比", recallPrompt: "怎样利用化合价写出化合物化学式？" },
+  "chemistry.equations.balancing": { memoryAnchor: "反应前后原子种类数目都不变", recallPrompt: "配平化学方程式依据哪条定律？" },
+  "chemistry.equations.stoichiometry": { memoryAnchor: "先配平再按系数比换算物质质量", recallPrompt: "根据化学方程式计算前为何必须配平？" },
+  "chemistry.carbon.carbon": { memoryAnchor: "同为碳单质，结构不同性质不同", recallPrompt: "金刚石和石墨性质不同的原因是什么？" },
+  "chemistry.carbon.carbon-oxides": { memoryAnchor: "一氧化碳有毒能还原，二氧化碳能灭火", recallPrompt: "一氧化碳与二氧化碳的性质怎样区别？" },
+  "chemistry.fuels.combustion": { memoryAnchor: "可燃物接触氧气，温度达到着火点", recallPrompt: "燃烧必须同时具备哪三个条件？" },
+  "chemistry.fuels.energy-environment": { memoryAnchor: "燃料供能也排污，节能清洁降影响", recallPrompt: "利用燃料时为何要兼顾能量与环境？" },
+  "morality-law.prosperity-innovation.reform": { memoryAnchor: "改革激活发展，共享指向共同富裕", recallPrompt: "改革与共享发展成果有什么联系？" },
+  "morality-law.prosperity-innovation.innovation": { memoryAnchor: "创新驱动发展，教育科技人才作支撑", recallPrompt: "建设创新型国家依靠哪些重要支撑？" },
+  "morality-law.democracy-law.democracy": { memoryAnchor: "人民当家作主，民主形式依法运行", recallPrompt: "社会主义民主的本质特征是什么？" },
+  "morality-law.democracy-law.rule-of-law": { memoryAnchor: "科学立法严格执法公正司法全民守法", recallPrompt: "全面依法治国的四项基本要求是什么？" },
+  "morality-law.civilization-home.culture": { memoryAnchor: "文化源自各族创造，自信来自价值生命力", recallPrompt: "文化自信建立在对什么的坚定信念上？" },
+  "morality-law.civilization-home.ecology": { memoryAnchor: "保护中发展，发展中护生态", recallPrompt: "绿色发展怎样处理经济与生态的关系？" },
+  "morality-law.harmony-dream.unity": { memoryAnchor: "各民族平等团结互助和谐，统一系根本利益", recallPrompt: "维护民族团结应坚持怎样的关系？" },
+  "morality-law.harmony-dream.china-dream": { memoryAnchor: "国家富强民族振兴人民幸福", recallPrompt: "中国梦的三个基本内涵是什么？" },
+  "morality-law.material-questions.material-analysis": { memoryAnchor: "设问圈限定，材料找关键词，教材准定位", recallPrompt: "材料题怎样从设问和材料定位知识？" },
+  "morality-law.material-questions.answer-structure": { memoryAnchor: "先亮观点，再扣材料，最后落行动", recallPrompt: "观点—材料—行动答题法怎样组织答案？" },
+  "history.ancient-civilizations.early-civilizations": { memoryAnchor: "大河育早期文明，文字制度建筑相伴", recallPrompt: "早期文明为何多形成于大河流域？" },
+  "history.ancient-civilizations.greek-roman": { memoryAnchor: "希腊重城邦民主，罗马留帝国法律", recallPrompt: "古希腊和古罗马各留下什么重要成果？" },
+  "history.feudal-era.europe-feudal": { memoryAnchor: "封君封臣系土地，庄园城市见经济变迁", recallPrompt: "中世纪西欧封建社会有哪些重要特征？" },
+  "history.feudal-era.asia-feudal": { memoryAnchor: "日本改新集权，阿拉伯帝国促交流", recallPrompt: "大化改新和阿拉伯帝国各有何影响？" },
+  "history.early-modern.renaissance": { memoryAnchor: "人文主义破神权，新航路连世界", recallPrompt: "文艺复兴和新航路开辟各带来什么变化？" },
+  "history.early-modern.colonization": { memoryAnchor: "武力垄断奴隶贸易，财富流向欧洲", recallPrompt: "早期殖民扩张主要用哪些方式掠夺财富？" },
+  "history.capitalism.english-revolution": { memoryAnchor: "革命倒专制，权利法案限王权", recallPrompt: "英国怎样逐步确立君主立宪制？" },
+  "history.capitalism.american-french": { memoryAnchor: "美国争独立建共和，法国反专制传平等", recallPrompt: "美法两场革命的目标和影响有何不同？" },
+  "history.industrial-revolution.steam-age": { memoryAnchor: "机器代手工，蒸汽给动力", recallPrompt: "第一次工业革命改变生产的两个关键词是什么？" },
+  "history.industrial-revolution.industrial-impact": { memoryAnchor: "生产城市齐加速，贫富污染也加深", recallPrompt: "工业化带来了哪些发展与社会代价？" },
+  "history.workers-movement.marxism": { memoryAnchor: "一八四八宣言发表，马克思主义诞生", recallPrompt: "马克思主义诞生的标志和时间是什么？" },
+  "history.workers-movement.paris-commune": { memoryAnchor: "一八七一巴黎公社，首次工人夺政权", recallPrompt: "巴黎公社为何是第一次伟大实践？" },
+  "history.history-methods.timeline": { memoryAnchor: "时间先后排清楚，因果还须证联系", recallPrompt: "为什么事件先发生不等于它就是原因？" },
+  "history.history-methods.source-analysis": { memoryAnchor: "先辨人时地意，再互证下有限结论", recallPrompt: "分析史料来源后为何还要与其他材料互证？" },
+};
+
+export const instantLessons: Record<string, InstantLesson> = Object.fromEntries(
+  Object.entries(lessonContent).map(([id, lesson]) => {
+    const memory = memoryContent[id];
+    if (!memory) throw new Error(`Missing memory content for ${id}`);
+    return [id, {
+      ...lesson,
+      memoryAnchor: same(memory.memoryAnchor),
+      recallPrompt: same(memory.recallPrompt),
+    }];
+  }),
+);
