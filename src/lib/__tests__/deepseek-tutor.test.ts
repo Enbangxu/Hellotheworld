@@ -27,7 +27,11 @@ describe("DeepSeek grade 9 tutor", () => {
     expect(body.messages[0].content).toContain("只输出JSON对象");
     expect(body.messages[0].content).not.toContain('"steps"');
     const userPayload = JSON.parse(body.messages.at(-1).content);
-    expect(userPayload.context).toMatchObject({ plainMeaning: expect.any(String), concreteExample: expect.any(String) });
+    expect(userPayload.context).toMatchObject({
+      plainMeaning: expect.any(String),
+      concreteExample: expect.any(String),
+      memoryAnchor: topic.instantLesson.memoryAnchor.zh,
+    });
   });
 
   it("parses Markdown JSON fences", async () => {

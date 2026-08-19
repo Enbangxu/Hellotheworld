@@ -3,6 +3,8 @@ export type LocalizedText = Record<LearningLocale, string>;
 export type InstantLesson = {
   plainMeaning: LocalizedText;
   concreteExample: LocalizedText;
+  memoryAnchor: LocalizedText;
+  recallPrompt: LocalizedText;
   essentialFormula?: string;
   formulaExplanation?: LocalizedText;
 };

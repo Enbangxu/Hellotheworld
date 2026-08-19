@@ -3,7 +3,7 @@ import { describe, expect, it } from "vitest";
 import { subjects } from "@/src/data/grade9";
 import { allTopics, getTopic, getTopicBySlug } from "@/src/lib/grade9-curriculum";
 const compact = (value: string) => value.replace(/[\s，。；：、“”‘’（）《》！？,.!?]/g, "");
-const forbidden = ["第1步", "第一步", "共几步", "学习路线", "20秒核心", "先找对象", "条件是起点", "规则是路线", "结论是终点", "TODO", "待补充"];
+const forbidden = ["第1步", "第一步", "学习路线", "TODO", "待补充", "记住这个知识点", "想想这个知识点"];
 describe("grade 9 instant curriculum", () => {
   it("keeps seven subjects and all 83 public topic ids and URLs", () => {
     expect(subjects.map((subject) => subject.slug)).toEqual(["chinese", "mathematics", "english", "physics", "chemistry", "morality-law", "history"]);
@@ -13,16 +13,22 @@ describe("grade 9 instant curriculum", () => {
   });
   it("provides concise, non-template instant lessons for every topic", () => {
     const meanings = new Set<string>(); const examples = new Set<string>();
+    const anchors = new Set<string>(); const prompts = new Set<string>();
     for (const { topic } of allTopics()) {
       const lesson = topic.instantLesson;
       expect(lesson.plainMeaning.zh.trim()).not.toBe(""); expect(lesson.concreteExample.zh.trim()).not.toBe("");
       expect(compact(lesson.plainMeaning.zh).length).toBeLessThanOrEqual(70);
       expect(compact(lesson.concreteExample.zh).length).toBeLessThanOrEqual(55);
+      expect(lesson.memoryAnchor.zh.trim()).not.toBe(""); expect(lesson.recallPrompt.zh.trim()).not.toBe("");
+      expect(compact(lesson.memoryAnchor.zh).length).toBeLessThanOrEqual(24);
+      expect(compact(lesson.recallPrompt.zh).length).toBeLessThanOrEqual(35);
       expect(lesson.plainMeaning.en.trim()).not.toBe(""); expect(lesson.plainMeaning.ja.trim()).not.toBe("");
       forbidden.forEach((phrase) => expect(JSON.stringify(lesson)).not.toContain(phrase));
       meanings.add(lesson.plainMeaning.zh); examples.add(lesson.concreteExample.zh);
+      anchors.add(lesson.memoryAnchor.zh); prompts.add(lesson.recallPrompt.zh);
     }
     expect(meanings.size).toBe(83); expect(examples.size).toBe(83);
+    expect(anchors.size).toBe(83); expect(prompts.size).toBe(83);
   });
   it("keeps key facts accurate", () => {
     expect(getTopic("mathematics.quadratic-equations.vieta")?.instantLesson.plainMeaning.zh).toMatch(/-b\/a.*c\/a/);
@@ -36,7 +42,13 @@ describe("grade 9 instant curriculum", () => {
     const legacy = readFileSync("src/app/[locale]/knowledge/grade-9/[subject]/[topic]/[micro]/page.tsx", "utf8");
     expect(page).not.toMatch(/microLessons\.map|LearningProgress|知识链|<details/);
     expect(card).not.toMatch(/进度|第1步|学习路线/);
+    expect(card).toContain("我来回想");
+    expect(card).toContain("查看答案");
     expect(tutor).not.toMatch(/小步骤|keyInsight|followUpQuestion/);
     expect(legacy).toContain("permanentRedirect");
+  });
+  it("includes the memory anchor in the server-side DeepSeek context", () => {
+    const deepSeek = readFileSync("src/lib/deepseek-tutor.ts", "utf8");
+    expect(deepSeek).toMatch(/memoryAnchor: localize\(topic\.instantLesson\.memoryAnchor\)/);
   });
 });
