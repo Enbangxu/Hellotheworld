@@ -1,5 +1,5 @@
 export type LearningLocale = "zh" | "en" | "ja";
-export type LocalizedText = Record<LearningLocale, string>;
+export type LocalizedText = { zh: string; en?: string; ja?: string };
 export type InstantLesson = {
   plainMeaning: LocalizedText;
   concreteExample: LocalizedText;

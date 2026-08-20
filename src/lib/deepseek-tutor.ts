@@ -62,7 +62,7 @@ export async function askDeepSeek(
   const model = process.env.DEEPSEEK_MODEL || "deepseek-v4-flash";
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12_000);
-  const localize = (value: Record<"zh" | "en" | "ja", string>) => value[input.locale] || value.zh;
+  const localize = (value: { zh: string; en?: string; ja?: string }) => value[input.locale] || value.zh;
   const context = {
     title: localize(topic.title),
     plainMeaning: localize(topic.instantLesson.plainMeaning),
