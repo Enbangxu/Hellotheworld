@@ -1,0 +1,6 @@
+import { describe, expect, it } from "vitest";
+import { classifyGeminiError, fallbackPrompt, isImageSize, isImageStyle } from "../image-generation";
+import { newStudioSessionId, studioSessionCookie } from "../studio-session";
+
+describe("V24 image request rules",()=>{it("validates supported styles and sizes",()=>{expect(isImageStyle("anime")).toBe(true);expect(isImageStyle("other")).toBe(false);expect(isImageSize("16:9")).toBe(true);expect(isImageSize("2:1")).toBe(false)});it("maps critical provider failures without fallback",()=>{expect(classifyGeminiError(401)).toBe("CONFIGURATION_REQUIRED");expect(classifyGeminiError(429)).toBe("RATE_LIMITED");expect(classifyGeminiError(400,"blocked by safety")).toBe("CONTENT_FILTERED")});it("builds a safe fallback for non-critical enhancement failure",()=>{expect(fallbackPrompt("a lighthouse","watercolor","9:16")).toContain("a lighthouse");expect(classifyGeminiError(500)).toBe("PROVIDER_UNAVAILABLE")})});
+describe("anonymous studio session",()=>{it("creates random HttpOnly SameSite cookies",()=>{const a=newStudioSessionId(),b=newStudioSessionId(),cookie=studioSessionCookie(a);expect(a).not.toBe(b);expect(cookie.options.httpOnly).toBe(true);expect(cookie.options.sameSite).toBe("lax")})});

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { siteConfig, type Locale } from "@/src/config/site";
 import { isLocale } from "@/src/lib/i18n";
+import { STUDIO_SESSION_COOKIE } from "@/src/lib/studio-session";
 function detectLocale(request: NextRequest): Locale { const languages = request.headers.get("accept-language")?.toLowerCase() ?? ""; if (languages.includes("zh")) return "zh"; if (languages.includes("ja") || languages.includes("jp")) return "ja"; return siteConfig.defaultLocale; }
-export function middleware(request: NextRequest) { const { pathname } = request.nextUrl; const pathnameLocale = pathname.split("/")[1]; if (isLocale(pathnameLocale)) return NextResponse.next(); const locale = detectLocale(request); const url = request.nextUrl.clone(); url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`; return NextResponse.redirect(url); }
+export function middleware(request: NextRequest) { const { pathname } = request.nextUrl; if (/^\/(studio|create|history)(\/|$)/.test(pathname)) { const response=NextResponse.next(); if(!request.cookies.get(STUDIO_SESSION_COOKIE))response.cookies.set(STUDIO_SESSION_COOKIE,crypto.randomUUID(),{httpOnly:true,sameSite:"lax",secure:process.env.NODE_ENV==="production",path:"/",maxAge:31536000}); return response; } const pathnameLocale = pathname.split("/")[1]; if (isLocale(pathnameLocale)) return NextResponse.next(); const locale = detectLocale(request); const url = request.nextUrl.clone(); url.pathname = `/${locale}${pathname === "/" ? "" : pathname}`; return NextResponse.redirect(url); }
 // Product pages without a locale segment and public/PWA assets must keep their
 // canonical URL. Everything else continues through locale detection.
-export const config = { matcher: ["/((?!api|create(?:/|$)|creation(?:/|$)|works(?:/|$)|v9(?:/|$)|_next/static|_next/image|images|icons|manifest.json|favicon.ico|robots.txt|sitemap.xml).*)"] };
+export const config = { matcher: ["/((?!api|creation(?:/|$)|works(?:/|$)|v9(?:/|$)|_next/static|_next/image|images|icons|manifest.json|favicon.ico|robots.txt|sitemap.xml).*)"] };

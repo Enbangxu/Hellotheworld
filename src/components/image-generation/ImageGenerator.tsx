@@ -1,68 +1,12 @@
 "use client";
-
-import Link from "next/link";
-import Image from "next/image";
-import { Download, History, ImageIcon, LoaderCircle, Sparkles } from "lucide-react";
-import { FormEvent, useState } from "react";
-
-const styles = [
-  ["realistic", "写实摄影"], ["anime", "动漫插画"], ["3d", "3D 艺术"],
-  ["watercolor", "水彩画"], ["cyberpunk", "赛博朋克"], ["fantasy", "奇幻艺术"],
-  ["cinematic", "电影质感"],
-] as const;
-const sizes = [["1:1", "方形"], ["16:9", "横向"], ["9:16", "竖向"]] as const;
-
-export function ImageGenerator() {
-  const [prompt, setPrompt] = useState("");
-  const [style, setStyle] = useState("realistic");
-  const [size, setSize] = useState("1:1");
-  const [imageUrl, setImageUrl] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-
-  async function generate(event: FormEvent) {
-    event.preventDefault();
-    if (!prompt.trim()) { setError("请先描述你想创作的画面。"); return; }
-    setLoading(true); setError(""); setImageUrl("");
-    try {
-      const response = await fetch("/api/generate-image", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ prompt: prompt.trim(), style, size }) });
-      const data = await response.json() as { imageUrl?: string; error?: string };
-      if (!response.ok || !data.imageUrl) throw new Error(data.error || "图片生成失败，请稍后再试。");
-      setImageUrl(data.imageUrl);
-    } catch (cause) { setError(cause instanceof Error ? cause.message : "网络开小差了，请稍后再试。"); }
-    finally { setLoading(false); }
-  }
-
-  async function download() {
-    if (!imageUrl) return;
-    try {
-      const blob = await (await fetch(imageUrl)).blob();
-      const localUrl = URL.createObjectURL(blob);
-      const anchor = document.createElement("a"); anchor.href = localUrl; anchor.download = `hello-the-world-${Date.now()}.png`; anchor.click();
-      URL.revokeObjectURL(localUrl);
-    } catch { window.open(imageUrl, "_blank", "noopener,noreferrer"); }
-  }
-
-  return <main className="image-studio min-h-screen text-white">
-    <div className="image-studio-glow" aria-hidden="true" />
-    <header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-6">
-      <Link href="/" className="font-black tracking-tight">Hello the World</Link>
-      <Link href="/history" className="image-secondary"><History size={17} />历史记录</Link>
-    </header>
-    <section className="relative mx-auto max-w-6xl px-5 pb-16 pt-8">
-      <div className="mb-9 text-center"><span className="image-kicker"><Sparkles size={14} /> V21 · GEMINI ONLY</span><h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">AI Image Studio</h1><p className="mx-auto mt-4 max-w-xl text-slate-400">描述脑海中的画面，Gemini 会先优化提示词，再把灵感变成作品。</p></div>
-      <div className="grid gap-6 lg:grid-cols-[.9fr_1.1fr]">
-        <form onSubmit={generate} className="image-panel space-y-6 p-5 sm:p-7">
-          <label className="block"><span className="image-label">画面描述</span><textarea value={prompt} onChange={e => setPrompt(e.target.value)} maxLength={1500} rows={6} placeholder="例如：雨后的未来城市，霓虹灯倒映在街道上，一只橘猫撑着透明雨伞……" className="image-input mt-2 resize-none" /><small className="mt-2 block text-right text-slate-500">{prompt.length} / 1500</small></label>
-          <fieldset><legend className="image-label">艺术风格</legend><div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">{styles.map(([value,label]) => <button type="button" key={value} onClick={() => setStyle(value)} className={`image-choice ${style===value?"active":""}`} aria-pressed={style===value}>{label}</button>)}</div></fieldset>
-          <fieldset><legend className="image-label">画面尺寸</legend><div className="mt-2 grid grid-cols-3 gap-2">{sizes.map(([value,label]) => <button type="button" key={value} onClick={() => setSize(value)} className={`image-choice ${size===value?"active":""}`} aria-pressed={size===value}><strong>{value}</strong><small>{label}</small></button>)}</div></fieldset>
-          {error && <p role="alert" className="rounded-xl border border-rose-400/25 bg-rose-400/10 p-3 text-sm text-rose-200">{error}</p>}
-          <button disabled={loading || !prompt.trim()} className="image-primary w-full">{loading?<><LoaderCircle className="animate-spin" size={19}/>正在描绘你的灵感…</>:<><Sparkles size={19}/>生成图片</>}</button>
-        </form>
-        <div className="image-panel flex min-h-[430px] flex-col overflow-hidden p-4 sm:min-h-[580px]">
-          {imageUrl ? <><div className="relative flex-1 overflow-hidden rounded-2xl bg-black/20"><Image src={imageUrl} alt={`AI 生成图片：${prompt}`} fill unoptimized sizes="(max-width: 1024px) 100vw, 55vw" className="object-contain" /></div><button onClick={download} className="image-secondary mt-4 self-end"><Download size={17}/>下载图片</button></> : <div className="flex flex-1 flex-col items-center justify-center px-6 text-center text-slate-500">{loading?<><div className="image-loading"><Sparkles size={28}/></div><p className="mt-6 font-bold text-slate-300">AI 正在创作中</p><p className="mt-2 text-sm">精彩画面需要一点时间，请不要离开</p></>:<><ImageIcon size={52} strokeWidth={1.2}/><p className="mt-5 font-bold text-slate-300">你的作品将在这里出现</p><p className="mt-2 text-sm">填写左侧创意，开启第一次生成</p></>}</div>}
-        </div>
-      </div>
-    </section>
-  </main>;
-}
+import Link from "next/link";import Image from "next/image";import{Copy,Download,History,ImageIcon,LoaderCircle,RotateCcw,Sparkles,Square}from"lucide-react";import{FormEvent,useCallback,useEffect,useRef,useState}from"react";
+const styles=[["realistic","写实摄影"],["anime","动漫插画"],["3d","3D 艺术"],["watercolor","水彩画"],["cyberpunk","赛博朋克"],["fantasy","奇幻艺术"],["cinematic","电影质感"]]as const,sizes=[["1:1","方形"],["16:9","横向"],["9:16","竖向"]]as const;
+const examples=["晨雾中的山间木屋，温暖灯光透过窗户","宇航员在月球上浇灌一株向日葵","雨夜东京小巷里的橘猫侦探"];
+type Result={imageUrl:string;enhancedPrompt:string;style:string;size:string;generatedAt:string;originalPrompt:string};
+export function ImageGenerator(){const[prompt,setPrompt]=useState(""),[style,setStyle]=useState("realistic"),[size,setSize]=useState("1:1"),[result,setResult]=useState<Result|null>(null),[error,setError]=useState(""),[loading,setLoading]=useState(false),[stage,setStage]=useState(0),[notice,setNotice]=useState("");const controller=useRef<AbortController|null>(null),timers=useRef<ReturnType<typeof setTimeout>[]>([]),mounted=useRef(true);
+const stop=useCallback(()=>{controller.current?.abort();controller.current=null;timers.current.forEach(clearTimeout);timers.current=[]},[]);useEffect(()=>()=>{mounted.current=false;stop()},[stop]);
+const generate=useCallback(async(event?:FormEvent)=>{event?.preventDefault();if(loading)return;const originalPrompt=prompt.trim();if(originalPrompt.length<3){setError("请至少用 3 个字符描述画面。");return}setLoading(true);setError("");setNotice("");setStage(0);controller.current=new AbortController();timers.current=[setTimeout(()=>mounted.current&&setStage(1),1300),setTimeout(()=>mounted.current&&setStage(2),3000)];try{const response=await fetch("/api/generate-image",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({prompt:originalPrompt,style,size}),signal:controller.current.signal});let data:{imageUrl?:string;enhancedPrompt?:string;style?:string;size?:string;generatedAt?:string;error?:{message?:string}};try{data=await response.json()}catch{throw new Error("服务返回了无法读取的内容，请稍后再试。")}if(!response.ok||!data.imageUrl)throw new Error(data.error?.message||"图片生成失败，请稍后再试。");if(mounted.current)setResult({imageUrl:data.imageUrl,enhancedPrompt:data.enhancedPrompt||originalPrompt,style:data.style||style,size:data.size||size,generatedAt:data.generatedAt||new Date().toISOString(),originalPrompt})}catch(cause){if(!mounted.current)return;if(cause instanceof Error&&cause.name==="AbortError")setNotice("已取消生成，当前设置和上一张作品已保留。");else setError(cause instanceof Error?cause.message:"网络开小差了，请稍后再试。")}finally{timers.current.forEach(clearTimeout);timers.current=[];controller.current=null;if(mounted.current)setLoading(false)}},[loading,prompt,size,style]);
+useEffect(()=>{const key=(event:KeyboardEvent)=>{if((event.ctrlKey||event.metaKey)&&event.key==="Enter"){event.preventDefault();void generate()}};addEventListener("keydown",key);return()=>removeEventListener("keydown",key)},[generate]);
+const copy=async()=>{if(!result)return;await navigator.clipboard.writeText(result.enhancedPrompt);setNotice("增强提示词已复制。")} ;const download=async()=>{if(!result)return;try{const blob=await(await fetch(result.imageUrl)).blob(),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`hello-the-world-${Date.now()}.png`;a.click();URL.revokeObjectURL(url)}catch{open(result.imageUrl,"_blank","noopener,noreferrer")}};
+const progress=["正在理解画面","正在优化描述","正在生成图片"];
+return <main className="image-studio min-h-screen text-white"><div className="image-studio-glow" aria-hidden="true"/><header className="relative mx-auto flex max-w-6xl items-center justify-between px-5 py-6"><Link href="/studio" className="font-black tracking-tight">← AI 工作室</Link><Link href="/history" className="image-secondary"><History size={17}/>历史记录</Link></header><section className="relative mx-auto max-w-6xl px-5 pb-16 pt-8"><div className="mb-9 text-center"><span className="image-kicker"><Sparkles size={14}/>Gemini · 图片工作室</span><h1 className="mt-4 text-4xl font-black tracking-tight sm:text-6xl">把想象变成画面</h1><p className="mx-auto mt-4 max-w-xl text-slate-400">描述脑海中的画面，Gemini 会优化描述并生成图片。</p></div><div className="grid gap-6 lg:grid-cols-[.9fr_1.1fr]"><form onSubmit={generate} className="image-panel space-y-6 p-5 sm:p-7"><label className="block"><span className="image-label">画面描述</span><textarea value={prompt} onChange={e=>setPrompt(e.target.value)} maxLength={1500} rows={6} className="image-input mt-2 resize-none" placeholder="描述主体、环境和氛围……"/><small className="mt-2 block text-right text-slate-500">{prompt.length} / 1500</small></label><div><p className="image-label">试试这些灵感</p><div className="mt-2 flex flex-wrap gap-2">{examples.map(x=><button type="button" key={x} onClick={()=>setPrompt(x)} className="image-secondary text-left text-sm">{x}</button>)}</div></div><fieldset><legend className="image-label">艺术风格</legend><div className="mt-2 grid grid-cols-2 gap-2 sm:grid-cols-3">{styles.map(([v,l])=><button type="button" key={v} disabled={loading} onClick={()=>setStyle(v)} className={`image-choice ${style===v?"active":""}`} aria-pressed={style===v}>{l}</button>)}</div></fieldset><fieldset><legend className="image-label">画面比例</legend><div className="mt-2 grid grid-cols-3 gap-2">{sizes.map(([v,l])=><button type="button" key={v} disabled={loading} onClick={()=>setSize(v)} className={`image-choice ${size===v?"active":""}`} aria-pressed={size===v}><strong>{v}</strong><small>{l}</small></button>)}</div></fieldset>{error&&<p role="alert" className="rounded-xl border border-rose-400/25 bg-rose-400/10 p-3 text-sm text-rose-200">{error}</p>}<p aria-live="polite" className="text-sm text-cyan-200">{notice}</p><div className="grid gap-3 sm:grid-cols-2">{loading?<button type="button" onClick={stop} className="image-secondary w-full"><Square size={17}/>取消生成</button>:null}<button disabled={loading||prompt.trim().length<3} className="image-primary w-full sm:col-span-2">{loading?<><LoaderCircle className="animate-spin" size={19}/>{progress[stage]}</>:<><Sparkles size={19}/>生成图片</>}</button></div></form><div className="image-panel flex min-h-[430px] min-w-0 flex-col overflow-hidden p-4 sm:min-h-[580px]">{result?<><div className="relative min-h-[360px] flex-1 overflow-hidden rounded-2xl bg-black/20"><Image src={result.imageUrl} alt={`AI 生成图片：${result.originalPrompt}`} fill unoptimized sizes="(max-width:1024px) 100vw,55vw" className="object-contain"/></div><div className="mt-4 space-y-3 overflow-hidden text-sm"><p><strong>原始描述：</strong>{result.originalPrompt}</p><p><strong>风格：</strong>{styles.find(([v])=>v===result.style)?.[1]||result.style}　<strong>比例：</strong>{result.size}</p><details className="rounded-xl bg-white/5 p-3"><summary className="cursor-pointer font-bold">查看增强提示词</summary><p className="mt-2 break-words text-slate-300">{result.enhancedPrompt}</p></details><div className="flex flex-wrap gap-2"><button onClick={download} className="image-secondary"><Download size={17}/>下载图片</button><button onClick={()=>generate()} disabled={loading} className="image-secondary"><RotateCcw size={17}/>再生成一次</button><button onClick={copy} className="image-secondary"><Copy size={17}/>复制增强提示词</button><Link href="/studio" className="image-secondary">返回 AI 工作室</Link></div></div></>:<div className="flex flex-1 flex-col items-center justify-center px-6 text-center text-slate-500"><ImageIcon size={52}/><p className="mt-5 font-bold text-slate-300">你的作品将在这里出现</p><p className="mt-2 text-sm">新生成开始后，上一张作品仍会保留</p></div>}</div></div></section></main>}
