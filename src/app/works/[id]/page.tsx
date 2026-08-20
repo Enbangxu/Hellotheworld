@@ -33,7 +33,7 @@ export default async function WorkPage({ params }: PageProps) {
   if (!creation) notFound();
   const work = normalizeCreativeWork(creation.result);
   return <main className="creative-lab min-h-screen bg-slate-950 px-5 py-10 text-white"><div className="mx-auto max-w-5xl space-y-6">
-    <Link className="creative-button" href="/create">← AI Creative Lab</Link>
+    <Link className="creative-button" href="/studio/ideas">← 返回 DeepSeek 创意工作室</Link>
     <CreatorCard title={creation.title} description={creation.tagline} category={creation.category} createdAt={creation.createdAt} originalIdea={creation.input} shareUrl={`/works/${creation.slug}`} />
     <CreationResult work={work} onRefine={() => {}} />
   </div></main>;

@@ -396,7 +396,9 @@ model GenerationTask {
   size           String
   imageUrl       String
   provider       String   @default("gemini")
+  sessionId      String?
   createdAt      DateTime @default(now())
 
   @@index([createdAt])
+  @@index([sessionId, createdAt])
 }

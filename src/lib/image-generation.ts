@@ -73,3 +73,16 @@ export class GeminiRequestError extends Error {
     this.name = "GeminiRequestError";
   }
 }
+
+export type ImageErrorCode = "INVALID_REQUEST" | "CONFIGURATION_REQUIRED" | "RATE_LIMITED" | "CONTENT_FILTERED" | "PROVIDER_UNAVAILABLE" | "GENERATION_TIMEOUT" | "EMPTY_IMAGE_RESULT";
+
+export function classifyGeminiError(status: number, message = ""): ImageErrorCode {
+  if (status === 401 || status === 403) return message.toLowerCase().includes("safety") ? "CONTENT_FILTERED" : "CONFIGURATION_REQUIRED";
+  if (status === 429) return "RATE_LIMITED";
+  if (/safety|blocked|content.?filter/i.test(message)) return "CONTENT_FILTERED";
+  return "PROVIDER_UNAVAILABLE";
+}
+
+export function fallbackPrompt(prompt: string, style: ImageStyle, size: ImageSize) {
+  return `${prompt}. Visual direction: ${stylePrompts[style]}. Aspect ratio: ${size}.`;
+}

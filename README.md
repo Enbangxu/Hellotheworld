@@ -1,3 +1,17 @@
+# V24 · Unified AI Studio
+
+V24 将 `/studio` 统一为 Gemini 图片工作室与 DeepSeek 创意工作室的清晰入口。`/create` 保留为图片生成直达路由，`/studio/ideas` 提供完整创意方案流程；匿名图片历史通过 HttpOnly 会话 cookie 隔离，每个会话仅保留最近 20 条记录。
+
+> **图片存储容量说明：** 当前图片仍以 data URL 存入 PostgreSQL，这只适合低流量阶段。正式扩大使用前必须迁移到对象存储，并仅在数据库保存对象 URL；V24 不会自动接入任何外部付费存储。
+
+## Vercel 部署前
+
+1. 在 Vercel 服务端环境配置 `GOOGLE_AI_API_KEY`（不要使用 `NEXT_PUBLIC_` 前缀）。
+2. 预览 migration SQL 并备份生产数据库，然后由维护者显式运行 `npx prisma migrate deploy`；本次更新不会自动执行生产迁移。
+3. 重新部署后访问 `/studio`，分别验证 `/create`、`/studio/ideas`，并在同一浏览器检查 `/history`。
+
+---
+
 # V23 · Adaptive Learning
 
 V23 在原有 V1–V22 功能之上增加初三 AI 自适应学习与智能复习中心。课程采用**通用中考课程框架**，内容是原创概括；本产品并非教育部门官方产品，也不宣称完整覆盖某一特定教材。
